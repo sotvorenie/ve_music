@@ -1,0 +1,124 @@
+@use 'helpers' as *;
+
+html {
+  &.is-lock {
+    overflow: hidden;
+  }
+}
+
+@media (min-width: 1920px) {
+  html {
+    font-size: clamp(
+            16px,
+            calc(16px + (100vw - 1920px) / 100),
+            20px
+    );
+  }
+}
+
+body {
+  @include fluid-text(18, 14);
+
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-family-base);
+  color: var(--color-light);
+  background-color: var(--color-dark);
+  overflow: hidden;
+}
+
+body * {
+  user-select: none;
+}
+
+main {
+  flex-grow: 1;
+}
+
+h1, .h1 {
+  @include fluid-text(70, 30);
+
+  line-height: 1.2;
+}
+
+h2, .h2 {
+  @include fluid-text(58, 28);
+
+  line-height: 1.3;
+}
+
+h3, .h3 {
+  @include fluid-text(40, 24);
+}
+
+h4, .h4 {
+  @include fluid-text(26, 18);
+}
+
+h5, .h5 {
+  @include fluid-text(24, 18);
+}
+
+h6, .h6 {
+  @include fluid-text(20, 16);
+}
+
+a,
+button,
+label,
+input,
+textarea,
+select,
+svg * {
+  transition:
+          color var(--transition-duration),
+          background-color var(--transition-duration),
+          border-color var(--transition-duration);
+}
+
+a {
+  color: inherit;
+
+  @include hover {
+    color: var(--color-accent);
+  }
+
+  &[class] {
+    text-decoration: none;
+  }
+}
+
+button, input {
+  border: none;
+  outline: none;
+  color: inherit;
+}
+button {
+  padding: 0;
+  background-color: transparent;
+
+  svg {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+button[disabled] {
+  cursor: default;
+  pointer-events: none;
+  opacity: .6;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-dark-15);
+  border-radius: var(--radius-regular);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-accent);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
+}

@@ -1,0 +1,55 @@
+@use '../helpers' as *;
+
+.skeleton-item {
+  background: var(--color-dark-15);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    height: 100%;
+    top: 0;
+    box-shadow: 0 0 rem(20) rem(10) #FFFFFF50;
+    animation: loadSkeleton 2s infinite linear;
+    z-index: 1;
+
+    @keyframes loadSkeleton {
+      0% {
+        left: -100%;
+      }
+      100% {
+        left: 200%;
+      }
+    }
+  }
+}
+
+.skeleton-genres, .skeleton-music {
+  display: flex;
+  flex-direction: column;
+  gap: rem(10);
+}
+
+.skeleton-genres {
+  @include abs-y;
+
+  left: rem(30);
+
+  &__item {
+    width: rem(200);
+    height: rem(60);
+    border-radius: var(--radius-regular);
+  }
+}
+
+.skeleton-music {
+  top: rem(100);
+  left: rem(400);
+
+  &__item {
+    width: rem(400);
+    height: rem(130);
+    border-radius: var(--radius-medium);
+  }
+}

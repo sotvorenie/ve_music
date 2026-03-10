@@ -1,0 +1,29 @@
+@use '../helpers' as *;
+
+.music {
+  z-index: 1000000;
+  inset: 0;
+
+  &__img-container {
+    right: 0;
+    width: 70vw;
+    min-height: 100vh;
+    max-height: 100vh;
+    aspect-ratio: 1;
+    transition: transform var(--transition-duration-big);
+    will-change: transform;
+
+    &.is-active {
+      transform: scale(1.05);
+    }
+  }
+
+  &__card {
+    right: rem(80);
+    bottom: rem(60);
+    backdrop-filter: blur(2px);
+    border-radius: rem(32);
+    padding: rem(25);
+    width: 50vw;
+  }
+}

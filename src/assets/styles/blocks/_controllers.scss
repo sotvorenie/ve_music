@@ -1,0 +1,117 @@
+@use '../helpers' as *;
+
+.controllers {
+  &__timeline {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: var(--radius-regular);
+    outline: none;
+    cursor: pointer;
+    background: var(--color-dark-15);
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      background: var(--color-light);
+      border-radius: 50%;
+    }
+    &::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      background: var(--color-light);
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    &::-moz-focus-outer {
+      border: 0;
+    }
+  }
+  &__btn-bar {
+    gap: rem(20);
+  }
+  &__btn {
+    @include flex-center();
+
+    background: transparent;
+    border-radius: 50%;
+    color: var(--color-light);
+    border: 2px solid currentColor;
+
+    &:not(:disabled) {
+
+      @include hover() {
+        color: var(--color-accent);
+      }
+    }
+
+    &:disabled {
+      cursor: default !important;
+      opacity: .6;
+    }
+
+    &.play-pause, &.prev, &.next {
+      padding: rem(5);
+    }
+
+    &.play-pause {
+      width: rem(80);
+      height: rem(80);
+    }
+
+    &.prev, &.next {
+      @include square(55);
+
+      svg {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    &.prev {
+      rotate: 180deg;
+
+      svg {
+        margin-right: rem(-5);
+      }
+    }
+
+    &.next {
+
+      svg {
+        margin-right: rem(-5);
+      }
+    }
+  }
+
+  &__time {
+    margin-bottom: rem(15);
+  }
+
+  &__modes {
+    @include abs-x;
+
+    gap: rem(10);
+    transform: translateX(calc(50% + #{rem(160)}));
+  }
+
+  &__mode-btn {
+    @include square(50);
+
+    padding: rem(10);
+    color: var(--color-light);
+    border-radius: var(--radius-regular);
+
+    &.is-active {
+      background-color: var(--color-dark-15);
+      pointer-events: none;
+    }
+
+    svg {
+      height: 100%;
+      width: auto;
+    }
+  }
+}

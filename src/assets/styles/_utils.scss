@@ -1,0 +1,58 @@
+@use 'helpers' as *;
+
+.visually-hidden {
+  @include visually-hidden;
+}
+
+.img-container {
+  @include flex-center();
+
+  overflow: hidden;
+
+  img, video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  svg {
+    max-width: 70%;
+    max-height: 70%;
+  }
+}
+
+.recolor-svg {
+  svg {
+    &[stroke]:not([stroke="none"]),
+    *[stroke]:not([stroke="none"]) {
+      stroke: currentColor !important;
+    }
+
+    &[fill]:not([fill="none"]),
+    *[fill]:not([fill="none"]) {
+      fill: currentColor !important;
+    }
+
+    path,
+    circle,
+    rect,
+    polygon,
+    polyline,
+    line,
+    ellipse {
+      &[stroke]:not([stroke="none"]) {
+        stroke: currentColor !important;
+      }
+      &[fill]:not([fill="none"]) {
+        fill: currentColor !important;
+      }
+    }
+  }
+}
+
+.hover-color-accent {
+
+  @include hover() {
+    color: var(--color-accent) !important;
+  }
+}

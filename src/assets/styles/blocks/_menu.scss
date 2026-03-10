@@ -1,0 +1,41 @@
+@use '../helpers' as *;
+
+.menu {
+  @include abs-y;
+
+  left: rem(30);
+  background: var(--color-dark-15);
+  padding: rem(16) rem(10);
+  border-radius: rem(22);
+
+  &__item {
+    min-width: rem(200);
+  }
+
+  &__btn {
+    color: currentColor;
+    background: transparent;
+    height: rem(60);
+    border-radius: rem(12);
+    padding-inline: rem(20);
+
+    @include hover {
+      backdrop-filter: brightness(.8);
+    }
+
+    &.is-active {
+      cursor: default;
+      pointer-events: none;
+    }
+  }
+
+  svg {
+    width: rem(50);
+    height: auto;
+  }
+
+  &__active {
+    height: rem(60);
+    width: calc(100% - #{rem(10)} * 2);
+  }
+}

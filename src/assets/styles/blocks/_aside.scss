@@ -1,0 +1,74 @@
+@use '../helpers' as *;
+
+.aside {
+
+  &__open {
+    @include square(50);
+
+    color: var(--color-light);
+    top: rem(30);
+    left: rem(30);
+  }
+
+  &__background {
+    inset: 0;
+    backdrop-filter: brightness(0.2) blur(5px);
+    background: rgba(0,0,0,.6);
+  }
+
+  &__content {
+    top: 0;
+    left: 0;
+    height: 100vh;
+    background: var(--color-dark-alt);
+    padding: rem(30);
+  }
+
+  &__list {
+    gap: rem(30);
+  }
+
+  &__btn {
+    @include square(50);
+  }
+
+  &__avatar {
+    border-radius: 50%;
+
+    &.is-active {
+
+      .img-container {
+        @include square(200);
+
+        top: rem(100);
+        left: rem(400);
+      }
+    }
+
+    & div {
+      @include square(50);
+      inset: 0;
+    }
+
+    .border {
+      border-radius: 50%;
+      border: 1px dashed var(--color-light);
+    }
+
+    .img-container {
+      border-radius: 50%;
+      transition:
+              top var(--transition-duration-big),
+              left var(--transition-duration-big),
+              width var(--transition-duration-big),
+              height var(--transition-duration-big);
+    }
+  }
+
+  &__block {
+    background: var(--color-dark-15);
+    left: rem(410);
+    top: rem(200);
+    border-radius: var(--radius-big);
+  }
+}

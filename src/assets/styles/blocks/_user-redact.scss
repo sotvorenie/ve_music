@@ -1,0 +1,19 @@
+@use '../helpers' as *;
+
+.user-redact {
+  padding: rem(60) rem(30) rem(60) rem(240);
+  width: rem(600);
+  height: rem(240);
+
+  &__name {
+    margin-bottom: rem(30);
+  }
+
+  &__btn-bar {
+    gap: rem(20);
+
+    button {
+      flex-grow: 1;
+    }
+  }
+}

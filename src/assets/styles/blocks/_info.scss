@@ -1,0 +1,40 @@
+@use '../helpers' as *;
+
+.info {
+  margin-bottom: rem(20);
+
+  &__track {
+    display: inline-flex;
+
+    @keyframes music-animate {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(calc(-50% - #{rem(75)}));
+      }
+    }
+
+    &.animate {
+      animation: music-animate linear infinite;
+    }
+  }
+  &__spacer {
+    margin-left: rem(150);
+  }
+  &__title, &__author {
+    line-height: 1.2;
+  }
+  &__title {
+    font-size: rem(100);
+    transition: transform var(--transition-duration-big);
+
+    &.shadow {
+      mask-image: linear-gradient(90deg, transparent, var(--color-dark) 5%, #000 90%, transparent);
+    }
+  }
+  &__author {
+    font-size: rem(42);
+    text-overflow: ellipsis
+  }
+}

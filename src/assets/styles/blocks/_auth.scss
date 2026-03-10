@@ -1,0 +1,19 @@
+@use '../helpers' as *;
+
+.auth {
+  padding: rem(30);
+  width: rem(450);
+
+  &__header {
+    gap: rem(30);
+    margin-bottom: rem(50);
+  }
+
+  &__form {
+    gap: rem(40);
+  }
+
+  &__submit {
+    margin-top: rem(20);
+  }
+}

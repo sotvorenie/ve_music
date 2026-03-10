@@ -1,0 +1,12 @@
+@use '../helpers' as *;
+
+.active-index {
+  --active-index: 0;
+
+  background: var(--color-dark-15);
+  transition: transform var(--transition-duration-big);
+  z-index: -1;
+  filter: brightness(.8);
+  border-radius: rem(12);
+  transform: translateY(calc(#{var(--active-index)} * 100%));
+}
