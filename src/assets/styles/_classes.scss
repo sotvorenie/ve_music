@@ -16,6 +16,7 @@ $grid-columns: 12 !default;
 .text-w700 {font-weight: 700 !important;}
 .text-nowrap {white-space: nowrap !important;}
 .text-upper {text-transform: uppercase !important;}
+.text-numeric {font-variant-numeric: tabular-nums !important;}
 
 .flex { display: flex !important; }
 .flex-column { flex-direction: column !important; }

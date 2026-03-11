@@ -12,8 +12,8 @@ import useMenuStore from "../../store/useMenuStore.ts";
 const menuStore = useMenuStore();
 import useAudioStore from "../../store/useAudioStore.ts";
 const audioStore = useAudioStore();
-import useModeStore from "../../store/useModeStore.ts";
-const modeStore = useModeStore();
+import useControllersStore from "../../store/useControllersStore.ts";
+const controllersStore = useControllersStore();
 
 
 const musicActive = ref<HTMLLIElement | null>(null)
@@ -37,8 +37,8 @@ const updateMusic = async () => {
     Object.assign(audioStore.activeTrack, data)
     audioStore.loadAndPlay()
 
-    if (modeStore.mode === modeStore.modesList.video && !audioStore.activeTrack.video_clip_url) {
-      modeStore.mode = modeStore.modesList.img
+    if (controllersStore.mode === controllersStore.modesList.video && !audioStore.activeTrack.video_clip_url) {
+      controllersStore.mode = controllersStore.modesList.img
     }
   }
 }

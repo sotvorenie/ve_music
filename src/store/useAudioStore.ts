@@ -2,9 +2,11 @@ import {defineStore} from "pinia";
 import {reactive, ref} from "vue";
 import useMenuStore from "./useMenuStore.ts";
 import {Music} from "../types/music.ts";
+import useControllersStore from "./useControllersStore.ts";
 
 const useAudioStore = defineStore('audioStore', () => {
     const menuStore = useMenuStore();
+    const controllersStore = useControllersStore();
 
     // аудио
     const audio = new Audio()
@@ -15,7 +17,10 @@ const useAudioStore = defineStore('audioStore', () => {
         currentTime.value = Math.floor(audio.currentTime)
     }
     audio.onended = () => {
-        if (menuStore.musicIndex < menuStore.musicListLength - 1) {
+        if (controllersStore.isRepeat) {
+            audio.currentTime = 0
+            audio.play().then(() => {})
+        } else if (menuStore.musicIndex < menuStore.musicListLength - 1) {
             menuStore.musicIndex++
         } else {
             isPlaying.value = false
@@ -47,10 +52,14 @@ const useAudioStore = defineStore('audioStore', () => {
         artists: [{id: -1, name: '', avatar: ''}]
     })
 
+    // уровень громкости
+    const volume = ref<number>(1)
+    // старый уровень громкости
+    const oldVolume = ref<number>(1)
+
 
     // загружаем данные о музыке
     const loadAndPlay = () => {
-        console.log(activeTrack.audio_url)
         currentTime.value = 0
         audio.src = `http://localhost:81/${activeTrack.audio_url}`
         audio.load()
@@ -68,6 +77,9 @@ const useAudioStore = defineStore('audioStore', () => {
         currentTime,
 
         activeTrack,
+
+        volume,
+        oldVolume,
 
         loadAndPlay,
     }

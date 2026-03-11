@@ -17,29 +17,43 @@ const audioStore = useAudioStore();
 
 const visible = ref(false)
 
-const videoRef = ref<HTMLVideoElement | null>(null)
+const allKeyCodes = {
+  space: 'Space',
+  arrowLeft: 'ArrowLeft',
+  arrowRight: 'ArrowRight',
+}
 
 const handleKey = (e: KeyboardEvent) => {
-  if (e.code !== 'Space') return
   const target = e.target as HTMLElement
   if (target.tagName === 'INPUT' ||
       target.tagName === "TEXTAREA" ||
       target.isContentEditable) return
 
-  e.preventDefault()
-  audioStore.isPlaying = !audioStore.isPlaying
+
+  const audio = audioStore.audio
+
+  switch (e.code) {
+    case allKeyCodes.space:
+      e.preventDefault()
+      audioStore.isPlaying = !audioStore.isPlaying
+      break
+    case allKeyCodes.arrowLeft:
+      if (Number.isNaN(audio.duration)) break
+      e.preventDefault()
+      audio.currentTime = Math.max(0, audio.currentTime - 5)
+      break
+    case allKeyCodes.arrowRight:
+      if (Number.isNaN(audio.duration)) break
+      e.preventDefault()
+      audio.currentTime = Math.min(audio.duration, audio.currentTime + 5)
+      break
+  }
 }
 
 watch(
     () => audioStore.isPlaying,
     (newVal) => {
-      if (newVal) {
-        audioStore.audio.play()
-        if (videoRef.value) videoRef.value.play()
-      } else {
-        audioStore.audio.pause()
-        if (videoRef.value) videoRef.value.pause()
-      }
+      newVal ? audioStore.audio.play() : audioStore.audio.pause()
     }
 )
 

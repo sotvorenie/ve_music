@@ -1,34 +1,30 @@
 @use '../helpers' as *;
 
 .controllers {
-  &__timeline {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 6px;
-    border-radius: var(--radius-regular);
-    outline: none;
-    cursor: pointer;
-    background: var(--color-dark-15);
 
-    &::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 14px;
-      height: 14px;
-      background: var(--color-light);
-      border-radius: 50%;
-    }
-    &::-moz-range-thumb {
-      width: 14px;
-      height: 14px;
-      background: var(--color-light);
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-    &::-moz-focus-outer {
-      border: 0;
+  &__timeline-wrapper {
+
+    @include hover {
+      .controllers__timeline-info {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   }
+
+  &__timeline-info {
+    @include abs-x;
+
+    bottom: 95%;
+    background: var(--color-dark-15);
+    border-radius: var(--radius-regular);
+    padding: rem(10);
+    transition: opacity var(--transition-duration), transform var(--transition-duration);
+    opacity: 0;
+    transform: translateY(10px);
+    pointer-events: none;
+  }
+
   &__btn-bar {
     gap: rem(20);
   }
@@ -90,14 +86,7 @@
     margin-bottom: rem(15);
   }
 
-  &__modes {
-    @include abs-x;
-
-    gap: rem(10);
-    transform: translateX(calc(50% + #{rem(160)}));
-  }
-
-  &__mode-btn {
+  &__small-btn {
     @include square(50);
 
     padding: rem(10);
@@ -106,12 +95,64 @@
 
     &.is-active {
       background-color: var(--color-dark-15);
-      pointer-events: none;
     }
 
     svg {
       height: 100%;
       width: auto;
+    }
+  }
+
+  &__modes, &__settings {
+    --transform-value: 0px;
+
+    @include abs-x;
+
+    gap: rem(10);
+    transform: translateX(calc(50% + #{var(--transform-value)}));
+  }
+
+  &__modes {
+    --transform-value: #{rem(160)};
+  }
+
+  &__mode-btn {
+
+    &.is-active {
+      pointer-events: none;
+    }
+  }
+
+  &__settings {
+    --transform-value: #{rem(-460)};
+  }
+
+  &__sound {
+    margin-right: rem(110);
+
+    @include hover {
+      .controllers__sound-number, .controllers__sound-range {
+        opacity: 1;
+      }
+      .controllers__sound-range {
+        display: block !important;
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
+    &-range, &-number {
+      opacity: 0;
+      transition: opacity var(--transition-duration);
+    }
+
+    &-range {
+      --range-wigth: #{rem(100)};
+
+      @include abs-y;
+
+      width: var(--range-wigth);
+      left: calc(100% - #{rem(5)});
     }
   }
 }

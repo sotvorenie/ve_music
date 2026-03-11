@@ -1,0 +1,25 @@
+@use '../helpers' as *;
+
+.tooltip {
+  height: 100%;
+
+  @include hover {
+    .tooltip__content {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  &__content {
+    @include abs-x;
+
+    bottom: calc(100% + #{rem(10)});
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-duration), transform var(--transition-duration);
+    background: var(--color-dark-15);
+    border-radius: var(--radius-regular);
+    padding: rem(10);
+    transform: translateY(10px);
+  }
+}

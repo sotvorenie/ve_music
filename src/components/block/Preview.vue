@@ -3,17 +3,17 @@ import {computed, nextTick, onMounted, onUnmounted, ref, watch} from "vue";
 
 import useAudioStore from "../../store/useAudioStore.ts";
 const audioStore = useAudioStore();
-import useModeStore from "../../store/useModeStore.ts";
-const modeStore = useModeStore();
+import useControllersStore from "../../store/useControllersStore.ts";
+const controllersStore = useControllersStore();
 
 const visibleImage = computed(() => {
-  return modeStore.mode === modeStore.modesList.img && audioStore.activeTrack.preview_url
+  return controllersStore.mode === controllersStore.modesList.img && audioStore.activeTrack.preview_url
 })
 
 const videoRef = ref<HTMLVideoElement | null>(null)
 
 const visibleVideo = computed(() => {
-  return modeStore.mode === modeStore.modesList.video && audioStore.activeTrack.video_clip_url
+  return controllersStore.mode === controllersStore.modesList.video && audioStore.activeTrack.video_clip_url
 })
 
 const onPlay = () => {
@@ -46,7 +46,7 @@ onUnmounted(() => {
 })
 
 watch(
-    () => modeStore.mode,
+    () => controllersStore.mode,
     async () => {
       await nextTick()
       onSeeked()
@@ -57,9 +57,9 @@ watch(
 <template>
 
   <Transition name="fade">
-    <div :key="`${audioStore.activeTrack.id}-${modeStore.mode}`"
+    <div :key="`${audioStore.activeTrack.id}-${controllersStore.mode}`"
          class="music__img-container img-container position-absolute"
-         :class="{'is-active': audioStore.isPlaying && (modeStore.mode !== modeStore.modesList.video)}"
+         :class="{'is-active': audioStore.isPlaying && (controllersStore.mode !== controllersStore.modesList.video)}"
     >
       <img v-if="visibleImage"
            :src="`http://localhost:81/${audioStore.activeTrack.preview_url}`"
