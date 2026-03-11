@@ -10,13 +10,14 @@ import RandomIcon from "../../assets/icons/RandomIcon.vue";
 import RepeatIcon from "../../assets/icons/RepeatIcon.vue";
 import SoundOnIcon from "../../assets/icons/SoundOnIcon.vue";
 import SoundOffIcon from "../../assets/icons/SoundOffIcon.vue";
+import Tooltip from "../ui/Tooltip.vue";
+
 
 import useAudioStore from "../../store/useAudioStore.ts";
 const audioStore = useAudioStore();
 import useMenuStore from "../../store/useMenuStore.ts";
 const menuStore = useMenuStore();
 import useControllersStore from "../../store/useControllersStore.ts";
-import Tooltip from "../ui/Tooltip.vue";
 const controllersStore = useControllersStore();
 
 

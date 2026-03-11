@@ -10,6 +10,6 @@ export const apiGetMusic = async (musicId: number): Promise<Music> => {
     return await apiGet(`/music/${musicId}`)
 }
 
-export const apiSearchMusic = async (name: string, page: number = 1, limit: number = 21): Promise<Music> => {
+export const apiSearchMusic = async (name: string, page: number = 1, limit: number = 21): Promise<MusicList> => {
     return await apiGet(`/music/search?name=${name}&page=${page}&limit=${limit}`)
 }

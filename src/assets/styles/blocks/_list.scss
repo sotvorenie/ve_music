@@ -1,13 +1,37 @@
 @use '../helpers' as *;
 
 .list {
-  top: rem(100);
-  left: rem(400);
   display: grid;
   grid-auto-rows: rem(130);
   overflow-y: auto;
   max-height: 80vh;
   padding-right: rem(10);
+  overflow-x: hidden;
+  transition: max-height var(--transition-duration);
+
+  &-wrapper {
+    top: rem(60);
+    left: rem(400);
+    transition: transform var(--transition-duration);
+
+    &.is-active {
+      transform: translateY(#{rem(80)});
+
+      .list {
+        max-height: 70vh;
+      }
+    }
+  }
+
+  &-tabs {
+    gap: rem(20);
+    margin-bottom: rem(15);
+  }
+
+  &-number {
+    display: block;
+    margin-bottom: rem(10);
+  }
 
   &__item {
     gap: rem(15);

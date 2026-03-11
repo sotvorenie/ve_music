@@ -10,6 +10,7 @@ import Aside from "./components/block/Aside.vue";
 import GenresSkeleton from "./components/ui/skeletons/GenresSkeleton.vue";
 import MusicListSkeleton from "./components/ui/skeletons/MusicListSkeleton.vue";
 import Preview from "./components/block/Preview.vue";
+import Search from "./components/block/Search.vue";
 
 import useAudioStore from "./store/useAudioStore.ts";
 const audioStore = useAudioStore();
@@ -77,6 +78,8 @@ onUnmounted(() => {
       <Vignette/>
 
       <Aside/>
+
+      <Search/>
 
       <Suspense>
         <template #default>

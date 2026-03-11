@@ -5,6 +5,10 @@ import { GenresList } from "../../types/genre";
 
 import {apiGetAllGenres} from "../../api/genre/genre.ts";
 
+import useMenuStore from "../../store/useMenuStore.ts";
+const menuStore = useMenuStore();
+
+
 const musicIndex = defineModel('musicIndex',{type: Number})
 
 const emits = defineEmits(['updateTag'])
@@ -15,12 +19,16 @@ const menuActive = ref<HTMLLIElement | null>(null)
 
 const genresList = ref<GenresList>()
 
-const handleTag = (id: number, index: number) => {
+const handleTag = (id: number, index: number, genreName?: string) => {
   activeTagId.value = id
   musicIndex.value = 0
+  menuStore.activeGenreIndex = index + 1
   updateMenuBlock(index)
 
-  if (id >= 0) emits('updateTag')
+  if (id >= 0) {
+    menuStore.activeGenreName = genreName || ''
+    emits('updateTag')
+  }
 }
 
 const updateMenuBlock = (index: number) => {
@@ -51,7 +59,7 @@ genresList.value = await apiGetAllGenres()
       <button class="menu__btn text-w500 w-100 text-left"
               type="button"
               :class="{'is-active': activeTagId === item.id}"
-              @click="handleTag(item.id, index)"
+              @click="handleTag(item.id, index, item.name)"
       >
         {{item?.name}}
       </button>

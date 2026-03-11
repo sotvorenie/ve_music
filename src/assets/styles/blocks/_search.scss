@@ -1,0 +1,55 @@
+@use '../helpers' as *;
+
+.search {
+
+  &__open {
+    @include square(50);
+
+    top: rem(30);
+    left: rem(100);
+  }
+
+  &__content {
+    top: rem(60);
+    left: rem(400);
+    height: rem(60);
+    width: rem(420);
+    background: var(--color-dark-15);
+    border-radius: var(--radius-big);
+    border: 1px solid var(--color-light);
+  }
+
+  &__input {
+    background: transparent;
+    height: 100%;
+    padding-inline: rem(20) rem(55);
+  }
+
+  &__clear {
+    @include square(30);
+    @include abs-y;
+    right: 20%;
+  }
+
+  &__submit {
+    top: 0;
+    right: 0;
+    width: 15%;
+    height: 100%;
+    padding: rem(15);
+    background: var(--color-dark-alt);
+    transform: translateX(100%);
+    transition: transform var(--transition-duration), opacity var(--transition-duration);
+    opacity: 0;
+
+    svg {
+      width: 100%;
+      height: auto;
+    }
+
+    &.is-active {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+}
