@@ -10,8 +10,8 @@ import useSearchStore from "../../store/useSearchStore.ts";
 const searchStore = useSearchStore();
 import useMenuStore from "../../store/useMenuStore.ts";
 const menuStore = useMenuStore();
-import useMusicStore from "../../store/useMusicStore.ts";
-const musicStore = useMusicStore();
+import useItemsStore from "../../store/useItemsStore.ts";
+const itemsStore = useItemsStore();
 
 
 const allPlaceholders = {
@@ -22,13 +22,13 @@ const allPlaceholders = {
 }
 
 const placeholder = computed(() => {
-  if (menuStore.mode === menuStore.allModes.music && menuStore.activeGenreIndex === 0)
+  if (menuStore.listMode === menuStore.allListModes.music && menuStore.activeGenreIndex === 0)
     return allPlaceholders.all
-  if (menuStore.mode === menuStore.allModes.music && menuStore.activeGenreIndex > 0)
+  if (menuStore.listMode === menuStore.allListModes.music && menuStore.activeGenreIndex > 0)
     return allPlaceholders.genre + ' ' + menuStore.activeGenreName
-  if (menuStore.mode === menuStore.allModes.artists)
+  if (menuStore.listMode === menuStore.allListModes.artists)
     return allPlaceholders.artists
-  if (menuStore.mode === menuStore.allModes.artists && searchStore.activeArtistName)
+  if (menuStore.listMode === menuStore.allListModes.artists && searchStore.activeArtistName)
     return allPlaceholders.artistSong + ' ' + searchStore.activeArtistName
 })
 
@@ -36,8 +36,8 @@ const placeholder = computed(() => {
 const handleSearch = async () => {
   menuStore.musicIndex = 0
 
-  if (menuStore.mode === menuStore.allModes.music) {
-    musicStore.musicList = await apiSearchMusic(searchStore.searchName, 1, 21)
+  if (menuStore.listMode === menuStore.allListModes.music) {
+    itemsStore.musicList = await apiSearchMusic(searchStore.searchName, 1, 21)
   }
 }
 
@@ -64,7 +64,7 @@ const handleSearch = async () => {
       <Transition name="fade" mode="out-in">
         <input type="text"
                class="search__input w-100"
-               :key="`${menuStore.mode}-${menuStore.activeGenreIndex}-${searchStore.activeArtistName}`"
+               :key="`${menuStore.listMode}-${menuStore.activeGenreIndex}-${searchStore.activeArtistName}`"
                v-model="searchStore.searchName"
                :title="searchStore.searchName"
                :placeholder="placeholder"

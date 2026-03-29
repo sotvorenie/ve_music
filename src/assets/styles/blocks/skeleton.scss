@@ -25,7 +25,7 @@
   }
 }
 
-.skeleton-genres, .skeleton-music {
+.skeleton-genres, .skeleton-music, .skeleton-artists {
   display: flex;
   flex-direction: column;
   gap: rem(10);
@@ -43,13 +43,35 @@
   }
 }
 
+.skeleton-music__item, .skeleton-artists__item {
+  width: rem(400);
+  height: rem(130);
+}
+
 .skeleton-music {
   top: rem(100);
   left: rem(400);
 
   &__item {
-    width: rem(400);
-    height: rem(130);
+    border-radius: var(--radius-medium);
+  }
+}
+
+.skeleton-artists {
+
+  &__item {
+    gap: rem(20);
+  }
+
+  &__avatar {
+    @include square(120);
+
+    border-radius: 50%;
+  }
+
+  &__name {
+    flex-grow: 1;
+    height: rem(40);
     border-radius: var(--radius-medium);
   }
 }

@@ -49,7 +49,7 @@ const useAudioStore = defineStore('audioStore', () => {
             id: -1,
             name: '',
         },
-        artists: [{id: -1, name: '', avatar: ''}]
+        artists: [{id: -1, name: '', avatar_url: ''}]
     })
 
     // уровень громкости

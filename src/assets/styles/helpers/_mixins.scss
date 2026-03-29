@@ -46,8 +46,10 @@
 }
 
 @mixin square($size) {
-  width: rem($size);
-  height: rem($size);
+  width: rem($size) !important;
+  min-width: rem($size) !important;
+  height: rem($size) !important;
+  min-height: rem($size) !important;
 }
 
 @mixin visually-hidden {

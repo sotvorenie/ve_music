@@ -56,3 +56,8 @@
     color: var(--color-accent) !important;
   }
 }
+
+.mb-10 {
+  display: block;
+  margin-bottom: rem(10);
+}

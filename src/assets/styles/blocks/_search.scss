@@ -3,7 +3,7 @@
 .search {
 
   &__open {
-    @include square(50);
+    @include square(40);
 
     top: rem(30);
     left: rem(100);

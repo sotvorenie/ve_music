@@ -4,28 +4,76 @@
   @include abs-y;
 
   left: rem(30);
-  background: var(--color-dark-15);
-  padding: rem(16) rem(10);
-  border-radius: rem(22);
+  width: rem(280);
 
-  &__item {
-    min-width: rem(200);
+  &__list, &__genres {
+    padding: rem(16) rem(10);
   }
 
-  &__btn {
+  &__item-btn, &__btn {
     color: currentColor;
     background: transparent;
-    height: rem(60);
     border-radius: rem(12);
     padding-inline: rem(20);
-
-    @include hover {
-      backdrop-filter: brightness(.8);
-    }
 
     &.is-active {
       cursor: default;
       pointer-events: none;
+    }
+  }
+
+  &__item {
+
+    &-btn {
+      gap: rem(10);
+      height: rem(80);
+
+      &.is-active {
+        background: var(--color-dark-15);
+      }
+
+      svg {
+        @include square(35);
+      }
+    }
+  }
+
+  &__wrapper {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows var(--transition-duration-big);
+
+    &.is-active {
+      grid-template-rows: 1fr;
+
+      .menu__wrapper-inner {
+        opacity: 1;
+      }
+    }
+
+    &-inner {
+      min-height: 0;
+      opacity: 0;
+      transition: opacity var(--transition-duration-big);
+    }
+  }
+
+  &__genres {
+    background: var(--color-dark-15);
+    border-radius: rem(22);
+    margin-left: rem(20);
+    margin-top: rem(10);
+  }
+
+  &__genre {
+    min-width: rem(200);
+  }
+
+  &__btn {
+    height: rem(60);
+
+    @include hover {
+      backdrop-filter: brightness(.8);
     }
   }
 

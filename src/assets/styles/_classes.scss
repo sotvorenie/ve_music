@@ -17,6 +17,12 @@ $grid-columns: 12 !default;
 .text-nowrap {white-space: nowrap !important;}
 .text-upper {text-transform: uppercase !important;}
 .text-numeric {font-variant-numeric: tabular-nums !important;}
+.text-ellipsis {
+  width: 100% !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
 
 .flex { display: flex !important; }
 .flex-column { flex-direction: column !important; }

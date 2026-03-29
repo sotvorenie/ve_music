@@ -1,0 +1,10 @@
+@use '../helpers' as *;
+
+.like {
+  transition: stroke var(--transition-duration), fill var(--transition-duration);
+
+  &.is-active {
+    color: var(--color-accent);
+    fill: var(--color-accent);
+  }
+}

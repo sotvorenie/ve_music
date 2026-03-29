@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, nextTick, onMounted, onUnmounted, ref, watch} from "vue";
+import {computed, onMounted, onUnmounted, ref} from "vue";
 
 import useAudioStore from "../../store/useAudioStore.ts";
 const audioStore = useAudioStore();
@@ -29,7 +29,7 @@ const onPause = () => {
 const onSeeked = () => {
   if (audioStore.audio && videoRef.value) {
     videoRef.value.currentTime = audioStore.audio.currentTime
-    if (audioStore.isPlaying)videoRef.value.play()
+    if (audioStore.isPlaying) videoRef.value.play()
   }
 }
 
@@ -44,36 +44,26 @@ onUnmounted(() => {
   audioStore.audio?.removeEventListener("pause", onPause)
   audioStore.audio?.removeEventListener("seeked", onSeeked)
 })
-
-watch(
-    () => controllersStore.mode,
-    async () => {
-      await nextTick()
-      onSeeked()
-    }
-)
 </script>
 
 <template>
 
-  <Transition name="fade">
-    <div :key="`${audioStore.activeTrack.id}-${controllersStore.mode}`"
-         class="music__img-container img-container position-absolute"
-         :class="{'is-active': audioStore.isPlaying && (controllersStore.mode !== controllersStore.modesList.video)}"
+  <div class="music__img-container img-container position-absolute"
+       :class="{'is-active': audioStore.isPlaying && (controllersStore.mode !== controllersStore.modesList.video)}"
+  >
+    <img :src="`http://localhost:81/${audioStore.activeTrack.preview_url}`"
+         :alt="audioStore.activeTrack?.name"
+         draggable="false"
+         :class="{'is-active': visibleImage}"
     >
-      <img v-if="visibleImage"
-           :src="`http://localhost:81/${audioStore.activeTrack.preview_url}`"
-           :alt="audioStore.activeTrack?.name"
-           draggable="false"
-      >
-      <video v-if="visibleVideo"
-             :src="`http://localhost:81/${audioStore.activeTrack?.video_clip_url}`"
-             muted
-             ref="videoRef"
-      >
-        <track src="" kind="captions" srclang="en" label="No captions">
-      </video>
-    </div>
-  </Transition>
+    <video :src="`http://localhost:81/${audioStore.activeTrack?.video_clip_url}`"
+           muted
+           ref="videoRef"
+           preload="auto"
+           :class="{'is-active': visibleVideo}"
+    >
+      <track src="" kind="captions" srclang="en" label="No captions">
+    </video>
+  </div>
 
 </template>

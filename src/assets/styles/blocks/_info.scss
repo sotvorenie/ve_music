@@ -37,4 +37,19 @@
     font-size: rem(42);
     text-overflow: ellipsis
   }
+
+  &__statistics {
+    gap: rem(10);
+  }
+
+  &__statistics-item {
+    gap: rem(10);
+    background: #26262650;
+    padding: rem(5) rem(10);
+    border-radius: var(--radius-regular);
+
+    svg {
+      @include square(30);
+    }
+  }
 }

@@ -16,6 +16,19 @@
     &.is-active {
       transform: scale(1.05);
     }
+
+    img, video {
+      transition: opacity var(--transition-duration-big);
+      opacity: 0;
+
+      &:not(.is-active) {
+        @include visually-hidden;
+      }
+
+      &.is-active {
+        opacity: 1;
+      }
+    }
   }
 
   &__card {

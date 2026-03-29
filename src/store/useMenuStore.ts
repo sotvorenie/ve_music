@@ -3,13 +3,23 @@ import {ref} from "vue";
 
 const useMenuStore = defineStore("menuStore", () => {
 
-    // все виды модов
-    const allModes = {
+    // все виды модов вывода: музыки, артистов или музыки определенного артиста
+    const allListModes = {
         music: 'music',
         artists: 'artists',
+        artistMusic: 'artistMusic',
     }
     // мод: жанры или артисты
-    const mode = ref<string>(allModes.music)
+    const listMode = ref<string>(allListModes.music)
+
+    // все виды модов меню: жанры, история, избранное
+    const allMenuModes = {
+        genres: 'genres',
+        history: 'history',
+        favorites: 'favorites',
+    }
+    // мод: жанры, история или избранное
+    const menuMode = ref<string>(allMenuModes.genres)
 
     // индекс активного жанра
     const activeGenreIndex = ref<number>(0)
@@ -23,8 +33,10 @@ const useMenuStore = defineStore("menuStore", () => {
     const musicListLength = ref<number>(0)
 
     return {
-        allModes,
-        mode,
+        allListModes,
+        listMode,
+        allMenuModes,
+        menuMode,
         activeGenreIndex,
         activeGenreName,
         musicIndex,
