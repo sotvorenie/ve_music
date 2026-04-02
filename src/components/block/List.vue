@@ -25,15 +25,14 @@ const isLoadingMusicList = ref<boolean>(false)
 watch(
     () => menuStore.listMode,
     async (newVal: string, oldVal: string) => {
+      isLoadingMusicList.value = true
       if (oldVal === menuStore.allListModes.artistMusic) {
-        isLoadingMusicList.value = true
         itemsStore.musicList = await apiGetAllMusic()
         isLoadingMusicList.value = false
       } else if (newVal === menuStore.allListModes.artistMusic) {
-        isLoadingMusicList.value = true
         itemsStore.musicList = await apiGetArtistsMusic(artistStore.artistId)
-        isLoadingMusicList.value = false
       }
+      isLoadingMusicList.value = false
     }
 )
 </script>

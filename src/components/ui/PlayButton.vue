@@ -2,7 +2,8 @@
 import {ref, watch} from "vue";
 import {createTimeline} from "animejs";
 
-const isPlaying = defineModel({type: Boolean, default: false})
+import useAudioStore from "../../store/useAudioStore.ts";
+const audioStore = useAudioStore();
 
 const pathRef = ref<SVGPathElement | null>(null)
 const pausePath = "M6,5 L9.5,5 L9.5,19 L6,19 Z M14.5,5 L18,5 L18,19 L14.5,19 Z"
@@ -18,13 +19,13 @@ const animateMorph = () => {
   })
 
   tl.add(pathRef.value, {
-    d: isPlaying.value ? pausePath : playPath,
+    d: audioStore.isPlaying ? pausePath : playPath,
     duration: 180,
   })
 }
 
 watch(
-    () => isPlaying.value,
+    () => audioStore.isPlaying,
     () => animateMorph()
 )
 
@@ -34,7 +35,7 @@ watch(
 
   <button class="controllers__btn play-pause"
           type="button"
-          @click="isPlaying = !isPlaying"
+          @click="audioStore.isPlaying = !audioStore.isPlaying"
   >
     <svg width="100" height="100" viewBox="0 0 24 24">
       <defs>
@@ -56,7 +57,7 @@ watch(
           stroke-linejoin="round"
           stroke-linecap="round"
           style="filter: url(#gooey-tight)"
-          :d="isPlaying ? pausePath : playPath"
+          :d="playPath"
       />
     </svg>
   </button>

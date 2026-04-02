@@ -225,7 +225,7 @@ onMounted(() => {
         <ArrowIcon/>
       </button>
 
-      <PlayButton v-model="audioStore.isPlaying" :disabled="audioStore.activeTrack.id < 0"/>
+      <PlayButton :disabled="audioStore.activeTrack.id < 0"/>
 
       <button class="controllers__btn next"
               type="button"

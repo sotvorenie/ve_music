@@ -9,13 +9,9 @@ const useSearchStore = defineStore("searchStore", () => {
     // значение поля поиска
     const searchName = ref<string>('')
 
-    // имя активного артиста
-    const activeArtistName = ref<string>('')
-
     return {
         isOpen,
         searchName,
-        activeArtistName,
     }
 })
 

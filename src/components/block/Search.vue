@@ -2,6 +2,7 @@
 import {computed} from "vue";
 
 import {apiSearchMusic} from "../../api/music/music.ts";
+import {apiSearchArtist, apiSearchArtistsMusic} from "../../api/artist/artist.ts";
 
 import SearchIcon from "../../assets/icons/SearchIcon.vue";
 import CrossIcon from "../../assets/icons/CrossIcon.vue";
@@ -12,6 +13,8 @@ import useMenuStore from "../../store/useMenuStore.ts";
 const menuStore = useMenuStore();
 import useItemsStore from "../../store/useItemsStore.ts";
 const itemsStore = useItemsStore();
+import useArtistStore from "../../store/useArtistStore.ts";
+const artistStore = useArtistStore();
 
 
 const allPlaceholders = {
@@ -28,8 +31,8 @@ const placeholder = computed(() => {
     return allPlaceholders.genre + ' ' + menuStore.activeGenreName
   if (menuStore.listMode === menuStore.allListModes.artists)
     return allPlaceholders.artists
-  if (menuStore.listMode === menuStore.allListModes.artists && searchStore.activeArtistName)
-    return allPlaceholders.artistSong + ' ' + searchStore.activeArtistName
+  if (menuStore.listMode === menuStore.allListModes.artistMusic)
+    return allPlaceholders.artistSong + ' ' + artistStore.artistName
 })
 
 
@@ -38,6 +41,10 @@ const handleSearch = async () => {
 
   if (menuStore.listMode === menuStore.allListModes.music) {
     itemsStore.musicList = await apiSearchMusic(searchStore.searchName, 1, 21)
+  } else if (menuStore.listMode === menuStore.allListModes.artists) {
+    itemsStore.artistsList = await apiSearchArtist(searchStore.searchName, 1, 21)
+  } else if (menuStore.listMode === menuStore.allListModes.artistMusic) {
+    itemsStore.musicList = await apiSearchArtistsMusic(searchStore.searchName, artistStore.artistId, 1, 21)
   }
 }
 
@@ -64,7 +71,7 @@ const handleSearch = async () => {
       <Transition name="fade" mode="out-in">
         <input type="text"
                class="search__input w-100"
-               :key="`${menuStore.listMode}-${menuStore.activeGenreIndex}-${searchStore.activeArtistName}`"
+               :key="`${menuStore.listMode}-${menuStore.activeGenreIndex}`"
                v-model="searchStore.searchName"
                :title="searchStore.searchName"
                :placeholder="placeholder"

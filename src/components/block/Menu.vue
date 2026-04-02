@@ -110,7 +110,7 @@ genresList.value = await apiGetAllGenres()
                 <button class="menu__btn text-w500 w-100 text-left"
                         type="button"
                         :class="{'is-active': activeGenreId === genreItem.id}"
-                        @click="handleGenre(genreItem.id, genreIndex, item.name)"
+                        @click="handleGenre(genreItem.id, genreIndex, genreItem.name)"
                 >
                   {{genreItem?.name}}
                 </button>
