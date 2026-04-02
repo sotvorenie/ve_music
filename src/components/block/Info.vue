@@ -81,7 +81,7 @@ watch(
           <template #activator>
             <div class="info__statistics-item recolor-svg flex flex-align-center">
               <ViewIcon/>
-              {{audioStore.activeTrack?.auditions || 0}}
+              {{(audioStore.activeTrack?.auditions || 0).toLocaleString()}}
             </div>
           </template>
           <template #default>
