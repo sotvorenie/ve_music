@@ -16,7 +16,6 @@ const useControllersStore = defineStore("controllersStore", () => {
     // активен ли "Повтор композиции"
     const isRepeat = ref(false)
 
-
     return {
         modesList,
         mode,

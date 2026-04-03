@@ -28,9 +28,11 @@ watch(
       isLoadingMusicList.value = true
       if (oldVal === menuStore.allListModes.artistMusic) {
         itemsStore.musicList = await apiGetAllMusic()
+        menuStore.musicIndex = 0
         isLoadingMusicList.value = false
       } else if (newVal === menuStore.allListModes.artistMusic) {
         itemsStore.musicList = await apiGetArtistsMusic(artistStore.artistId)
+        menuStore.musicIndex = 0
       }
       isLoadingMusicList.value = false
     }

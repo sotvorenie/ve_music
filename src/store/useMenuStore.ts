@@ -9,7 +9,7 @@ const useMenuStore = defineStore("menuStore", () => {
         artists: 'artists',
         artistMusic: 'artistMusic',
     }
-    // мод: жанры или артисты
+    // мод: музыка, артисты или музыка артиста
     const listMode = ref<string>(allListModes.music)
 
     // все виды модов меню: жанры, история, избранное
@@ -25,6 +25,8 @@ const useMenuStore = defineStore("menuStore", () => {
     const activeGenreIndex = ref<number>(0)
     // название активного жанра
     const activeGenreName = ref<string>('')
+    // id активного жанра
+    const activeGenreId = ref<number>(-1)
 
     // индекс активной музыки
     const musicIndex = ref<number>(0)
@@ -39,6 +41,7 @@ const useMenuStore = defineStore("menuStore", () => {
         menuMode,
         activeGenreIndex,
         activeGenreName,
+        activeGenreId,
         musicIndex,
         musicListLength,
     }

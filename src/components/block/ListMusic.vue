@@ -48,7 +48,7 @@ const updateMusic = async (id?: number) => {
 
 
 watch(
-    () => itemsStore.musicList,
+    () => [itemsStore.musicList, menuStore.musicIndex],
     async () => {
       await updateMusic()
       menuStore.musicListLength = itemsStore.musicList?.total ? itemsStore.musicList.total : 0

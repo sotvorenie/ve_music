@@ -17,7 +17,7 @@ const visibleVideo = computed(() => {
 })
 
 const onPlay = () => {
-  if (!videoRef.value) return
+  if (!videoRef.value || !audioStore.activeTrack.video_clip_url) return
   videoRef.value?.play()
 }
 

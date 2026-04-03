@@ -2,23 +2,26 @@
 import {computed, onMounted, ref, watch} from "vue";
 
 import formatTime from "../../composables/useFormatTime.ts";
-import ArrowIcon from "../../assets/icons/ArrowIcon.vue";
+
 import PlayButton from "../ui/PlayButton.vue";
+import Tooltip from "../common/Tooltip.vue";
+
 import ImgIcon from "../../assets/icons/ImgIcon.vue";
 import VideoIcon from "../../assets/icons/VideoIcon.vue";
 import RandomIcon from "../../assets/icons/RandomIcon.vue";
 import RepeatIcon from "../../assets/icons/RepeatIcon.vue";
 import SoundOnIcon from "../../assets/icons/SoundOnIcon.vue";
 import SoundOffIcon from "../../assets/icons/SoundOffIcon.vue";
-import Tooltip from "../common/Tooltip.vue";
-
+import ArrowIcon from "../../assets/icons/ArrowIcon.vue";
 
 import useAudioStore from "../../store/useAudioStore.ts";
-const audioStore = useAudioStore();
 import useMenuStore from "../../store/useMenuStore.ts";
-const menuStore = useMenuStore();
 import useControllersStore from "../../store/useControllersStore.ts";
+import useItemsStore from "../../store/useItemsStore.ts";
+const audioStore = useAudioStore();
+const menuStore = useMenuStore();
 const controllersStore = useControllersStore();
+const itemsStore = useItemsStore();
 
 
 const progressStyle = computed(() => {
@@ -38,10 +41,10 @@ const volumeStyle = computed(() => {
 })
 
 const disabledPrevButton = computed(() => {
-  return menuStore.musicIndex === 0 || audioStore.activeTrack.id < 0
+  return (controllersStore.isRandom ? false : menuStore.musicIndex === 0) || audioStore.activeTrack.id < 0
 })
 const disabledNextButton = computed(() => {
-  return menuStore.musicIndex === menuStore.musicListLength - 1 || audioStore.activeTrack.id < 0
+  return (controllersStore.isRandom ? false : menuStore.musicIndex === menuStore.musicListLength - 1) || audioStore.activeTrack.id < 0
 })
 
 const cursorTime = ref(0)
@@ -57,17 +60,45 @@ const mouseMoveTimeline = (e: MouseEvent) => {
   timelineInfoRef.value.style.left = `${Math.round(percent * 100)}%`
 }
 
+const getCurrentInfo = (): any => {
+  const isRandom = controllersStore.isRandom && itemsStore.randomMusicList?.length
+  const currentList = isRandom ? itemsStore.randomMusicList : itemsStore.musicList?.music
+
+  if (!currentList?.length) return
+
+  return {
+    currentIndex: currentList.findIndex(m => m.id === audioStore.activeTrack.id),
+    currentList
+  }
+}
 const prevItem = () => {
-  if (menuStore.musicIndex === undefined) return
   if (audioStore.currentTime > 20) {
     audioStore.audio.currentTime = 0
-  } else {
-    menuStore.musicIndex = Math.max(0, menuStore.musicIndex - 1)
+    return
+  }
+
+  const {currentIndex, currentList} = getCurrentInfo()
+
+  const prevIndexInCurrentList = (currentIndex - 1 + currentList.length) % currentList.length
+  const targetTrack = currentList[prevIndexInCurrentList]
+
+  const globalIndex = itemsStore.musicList?.music.findIndex(m => m.id === targetTrack.id)
+
+  if (globalIndex !== -1 && globalIndex !== undefined) {
+    menuStore.musicIndex = globalIndex
   }
 }
 const nextItem = () => {
-  if (menuStore.musicIndex === undefined) return
-  menuStore.musicIndex = Math.min(menuStore.musicListLength - 1, menuStore.musicIndex + 1)
+  const {currentIndex, currentList} = getCurrentInfo()
+
+  const nextIndexInCurrentList = (currentIndex + 1) % currentList.length
+  const nextTrack = currentList[nextIndexInCurrentList]
+
+  const globalIndex = itemsStore.musicList?.music.findIndex(m => m.id === nextTrack.id)
+
+  if (globalIndex !== -1 && globalIndex !== undefined) {
+    menuStore.musicIndex = globalIndex
+  }
 }
 
 const handleModeBtn = (mode: string) => {
@@ -99,7 +130,7 @@ const setIsRandomToLocStore = () => {
 const getIsRandomFromLocStore = () => {
   controllersStore.isRandom = JSON.parse(localStorage.getItem('isRandom') || 'false')
 }
-const handleIsRandom = () => {
+const handleIsRandom = async () => {
   controllersStore.isRandom = !controllersStore.isRandom
   setIsRandomToLocStore()
 }
