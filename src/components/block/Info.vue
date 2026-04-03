@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import {nextTick, ref, watch} from "vue";
 
+import {apiCheckIsLike, apiLike} from "../../api/like/like.ts";
+
 import {showArtists} from "../../composables/useShowArtists.ts";
 
+import Tooltip from "../ui/Tooltip.vue";
 import Like from "../ui/Like.vue";
 
 import ViewIcon from "../../assets/icons/ViewIcon.vue";
 
 import useAudioStore from "../../store/useAudioStore.ts";
-import Tooltip from "../ui/Tooltip.vue";
 const audioStore = useAudioStore();
+import useUserStore from "../../store/useUserStore.ts";
+const userStore = useUserStore();
 
 const nameTrackRef = ref<HTMLDivElement | null>(null)
 
@@ -20,8 +24,22 @@ const timer = ref<number | null>(null)
 
 const isLiked = ref<boolean>(false)
 
-const handleLike = () => {
-  isLiked.value = !isLiked.value
+const handleLike = async () => {
+  try {
+    isLiked.value = !isLiked.value
+
+    const response = await apiLike(audioStore.activeTrack.id)
+
+    if (response?.liked) {
+      audioStore.activeTrack.likes = audioStore.activeTrack.likes + 1
+    } else {
+      audioStore.activeTrack.likes = Math.max(audioStore.activeTrack.likes - 1, 0)
+    }
+  } catch (err) {
+    console.error(err)
+
+    isLiked.value = false
+  }
 }
 
 const checkWidth = async () => {
@@ -50,9 +68,20 @@ const checkWidth = async () => {
   }
 }
 
+const checkIsLiked = async () => {
+  if (audioStore.activeTrack?.id < 0 || userStore.user.id < 0) return
+
+  const check = await apiCheckIsLike(audioStore.activeTrack.id)
+
+  isLiked.value = check?.is_liked ? check.is_liked : false
+}
+
 watch(
     () => audioStore.activeTrack,
-    () => checkWidth(),
+    () => {
+      checkWidth()
+      checkIsLiked()
+    },
     {immediate: true, deep: true}
 )
 </script>
