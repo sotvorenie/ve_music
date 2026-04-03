@@ -5,8 +5,9 @@ import {apiCheckIsLike, apiLike} from "../../api/like/like.ts";
 
 import {showArtists} from "../../composables/useShowArtists.ts";
 
-import Tooltip from "../ui/Tooltip.vue";
+import Tooltip from "../common/Tooltip.vue";
 import Like from "../ui/Like.vue";
+import Modal from "../common/Modal.vue";
 
 import ViewIcon from "../../assets/icons/ViewIcon.vue";
 
@@ -93,13 +94,21 @@ watch(
       <div class="info__statistics flex flex-align-center">
         <Tooltip>
           <template #activator>
-            <button class="info__statistics-item recolor-svg hover-color-accent flex flex-align-center"
-                    type="button"
-                    @click="handleLike"
-            >
-              <Like :is-liked="isLiked"/>
-              {{audioStore.activeTrack?.likes || 0}}
-            </button>
+            <Modal close-visible>
+              <template #activator="{open}">
+                <button class="info__statistics-item recolor-svg hover-color-accent flex flex-align-center"
+                        type="button"
+                        @click="userStore.user.id >= 0 ? handleLike : open()"
+                >
+                  <Like :is-liked="isLiked"/>
+                  {{audioStore.activeTrack?.likes || 0}}
+                </button>
+              </template>
+
+              <template #default>
+                <p class="text-center">Чтобы добавить трек в избранное необходимо авторизоваться</p>
+              </template>
+            </Modal>
           </template>
           <template #default>
             {{isLiked ? 'Удалить из Избранного' : 'Добавить в Избранное'}}

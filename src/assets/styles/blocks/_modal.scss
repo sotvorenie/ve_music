@@ -1,0 +1,21 @@
+@use '../helpers' as *;
+
+.modal {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  backdrop-filter: blur(5px);
+
+  &__content {
+    background: var(--color-dark-15);
+    padding: rem(20);
+    border-radius: var(--radius-medium);
+  }
+
+  &__close {
+    display: block;
+    margin-top: rem(30);
+    margin-inline: auto;
+    width: min(100%, #{rem(400)});
+  }
+}

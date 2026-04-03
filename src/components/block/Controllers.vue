@@ -10,7 +10,7 @@ import RandomIcon from "../../assets/icons/RandomIcon.vue";
 import RepeatIcon from "../../assets/icons/RepeatIcon.vue";
 import SoundOnIcon from "../../assets/icons/SoundOnIcon.vue";
 import SoundOffIcon from "../../assets/icons/SoundOffIcon.vue";
-import Tooltip from "../ui/Tooltip.vue";
+import Tooltip from "../common/Tooltip.vue";
 
 
 import useAudioStore from "../../store/useAudioStore.ts";

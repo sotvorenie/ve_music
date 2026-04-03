@@ -18,10 +18,10 @@ const artistStore = useArtistStore();
 
 
 const allPlaceholders = {
-  all: 'Поиск по всем песням',
-  genre: 'Поиск песен в жанре',
+  all: 'Поиск по всем трекам',
+  genre: 'Поиск треков в жанре',
   artists: 'Поиск исполнителя',
-  artistSong: 'Поиск песен исполнителя'
+  artistSong: 'Поиск треков исполнителя'
 }
 
 const placeholder = computed(() => {

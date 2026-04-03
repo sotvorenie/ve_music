@@ -33,6 +33,13 @@
   opacity: 0;
 }
 
+.fade-small-enter-active, .fade-small-leave-active {
+  transition: opacity var(--transition-duration) ease !important;
+}
+.fade-small-enter-from, .fade-small-leave-to {
+  opacity: 0;
+}
+
 .aside-enter-active, .aside-leave-active {
   transition: transform var(--transition-duration) ease !important;
 }

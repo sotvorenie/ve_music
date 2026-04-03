@@ -5,12 +5,16 @@ import { GenresList } from "../../types/genre";
 
 import {apiGetAllGenres} from "../../api/genre/genre.ts";
 
+import Modal from "../common/Modal.vue";
+
 import MusicIcon from "../../assets/icons/MusicIcon.vue";
 import HistoryIcon from "../../assets/icons/HistoryIcon.vue";
 import LikeIcon from "../../assets/icons/LikeIcon.vue";
 
 import useMenuStore from "../../store/useMenuStore.ts";
 const menuStore = useMenuStore();
+import useUserStore from "../../store/useUserStore.ts";
+const userStore = useUserStore();
 
 
 const musicIndex = defineModel('musicIndex',{type: Number})
@@ -68,9 +72,30 @@ const handleTab = (index: number) => {
 }
 
 genresList.value = await apiGetAllGenres()
+
+const modalText = ref<string>('')
+const indexErrorText = 'необходимо авторизоваться'
+const allErrorsText = {
+  [menuStore.allMenuModes.history]: `Для доступа к истории прослушиваний ${indexErrorText}`,
+  [menuStore.allMenuModes.favorites]: `Для доступа к понравившимся трекам ${indexErrorText}`,
+}
+const handleErrorModal = (type: string, func: Function) => {
+  modalText.value = allErrorsText[type]
+  func()
+}
 </script>
 
 <template>
+
+  <Modal close-visible>
+    <template #activator>
+
+    </template>
+
+    <template #default>
+      {{modalText}}
+    </template>
+  </Modal>
 
   <div class="menu position-absolute z-10">
     <ul class="menu__list flex flex-column">
@@ -78,14 +103,22 @@ genresList.value = await apiGetAllGenres()
           :key="item.name"
           class="menu__item"
       >
-        <button class="menu__item-btn recolor-svg hover-color-accent flex flex-align-center w-100"
-                :class="{'is-active': activeTabIndex === index}"
-                type="button"
-                @click="handleTab(index)"
-        >
-          <Component :is="item.icon"/>
-          <span class="menu__name">{{item.name}}</span>
-        </button>
+        <Modal close-visible>
+          <template #activator="{open}">
+            <button class="menu__item-btn recolor-svg hover-color-accent flex flex-align-center w-100"
+                    :class="{'is-active': activeTabIndex === index}"
+                    type="button"
+                    @click="userStore.user.id >= 0 ? handleTab(index) : handleErrorModal(item.value, open)"
+            >
+              <Component :is="item.icon"/>
+              <span class="menu__name">{{item.name}}</span>
+            </button>
+          </template>
+
+          <template #default>
+            <p class="text-center">{{modalText}}</p>
+          </template>
+        </Modal>
 
         <div class="menu__wrapper overflow-hidden"
              :class="{'is-active': activeTabIndex === 0}"
