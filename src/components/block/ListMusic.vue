@@ -27,14 +27,6 @@ let observer: IntersectionObserver | null = null
 
 const isFetching = ref<boolean>(false)
 
-watch(
-    () => itemsStore.musicList,
-    () => {
-      menuStore.musicListLength = itemsStore.musicList?.total ? itemsStore.musicList.total : 0
-    },
-    {immediate: true}
-)
-
 const initObserver = () => {
   const observerOptions = {
     root: listRef.value,
@@ -61,26 +53,26 @@ const addNewMusic = async () => {
   if (isFetching.value) return
   isFetching.value = true
 
-  itemsStore.page++
+  const page = itemsStore.musicList!.page + 1
 
   let data
 
   if (artistStore.artistId >= 0) {
     if (searchStore.searchName) {
-      data = await apiSearchArtistsMusic(searchStore.searchName, artistStore.artistId, itemsStore.page)
+      data = await apiSearchArtistsMusic(searchStore.searchName, artistStore.artistId, page)
     } else {
-      data = await apiGetArtistsMusic(artistStore.artistId, itemsStore.page)
+      data = await apiGetArtistsMusic(artistStore.artistId, page)
     }
   } else if (menuStore.activeGenreId < 0) {
     if (searchStore.searchName) {
-      data = await apiSearchMusic(searchStore.searchName, itemsStore.page)
+      data = await apiSearchMusic(searchStore.searchName, page)
     } else {
-      data = await apiGetAllMusic(itemsStore.page)
+      data = await apiGetAllMusic(page)
     }
   } else if (searchStore.searchName) {
-    data = await apiSearchGenresMusic(searchStore.searchName, menuStore.activeGenreId, itemsStore.page)
+    data = await apiSearchGenresMusic(searchStore.searchName, menuStore.activeGenreId, page)
   } else {
-    data = await apiGetGenresMusic(menuStore.activeGenreId, itemsStore.page)
+    data = await apiGetGenresMusic(menuStore.activeGenreId, page)
   }
 
   if (data) {
@@ -95,6 +87,14 @@ const addNewMusic = async () => {
 
   isFetching.value = false
 }
+
+watch(
+    () => itemsStore.musicList,
+    () => {
+      menuStore.musicListLength = itemsStore.musicList?.total ? itemsStore.musicList.total : 0
+    },
+    {immediate: true}
+)
 
 watchEffect((onCleanup) => {
   if (!listRef.value || !itemsStore.musicList?.music?.length || !itemsStore.musicList?.has_more) return

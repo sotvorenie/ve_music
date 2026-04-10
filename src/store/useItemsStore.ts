@@ -8,9 +8,6 @@ const useItemsStore = defineStore("itemsStore", () => {
     // список музыки
     const musicList = ref<MusicList>()
 
-    // активная страница для апи
-    const page = ref(1)
-
     // seed для случайного порядка проигрывания музыки
     const randomSeed = ref<number>((Math.random() * 2) - 1)
     // список музыки в случайном порядке
@@ -50,7 +47,6 @@ const useItemsStore = defineStore("itemsStore", () => {
 
     return {
         musicList,
-        page,
         randomMusicList,
         artistsList,
     }

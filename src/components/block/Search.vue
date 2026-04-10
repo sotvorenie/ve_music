@@ -42,14 +42,14 @@ const handleSearch = async () => {
 
   if (menuStore.listMode === menuStore.allListModes.music) {
     if (menuStore.activeGenreId < 0) {
-      itemsStore.musicList = await apiSearchMusic(searchStore.searchName, itemsStore.page, 21)
+      itemsStore.musicList = await apiSearchMusic(searchStore.searchName)
     } else {
-      itemsStore.musicList = await apiSearchGenresMusic(searchStore.searchName, menuStore.activeGenreId, itemsStore.page, 21)
+      itemsStore.musicList = await apiSearchGenresMusic(searchStore.searchName, menuStore.activeGenreId)
     }
   } else if (menuStore.listMode === menuStore.allListModes.artists) {
-    itemsStore.artistsList = await apiSearchArtist(searchStore.searchName, itemsStore.page, 21)
+    itemsStore.artistsList = await apiSearchArtist(searchStore.searchName)
   } else if (menuStore.listMode === menuStore.allListModes.artistMusic) {
-    itemsStore.musicList = await apiSearchArtistsMusic(searchStore.searchName, artistStore.artistId, itemsStore.page, 21)
+    itemsStore.musicList = await apiSearchArtistsMusic(searchStore.searchName, artistStore.artistId)
   }
 }
 
