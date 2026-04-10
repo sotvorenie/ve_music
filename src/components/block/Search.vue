@@ -14,6 +14,7 @@ const menuStore = useMenuStore();
 import useItemsStore from "../../store/useItemsStore.ts";
 const itemsStore = useItemsStore();
 import useArtistStore from "../../store/useArtistStore.ts";
+import {apiSearchGenresMusic} from "../../api/genre/genre.ts";
 const artistStore = useArtistStore();
 
 
@@ -40,7 +41,11 @@ const handleSearch = async () => {
   menuStore.musicIndex = 0
 
   if (menuStore.listMode === menuStore.allListModes.music) {
-    itemsStore.musicList = await apiSearchMusic(searchStore.searchName, 1, 21)
+    if (menuStore.activeGenreId < 0) {
+      itemsStore.musicList = await apiSearchMusic(searchStore.searchName, 1, 21)
+    } else {
+      itemsStore.musicList = await apiSearchGenresMusic(searchStore.searchName, menuStore.activeGenreId, 1, 21)
+    }
   } else if (menuStore.listMode === menuStore.allListModes.artists) {
     itemsStore.artistsList = await apiSearchArtist(searchStore.searchName, 1, 21)
   } else if (menuStore.listMode === menuStore.allListModes.artistMusic) {

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import {ref} from "vue";
+import {ref, watch} from "vue";
 
 import { GenresList } from "../../types/genre";
 
-import {apiGetAllGenres} from "../../api/genre/genre.ts";
+import {apiGetAllGenres, apiGetGenresMusic, apiSearchGenresMusic} from "../../api/genre/genre.ts";
 
 import Modal from "../common/Modal.vue";
 
@@ -15,13 +15,16 @@ import useMenuStore from "../../store/useMenuStore.ts";
 const menuStore = useMenuStore();
 import useUserStore from "../../store/useUserStore.ts";
 const userStore = useUserStore();
+import useItemsStore from "../../store/useItemsStore.ts";
+const itemsStore = useItemsStore();
+import useAudioStore from "../../store/useAudioStore.ts";
+import {apiGetAllMusic, apiSearchMusic} from "../../api/music/music.ts";
+const audioStore = useAudioStore();
+import useSearchStore from "../../store/useSearchStore.ts";
+const searchStore = useSearchStore();
 
 
 const musicIndex = defineModel('musicIndex',{type: Number})
-
-const emits = defineEmits(['updateTag'])
-
-const activeGenreId = ref<number>(0)
 
 const menuActive = ref<HTMLLIElement[]>([])
 
@@ -47,16 +50,13 @@ const menuList = ref([
 
 const activeTabIndex = ref<number>(0)
 
-const handleGenre = (id: number, index: number, genreName?: string) => {
-  activeGenreId.value = id
+const handleGenre = async (id: number, index: number, genreName?: string) => {
   musicIndex.value = 0
   menuStore.activeGenreIndex = index + 1
   updateMenuBlock(index)
 
-  if (id >= 0) {
-    menuStore.activeGenreName = genreName || ''
-    emits('updateTag')
-  }
+  menuStore.activeGenreId = id
+  menuStore.activeGenreName = genreName || ''
 }
 
 const updateMenuBlock = (index: number) => {
@@ -83,6 +83,30 @@ const handleErrorModal = (type: string, func: Function) => {
   modalText.value = allErrorsText[type]
   func()
 }
+
+watch(
+    () => menuStore.activeGenreId,
+    async (id: number) => {
+      menuStore.listMode = menuStore.allListModes.music
+
+      if (searchStore.searchName) {
+        if (menuStore.activeGenreId < 0) {
+          itemsStore.musicList = await apiSearchMusic(searchStore.searchName, 1, 21)
+        } else {
+          itemsStore.musicList = await apiSearchGenresMusic(searchStore.searchName, menuStore.activeGenreId, 1, 21)
+        }
+      } else {
+        let data
+
+        data = id >= 0 ? await apiGetGenresMusic(id, 1, 21) : await apiGetAllMusic(1, 21)
+
+        if (data) {
+          itemsStore.musicList = data
+          await audioStore.updateMusic()
+        }
+      }
+    }
+)
 </script>
 
 <template>
@@ -130,7 +154,7 @@ const handleErrorModal = (type: string, func: Function) => {
               <li class="menu__genre w-100 z-1" v-if="genresList?.genres">
                 <button class="menu__btn text-w500 w-100 text-left"
                         type="button"
-                        :class="{'is-active': activeGenreId === -1}"
+                        :class="{'is-active': menuStore.activeGenreId === -1}"
                         @click="handleGenre(-1, -1)"
                 >
                   All
@@ -142,7 +166,7 @@ const handleErrorModal = (type: string, func: Function) => {
               >
                 <button class="menu__btn text-w500 w-100 text-left"
                         type="button"
-                        :class="{'is-active': activeGenreId === genreItem.id}"
+                        :class="{'is-active': menuStore.activeGenreId === genreItem.id}"
                         @click="handleGenre(genreItem.id, genreIndex, genreItem.name)"
                 >
                   {{genreItem?.name}}
