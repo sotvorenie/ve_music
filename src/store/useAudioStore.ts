@@ -1,12 +1,15 @@
 import {defineStore} from "pinia";
 import {reactive, ref} from "vue";
 import useMenuStore from "./useMenuStore.ts";
-import {Music} from "../types/music.ts";
+import {Music, MusicForList} from "../types/music.ts";
 import useControllersStore from "./useControllersStore.ts";
+import {apiGetMusic} from "../api/music/music.ts";
+import useItemsStore from "./useItemsStore.ts";
 
 const useAudioStore = defineStore('audioStore', () => {
     const menuStore = useMenuStore();
     const controllersStore = useControllersStore();
+    const itemsStore = useItemsStore();
 
     // аудио
     const audio = new Audio()
@@ -16,12 +19,12 @@ const useAudioStore = defineStore('audioStore', () => {
     audio.ontimeupdate = () => {
         currentTime.value = Math.floor(audio.currentTime)
     }
-    audio.onended = () => {
+    audio.onended = async () => {
         if (controllersStore.isRepeat) {
             audio.currentTime = 0
             audio.play().then(() => {})
-        } else if (menuStore.musicIndex < menuStore.musicListLength - 1) {
-            menuStore.musicIndex++
+        } else if (itemsStore.musicList?.music && itemsStore.musicList.music.length > 1) {
+            await controllersStore.nextItem()
         } else {
             isPlaying.value = false
             currentTime.value = 0
@@ -69,6 +72,25 @@ const useAudioStore = defineStore('audioStore', () => {
         }
     }
 
+    // функция для загрузки музыки по id (причем при клике на музыку, при next/prev у нас передается id, а при первоначальной загрузке или при переходе между музыкой/музыкой_артиста мы просто берем id первого трека)
+    const updateMusic = async (id?: number) => {
+        if (!itemsStore.musicList?.music?.length) return
+
+        const usedId = id || itemsStore.musicList.music[menuStore.musicIndex].id
+        const data = await apiGetMusic(usedId)
+
+        if (data) {
+            Object.assign(activeTrack, data)
+            loadAndPlay()
+
+            menuStore.musicIndex = itemsStore.musicList?.music.findIndex((music: MusicForList) => music.id === activeTrack.id) ?? 0
+
+            if (controllersStore.mode === controllersStore.modesList.video && !activeTrack.video_clip_url) {
+                controllersStore.mode = controllersStore.modesList.img
+            }
+        }
+    }
+
     return {
         audio,
 
@@ -82,6 +104,8 @@ const useAudioStore = defineStore('audioStore', () => {
         oldVolume,
 
         loadAndPlay,
+
+        updateMusic,
     }
 })
 

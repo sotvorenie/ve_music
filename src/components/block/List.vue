@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {ref, watch} from "vue";
 
-import {apiGetAllMusic} from "../../api/music/music.ts";
 import {apiGetArtistsMusic} from "../../api/artist/artist.ts";
+import {apiGetAllMusic} from "../../api/music/music.ts";
 
 import ListMusic from "./ListMusic.vue";
 import ListArtists from "./ListArtists.vue";
@@ -17,8 +17,11 @@ import useItemsStore from "../../store/useItemsStore.ts";
 const itemsStore = useItemsStore();
 import useArtistStore from "../../store/useArtistStore.ts";
 const artistStore = useArtistStore();
+import useAudioStore from "../../store/useAudioStore.ts";
+const audioStore = useAudioStore();
 
 itemsStore.musicList = await apiGetAllMusic()
+await audioStore.updateMusic()
 
 const isLoadingMusicList = ref<boolean>(false)
 
@@ -28,12 +31,18 @@ watch(
       isLoadingMusicList.value = true
       if (oldVal === menuStore.allListModes.artistMusic) {
         itemsStore.musicList = await apiGetAllMusic()
-        menuStore.musicIndex = 0
-        isLoadingMusicList.value = false
+
+        if (itemsStore.musicList?.music?.length) {
+          await audioStore.updateMusic()
+        }
       } else if (newVal === menuStore.allListModes.artistMusic) {
         itemsStore.musicList = await apiGetArtistsMusic(artistStore.artistId)
-        menuStore.musicIndex = 0
+
+        if (itemsStore.musicList?.music?.length) {
+          await audioStore.updateMusic()
+        }
       }
+
       isLoadingMusicList.value = false
     }
 )
@@ -68,11 +77,13 @@ watch(
       Исполнителей: {{itemsStore.artistsList?.total || 0}}
     </span>
 
-    <ListMusic v-show="menuStore.listMode !== menuStore.allListModes.artists && !isLoadingMusicList"/>
-
     <MusicListSkeleton v-if="isLoadingMusicList"/>
 
-    <ListArtists v-show="menuStore.listMode === menuStore.allListModes.artists"/>
+    <template v-else>
+      <ListMusic v-show="menuStore.listMode !== menuStore.allListModes.artists"/>
+
+      <ListArtists v-show="menuStore.listMode === menuStore.allListModes.artists"/>
+    </template>
   </div>
 
 </template>

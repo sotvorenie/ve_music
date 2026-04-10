@@ -50,6 +50,7 @@ onUnmounted(() => {
 
   <div class="music__img-container img-container position-absolute"
        :class="{'is-active': audioStore.isPlaying && (controllersStore.mode !== controllersStore.modesList.video)}"
+       :key="audioStore.activeTrack.id"
   >
     <img :src="`http://localhost:81/${audioStore.activeTrack.preview_url}`"
          :alt="audioStore.activeTrack?.name"

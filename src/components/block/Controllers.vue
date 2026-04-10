@@ -17,11 +17,9 @@ import ArrowIcon from "../../assets/icons/ArrowIcon.vue";
 import useAudioStore from "../../store/useAudioStore.ts";
 import useMenuStore from "../../store/useMenuStore.ts";
 import useControllersStore from "../../store/useControllersStore.ts";
-import useItemsStore from "../../store/useItemsStore.ts";
 const audioStore = useAudioStore();
 const menuStore = useMenuStore();
 const controllersStore = useControllersStore();
-const itemsStore = useItemsStore();
 
 
 const progressStyle = computed(() => {
@@ -58,47 +56,6 @@ const mouseMoveTimeline = (e: MouseEvent) => {
   cursorTime.value = audioStore.audio.duration * percent
 
   timelineInfoRef.value.style.left = `${Math.round(percent * 100)}%`
-}
-
-const getCurrentInfo = (): any => {
-  const isRandom = controllersStore.isRandom && itemsStore.randomMusicList?.length
-  const currentList = isRandom ? itemsStore.randomMusicList : itemsStore.musicList?.music
-
-  if (!currentList?.length) return
-
-  return {
-    currentIndex: currentList.findIndex(m => m.id === audioStore.activeTrack.id),
-    currentList
-  }
-}
-const prevItem = () => {
-  if (audioStore.currentTime > 20) {
-    audioStore.audio.currentTime = 0
-    return
-  }
-
-  const {currentIndex, currentList} = getCurrentInfo()
-
-  const prevIndexInCurrentList = (currentIndex - 1 + currentList.length) % currentList.length
-  const targetTrack = currentList[prevIndexInCurrentList]
-
-  const globalIndex = itemsStore.musicList?.music.findIndex(m => m.id === targetTrack.id)
-
-  if (globalIndex !== -1 && globalIndex !== undefined) {
-    menuStore.musicIndex = globalIndex
-  }
-}
-const nextItem = () => {
-  const {currentIndex, currentList} = getCurrentInfo()
-
-  const nextIndexInCurrentList = (currentIndex + 1) % currentList.length
-  const nextTrack = currentList[nextIndexInCurrentList]
-
-  const globalIndex = itemsStore.musicList?.music.findIndex(m => m.id === nextTrack.id)
-
-  if (globalIndex !== -1 && globalIndex !== undefined) {
-    menuStore.musicIndex = globalIndex
-  }
 }
 
 const handleModeBtn = (mode: string) => {
@@ -251,7 +208,7 @@ onMounted(() => {
       <button class="controllers__btn prev"
               type="button"
               :disabled="disabledPrevButton"
-              @click="prevItem"
+              @click="controllersStore.prevItem"
       >
         <ArrowIcon/>
       </button>
@@ -261,7 +218,7 @@ onMounted(() => {
       <button class="controllers__btn next"
               type="button"
               :disabled="disabledNextButton"
-              @click="nextItem"
+              @click="controllersStore.nextItem"
       >
         <ArrowIcon/>
       </button>

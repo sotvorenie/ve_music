@@ -14,7 +14,7 @@ defineProps({
   },
   size: {
     type: Number,
-    default: 500,
+    default: 400,
   },
 })
 
@@ -43,7 +43,7 @@ onBeforeUnmount(() => document.addEventListener('keydown', handleEsc))
   <Transition name="fade-small">
     <Teleport to="body">
       <div class="modal z-10000 flex-center" v-if="isVisible" @click="close">
-        <div class="modal__content" :style="{width: `${size}px`}" @click.stop>
+        <div class="modal__content" :style="{width: `${size / 16}rem`}" @click.stop>
           <slot name="default" :close="close"/>
 
           <ButtonUi v-if="closeVisible"
