@@ -20,7 +20,7 @@ const artistStore = useArtistStore();
 import useAudioStore from "../../store/useAudioStore.ts";
 const audioStore = useAudioStore();
 
-itemsStore.musicList = await apiGetAllMusic()
+itemsStore.musicList = await apiGetAllMusic(itemsStore.page)
 await audioStore.updateMusic()
 
 const isLoadingMusicList = ref<boolean>(false)
@@ -28,6 +28,8 @@ const isLoadingMusicList = ref<boolean>(false)
 watch(
     () => menuStore.listMode,
     async (newVal: string, oldVal: string) => {
+      itemsStore.page = 1
+
       isLoadingMusicList.value = true
       if (oldVal === menuStore.allListModes.artistMusic) {
         itemsStore.musicList = await apiGetAllMusic()
@@ -36,7 +38,7 @@ watch(
           await audioStore.updateMusic()
         }
       } else if (newVal === menuStore.allListModes.artistMusic) {
-        itemsStore.musicList = await apiGetArtistsMusic(artistStore.artistId)
+        itemsStore.musicList = await apiGetArtistsMusic(artistStore.artistId, itemsStore.page)
 
         if (itemsStore.musicList?.music?.length) {
           await audioStore.updateMusic()

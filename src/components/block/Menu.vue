@@ -88,17 +88,18 @@ watch(
     () => menuStore.activeGenreId,
     async (id: number) => {
       menuStore.listMode = menuStore.allListModes.music
+      itemsStore.page = 1
 
       if (searchStore.searchName) {
         if (menuStore.activeGenreId < 0) {
-          itemsStore.musicList = await apiSearchMusic(searchStore.searchName, 1, 21)
+          itemsStore.musicList = await apiSearchMusic(searchStore.searchName, itemsStore.page, 21)
         } else {
-          itemsStore.musicList = await apiSearchGenresMusic(searchStore.searchName, menuStore.activeGenreId, 1, 21)
+          itemsStore.musicList = await apiSearchGenresMusic(searchStore.searchName, menuStore.activeGenreId, itemsStore.page, 21)
         }
       } else {
         let data
 
-        data = id >= 0 ? await apiGetGenresMusic(id, 1, 21) : await apiGetAllMusic(1, 21)
+        data = id >= 0 ? await apiGetGenresMusic(id, itemsStore.page, 21) : await apiGetAllMusic(itemsStore.page, 21)
 
         if (data) {
           itemsStore.musicList = data

@@ -12,7 +12,7 @@ import useMenuStore from "../../store/useMenuStore.ts";
 const menuStore = useMenuStore();
 
 
-itemsStore.artistsList = itemsStore.artistsList ? itemsStore.artistsList : await apiGetAllArtists(1, 21)
+itemsStore.artistsList = itemsStore.artistsList && artistStore.artistId >= 0 ? itemsStore.artistsList : await apiGetAllArtists(1, 21)
 
 const handleArtist = (artistId: number, artistName: string) => {
   artistStore.artistId = artistId
