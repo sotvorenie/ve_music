@@ -76,7 +76,7 @@ const useAudioStore = defineStore('audioStore', () => {
     const updateMusic = async (id?: number) => {
         if (!itemsStore.musicList?.music?.length) return
 
-        const usedId = id || itemsStore.musicList.music[menuStore.musicIndex].id
+        const usedId = id || itemsStore.musicList.music?.[0]?.id
         const data = await apiGetMusic(usedId)
 
         if (data) {
