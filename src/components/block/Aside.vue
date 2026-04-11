@@ -1,14 +1,17 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
 
-import MenuIcon from "../../assets/icons/MenuIcon.vue";
-import CrossIcon from "../../assets/icons/CrossIcon.vue";
+import {logout} from "../../utils/auth.ts";
 
-import useUserStore from "../../store/useUserStore.ts";
-import FoxIcon from "../../assets/icons/FoxIcon.vue";
 import UserRedact from "./UserRedact.vue";
 import Auth from "./Auth.vue";
 import TopMessage from "../ui/TopMessage.vue";
+
+import MenuIcon from "../../assets/icons/MenuIcon.vue";
+import CrossIcon from "../../assets/icons/CrossIcon.vue";
+import FoxIcon from "../../assets/icons/FoxIcon.vue";
+
+import useUserStore from "../../store/useUserStore.ts";
 const userStore = useUserStore();
 
 const isOpen = ref<boolean>(false)
@@ -51,6 +54,13 @@ const handleAvatar = () => {
 const successAuth = (messageText: string) => {
   isAuth.value = false
   message.value = messageText
+  messageVisible.value = true
+}
+
+const successLogout = () => {
+  isUserRedact.value = false
+  logout()
+  message.value = 'До новых встреч!!)'
   messageVisible.value = true
 }
 </script>
@@ -106,7 +116,10 @@ const successAuth = (messageText: string) => {
       </ul>
 
       <Transition name="list">
-        <UserRedact v-if="isUserRedact" :is-user-redact="isUserRedact"/>
+        <UserRedact v-if="isUserRedact"
+                    :is-user-redact="isUserRedact"
+                    @logout="successLogout"
+        />
       </Transition>
 
       <Transition name="list">

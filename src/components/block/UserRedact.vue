@@ -14,6 +14,8 @@ defineProps({
   },
 })
 
+const emits = defineEmits(['logout'])
+
 const nameCopy = ref<string>('')
 
 // активность кнопки "Редактировать"
@@ -34,7 +36,7 @@ onMounted(() => {
       <ButtonUi :is-disabled="!redactIsActive || !nameCopy.length">
         Редактировать
       </ButtonUi>
-      <ButtonUi>
+      <ButtonUi @click="emits('logout')">
         Выйти
       </ButtonUi>
     </div>
