@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import {onMounted, onUnmounted, ref, watch} from "vue";
 
+import {checkMe} from "./utils/auth.ts";
+
 import Menu from "./components/block/Menu.vue";
 import Info from "./components/block/Info.vue";
 import Controls from "./components/block/Controllers.vue";
@@ -58,12 +60,12 @@ watch(
     }
 )
 
-onMounted(() => {
+onMounted(async () => {
   globalThis.addEventListener("keydown", handleKey)
 
-  setTimeout(() => {
-    visible.value = true
-  }, 1000)
+  await checkMe()
+
+  visible.value = true
 })
 
 onUnmounted(() => {

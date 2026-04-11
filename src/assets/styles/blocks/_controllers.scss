@@ -104,16 +104,13 @@
   }
 
   &__modes, &__settings {
-    --transform-value: 0px;
-
-    @include abs-x;
-
+    position: absolute;
     gap: rem(10);
-    transform: translateX(calc(50% + #{var(--transform-value)}));
   }
 
   &__modes {
-    --transform-value: #{rem(160)};
+    right: rem(130);
+    width: 20%;
   }
 
   &__mode-btn {
@@ -124,7 +121,7 @@
   }
 
   &__settings {
-    --transform-value: #{rem(-460)};
+    left: rem(25);
   }
 
   &__sound {

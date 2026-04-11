@@ -18,5 +18,5 @@ export const apiRegister = async (login: string, password: string, name: string)
 }
 
 export const apiCheckMe = async (): Promise<UserWithToken> => {
-    return await apiGet('/me')
+    return await apiGet('/auth/me')
 }
