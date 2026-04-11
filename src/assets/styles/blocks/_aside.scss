@@ -41,6 +41,7 @@
 
       .img-container {
         transform: translate(rem(470), rem(185)) scale(4);
+        border-radius: rem(2);
       }
     }
 
@@ -55,7 +56,10 @@
     }
 
     .img-container {
-      transition: transform var(--transition-duration-big) ease;
+      border-radius: 50%;
+      transition:
+              transform var(--transition-duration-big) ease,
+              border-radius var(--transition-duration-big) ease;
       transform: translate(0, 0) scale(1);
       transform-origin: center center;
       will-change: transform;

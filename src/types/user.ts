@@ -13,3 +13,7 @@ export interface UserWithToken {
     user: User,
     token: string
 }
+
+export interface UserAvatar {
+    new_avatar_url: string
+}
