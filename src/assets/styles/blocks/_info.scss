@@ -47,6 +47,7 @@
     background: #26262650;
     padding: rem(5) rem(10);
     border-radius: var(--radius-regular);
+    font-variant-numeric: tabular-nums;
 
     svg {
       @include square(30);

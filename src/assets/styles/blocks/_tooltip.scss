@@ -6,7 +6,7 @@
   @include hover {
     .tooltip__content {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateX(-50%) translateY(0);
     }
   }
 
@@ -20,6 +20,6 @@
     background: var(--color-dark-15);
     border-radius: var(--radius-regular);
     padding: rem(10);
-    transform: translateY(10px);
+    transform: translateX(-50%) translateY(10px);
   }
 }
