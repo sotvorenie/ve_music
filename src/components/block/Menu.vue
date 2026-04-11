@@ -130,6 +130,8 @@ watch(
       } else {
         itemsStore.musicList = await apiGetAllLiked()
       }
+
+      await audioStore.updateMusic()
     }
 )
 </script>

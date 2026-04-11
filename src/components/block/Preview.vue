@@ -29,7 +29,7 @@ const onPause = () => {
 const onSeeked = () => {
   if (audioStore.audio && videoRef.value) {
     videoRef.value.currentTime = audioStore.audio.currentTime
-    if (audioStore.isPlaying) videoRef.value.play()
+    if (audioStore.isPlaying && videoRef.value) videoRef.value?.play()
   }
 }
 

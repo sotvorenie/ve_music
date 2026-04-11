@@ -15,6 +15,7 @@
     top: rem(60);
     left: rem(400);
     transition: transform var(--transition-duration-big);
+    height: 80vh;
 
     &.is-active {
       transform: translateY(#{rem(80)});

@@ -8,6 +8,8 @@ import {apiGetArtistsMusic, apiSearchArtistsMusic} from "../../api/artist/artist
 import {showArtists} from "../../composables/useShowArtists.ts";
 import formatTime from "../../composables/useFormatTime.ts";
 
+import Empty from "../ui/empty/Empty.vue";
+
 import useItemsStore from "../../store/useItemsStore.ts";
 const itemsStore = useItemsStore();
 import useMenuStore from "../../store/useMenuStore.ts";
@@ -137,4 +139,8 @@ watchEffect((onCleanup) => {
         :style="{'--active-index': String(menuStore.musicIndex)}"
     />
   </ul>
+
+  <Transition name="list">
+    <Empty v-if="!itemsStore.musicList?.music?.length"/>
+  </Transition>
 </template>

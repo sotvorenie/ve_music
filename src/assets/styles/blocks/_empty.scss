@@ -1,0 +1,12 @@
+@use '../helpers' as *;
+
+.empty {
+  @include abs-center;
+  @include flex-center();
+
+  font-size: rem(24);
+
+  svg {
+    @include square(100);
+  }
+}

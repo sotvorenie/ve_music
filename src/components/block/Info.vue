@@ -2,6 +2,7 @@
 import {nextTick, ref, watch} from "vue";
 
 import {apiCheckIsLike, apiLike} from "../../api/like/like.ts";
+import {apiSetToHistory} from "../../api/history/history.ts";
 
 import {showArtists} from "../../composables/useShowArtists.ts";
 
@@ -15,6 +16,9 @@ import useAudioStore from "../../store/useAudioStore.ts";
 const audioStore = useAudioStore();
 import useUserStore from "../../store/useUserStore.ts";
 const userStore = useUserStore();
+import useMenuStore from "../../store/useMenuStore.ts";
+const menuStore = useMenuStore();
+
 
 const nameTrackRef = ref<HTMLDivElement | null>(null)
 
@@ -77,11 +81,18 @@ const checkIsLiked = async () => {
   isLiked.value = check?.is_liked
 }
 
+const setToHistory = async () => {
+  if (userStore.user.id < 0 || menuStore.menuMode === menuStore.allMenuModes.history) return
+
+  await apiSetToHistory(audioStore.activeTrack.id)
+}
+
 watch(
     () => audioStore.activeTrack.id,
     () => {
       checkWidth()
       checkIsLiked()
+      setToHistory()
     },
     {immediate: true, deep: true}
 )
