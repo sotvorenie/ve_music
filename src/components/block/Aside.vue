@@ -107,6 +107,11 @@ const updateAvatar = async (event: Event) => {
     }
   }
 }
+
+const updateName = () => {
+  message.value = 'Имя пользователя изменено!!'
+  messageVisible.value = true
+}
 </script>
 
 <template>
@@ -161,7 +166,10 @@ const updateAvatar = async (event: Event) => {
               >
 
               <FoxIcon v-if="!userStore.user?.avatar_url"/>
-              <img v-else :src="`http://localhost:81/${userStore.user.avatar_url}`" :alt="userStore.user.name"/>
+              <img v-else
+                   :src="`http://localhost:81/${userStore.user.avatar_url}`"
+                   :alt="userStore.user.name"
+              />
             </div>
           </div>
         </li>
@@ -170,7 +178,9 @@ const updateAvatar = async (event: Event) => {
       <Transition name="list">
         <UserRedact v-if="isUserRedact"
                     :is-user-redact="isUserRedact"
+                    v-model="isLoading"
                     @logout="successLogout"
+                    @update-name="updateName"
         />
       </Transition>
 

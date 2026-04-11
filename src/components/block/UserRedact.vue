@@ -5,7 +5,8 @@ import InputUi from "../ui/InputUi.vue";
 import ButtonUi from "../ui/ButtonUi.vue";
 
 import useUserStore from "../../store/useUserStore.ts";
-import {showConfirm} from "../../utils/modals.ts";
+import {showConfirm, showError} from "../../utils/modals.ts";
+import {apiRedactUserName} from "../../api/user/user.ts";
 const userStore = useUserStore();
 
 defineProps({
@@ -13,13 +14,11 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  isLoading: {
-    type: Boolean,
-    default: false,
-  },
 })
 
-const emits = defineEmits(['logout'])
+const isLoading = defineModel({type: Boolean, default: false})
+
+const emits = defineEmits(['logout', 'updateName'])
 
 const nameCopy = ref<string>('')
 
@@ -37,6 +36,36 @@ const handleLogout = async () => {
   if (check) emits('logout')
 }
 
+// клик по кнопке "Редактировать"
+const handleRedact = async () => {
+  const check = await showConfirm(
+      'Редактирование профиля',
+      'Вы действительно хотите редактировать профиль?'
+  )
+
+  if (check) {
+    try {
+      isLoading.value = true
+
+      const response = await apiRedactUserName(nameCopy.value)
+
+      if (response.success) {
+        userStore.user.name = nameCopy.value
+        emits('updateName')
+      }
+    } catch (err) {
+      console.error(err)
+
+      await showError(
+          'Ошибка редактирования профиля',
+          'Не удалось редактировать профиль'
+      )
+    } finally {
+      isLoading.value = false
+    }
+  }
+}
+
 onMounted(() => {
   nameCopy.value = userStore.user.name
 })
@@ -50,7 +79,10 @@ onMounted(() => {
     />
 
     <div class="user-redact__btn-bar flex">
-      <ButtonUi :is-disabled="!redactIsActive || !nameCopy.length" :is-loading="isLoading">
+      <ButtonUi :is-disabled="!redactIsActive || !nameCopy.length"
+                :is-loading="isLoading"
+                @click="handleRedact"
+      >
         Редактировать
       </ButtonUi>
       <ButtonUi @click="handleLogout"
