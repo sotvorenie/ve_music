@@ -120,12 +120,10 @@ watch(
           } else {
             itemsStore.musicList = await apiSearchGenresMusic(searchStore.searchName, menuStore.activeGenreId)
           }
+        } else if (menuStore.activeGenreId >= 0) {
+          itemsStore.musicList = await apiGetGenresMusic(menuStore.activeGenreId)
         } else {
-          if (menuStore.activeGenreId >= 0) {
-            itemsStore.musicList = await apiGetGenresMusic(menuStore.activeGenreId)
-          } else {
-            itemsStore.musicList = await apiGetAllMusic()
-          }
+          itemsStore.musicList = await apiGetAllMusic()
         }
       } else if (newMode === menuStore.allMenuModes.history) {
         itemsStore.musicList = await apiGetHistory()
