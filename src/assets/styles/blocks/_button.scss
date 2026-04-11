@@ -22,4 +22,8 @@
     background: var(--color-light);
     color: var(--color-dark-alt);
   }
+
+  &__span {
+    transition: opacity var(--transition-duration);
+  }
 }

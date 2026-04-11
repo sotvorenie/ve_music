@@ -33,15 +33,14 @@
   }
 
   &__avatar {
+    @include square(50);
+
     border-radius: 50%;
 
     &.is-active {
 
       .img-container {
-        @include square(200);
-
-        top: rem(100);
-        left: rem(400);
+        transform: translate(rem(470), rem(185)) scale(4);
       }
     }
 
@@ -56,12 +55,10 @@
     }
 
     .img-container {
-      border-radius: 50%;
-      transition:
-              top var(--transition-duration-big),
-              left var(--transition-duration-big),
-              width var(--transition-duration-big),
-              height var(--transition-duration-big);
+      transition: transform var(--transition-duration-big) ease;
+      transform: translate(0, 0) scale(1);
+      transform-origin: center center;
+      will-change: transform;
     }
   }
 

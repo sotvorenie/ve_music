@@ -8,12 +8,16 @@ import useUserStore from "../../store/useUserStore.ts";
 import FoxIcon from "../../assets/icons/FoxIcon.vue";
 import UserRedact from "./UserRedact.vue";
 import Auth from "./Auth.vue";
+import TopMessage from "../ui/TopMessage.vue";
 const userStore = useUserStore();
 
 const isOpen = ref<boolean>(false)
 
 const isUserRedact = ref<boolean>(false)
 const isAuth = ref<boolean>(false)
+
+const message = ref('')
+const messageVisible = ref<boolean>(false)
 
 const closeAside = () => {
   if (isUserRedact.value || isAuth.value) return
@@ -43,9 +47,17 @@ const handleAvatar = () => {
     isAuth.value = !isAuth.value
   }
 }
+
+const successAuth = (messageText: string) => {
+  isAuth.value = false
+  message.value = messageText
+  messageVisible.value = true
+}
 </script>
 
 <template>
+
+  <TopMessage :message="message" v-model="messageVisible"/>
 
   <button class="aside__open recolor-svg position-absolute hover-color-accent z-10"
           type="button"
@@ -98,7 +110,7 @@ const handleAvatar = () => {
       </Transition>
 
       <Transition name="list">
-        <Auth v-if="isAuth"/>
+        <Auth v-if="isAuth" @success-auth="successAuth"/>
       </Transition>
     </div>
   </Transition>

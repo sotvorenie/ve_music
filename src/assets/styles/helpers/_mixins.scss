@@ -36,7 +36,7 @@
 @mixin abs-x {
   position: absolute;
   left: 50%;
-  translate: -50%;
+  transform: translate(-50%, 0);
 }
 
 @mixin abs-y {

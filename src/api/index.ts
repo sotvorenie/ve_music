@@ -1,6 +1,5 @@
 import axios from 'axios'
 
-import {showError} from "../utils/modals.ts";
 import {logout} from "../utils/auth.ts";
 
 import useUserStore from "../store/useUserStore.ts";
@@ -20,10 +19,6 @@ client.interceptors.response.use(
     response => response,
     async error => {
         if (error.response?.status === 401) {
-            await showError(
-                'Невалидный токен..',
-                'Ваш токен авторизации невалиден!! Пожалуйста, авторизуйтесь'
-            )
             logout()
         }
         return Promise.reject(error)

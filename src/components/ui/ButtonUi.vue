@@ -30,8 +30,15 @@ defineProps({
           :type="isSubmit ? 'submit' : 'button'"
           :disabled="isLoading || isDisabled"
   >
-    <slot v-if="!isLoading"/>
-    <LoadingIcon v-else class="position-absolute"/>
+    <TransitionGroup name="fade-absolute">
+      <span class="button__span"
+            :style="{opacity: isLoading ? 0 : 1}"
+      >
+        <slot/>
+      </span>
+
+      <LoadingIcon v-if="isLoading" class="position-absolute"/>
+    </TransitionGroup>
   </button>
 
 </template>
