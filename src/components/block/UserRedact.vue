@@ -5,6 +5,7 @@ import InputUi from "../ui/InputUi.vue";
 import ButtonUi from "../ui/ButtonUi.vue";
 
 import useUserStore from "../../store/useUserStore.ts";
+import {showConfirm} from "../../utils/modals.ts";
 const userStore = useUserStore();
 
 defineProps({
@@ -27,6 +28,15 @@ const redactIsActive = computed(() => {
   return nameCopy.value !== userStore.user.name
 })
 
+// клик по кнопке "Выйти"
+const handleLogout = async () => {
+  const check = await showConfirm(
+      'Выход из профиля',
+      'Вы действительно хотите выйти?'
+  )
+  if (check) emits('logout')
+}
+
 onMounted(() => {
   nameCopy.value = userStore.user.name
 })
@@ -43,7 +53,9 @@ onMounted(() => {
       <ButtonUi :is-disabled="!redactIsActive || !nameCopy.length" :is-loading="isLoading">
         Редактировать
       </ButtonUi>
-      <ButtonUi @click="emits('logout')" :is-loading="isLoading">
+      <ButtonUi @click="handleLogout"
+                :is-loading="isLoading"
+      >
         Выйти
       </ButtonUi>
     </div>
