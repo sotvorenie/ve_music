@@ -71,7 +71,7 @@ const handleSearch = async () => {
 
   <Transition name="list">
     <div class="search__content position-absolute z-10 flex overflow-hidden"
-         v-if="searchStore.isOpen"
+         v-if="searchStore.isOpen && menuStore.menuMode === menuStore.allMenuModes.genres"
     >
       <Transition name="fade" mode="out-in">
         <input type="text"
