@@ -1,4 +1,4 @@
-import {Like, IsLiked} from "../../types/like.ts";
+import {Like} from "../../types/like.ts";
 import {MusicList} from "../../types/music.ts";
 
 import {apiGet, apiPost} from "../index.ts";
@@ -7,7 +7,7 @@ export const apiLike = async (musicId: number): Promise<Like> => {
     return await apiPost(`/like/${musicId}`, {})
 }
 
-export const apiCheckIsLike = async (musicId: number): Promise<IsLiked> => {
+export const apiCheckIsLike = async (musicId: number): Promise<Like> => {
     return await apiGet(`/like/is_liked/${musicId}`)
 }
 

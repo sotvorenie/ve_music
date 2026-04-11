@@ -1,9 +1,5 @@
 import {SuccessResponse} from "./SuccessResponse.ts";
 
-export interface Like extends SuccessResponse{
-    liked: boolean
-}
-
-export interface IsLiked {
-    is_liked: boolean
+export interface Like extends SuccessResponse {
+    is_liked: boolean;
 }

@@ -31,7 +31,7 @@ const handleLike = async () => {
 
     const response = await apiLike(audioStore.activeTrack.id)
 
-    if (response?.liked) {
+    if (response?.is_liked) {
       audioStore.activeTrack.likes = audioStore.activeTrack.likes + 1
     } else {
       audioStore.activeTrack.likes = Math.max(audioStore.activeTrack.likes - 1, 0)
@@ -74,11 +74,11 @@ const checkIsLiked = async () => {
 
   const check = await apiCheckIsLike(audioStore.activeTrack.id)
 
-  isLiked.value = check?.is_liked ? check.is_liked : false
+  isLiked.value = check?.is_liked
 }
 
 watch(
-    () => audioStore.activeTrack,
+    () => audioStore.activeTrack.id,
     () => {
       checkWidth()
       checkIsLiked()
@@ -98,7 +98,7 @@ watch(
               <template #activator="{open}">
                 <button class="info__statistics-item recolor-svg hover-color-accent flex flex-align-center"
                         type="button"
-                        @click="userStore.user.id >= 0 ? handleLike : open()"
+                        @click="userStore.user.id >= 0 ? handleLike() : open()"
                 >
                   <Like :is-liked="isLiked"/>
                   {{audioStore.activeTrack?.likes || 0}}
