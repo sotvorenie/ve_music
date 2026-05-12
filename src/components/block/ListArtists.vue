@@ -17,9 +17,11 @@ const searchStore = useSearchStore();
 
 itemsStore.artistsList = itemsStore.artistsList && artistStore.artistId >= 0 ? itemsStore.artistsList : await apiGetAllArtists(1, 21)
 
-const handleArtist = (artistId: number, artistName: string) => {
+const handleArtist = async (artistId: number, artistName: string) => {
   artistStore.artistId = artistId
   artistStore.artistName = artistName
+
+  await itemsStore.getMusicList()
 
   menuStore.listMode = menuStore.allListModes.artistMusic
 }

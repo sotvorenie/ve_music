@@ -16,6 +16,10 @@ import Search from "./components/block/Search.vue";
 
 import useAudioStore from "./store/useAudioStore.ts";
 const audioStore = useAudioStore();
+import useMenuStore from "./store/useMenuStore.ts";
+const menuStore = useMenuStore();
+import useItemsStore from "./store/useItemsStore.ts";
+const itemsStore = useItemsStore();
 
 
 const visible = ref(false)
@@ -57,6 +61,13 @@ watch(
     () => audioStore.isPlaying,
     (newVal) => {
       newVal ? audioStore.audio.play() : audioStore.audio.pause()
+    }
+)
+
+watch(
+    () => menuStore.menuMode,
+    () => {
+      itemsStore.getMusicList()
     }
 )
 

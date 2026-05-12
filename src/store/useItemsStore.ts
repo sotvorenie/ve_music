@@ -2,8 +2,13 @@ import {defineStore} from "pinia";
 import {ref, watch} from "vue";
 import {MusicForList, MusicList} from "../types/music.ts";
 import {ArtistsList} from "../types/artist.ts";
+import {apiGetMusicList} from "../api/music/music.ts";
+import {apiGetHistory} from "../api/history/history.ts";
+import {apiGetAllLiked} from "../api/like/like.ts";
+import useMenuStore from "./useMenuStore.ts";
 
 const useItemsStore = defineStore("itemsStore", () => {
+    const menuStore = useMenuStore();
 
     // список музыки
     const musicList = ref<MusicList>()
@@ -45,10 +50,26 @@ const useItemsStore = defineStore("itemsStore", () => {
     // список исполнителей
     const artistsList = ref<ArtistsList>()
 
+    // загрузка списка музыки
+    const getMusicList = async (
+        page: number = 1,
+        limit: number = 21,
+    ) => {
+        if (menuStore.menuMode === menuStore.allMenuModes.genres) {
+            musicList.value = await apiGetMusicList(page, limit)
+        } else if (menuStore.menuMode === menuStore.allMenuModes.history) {
+            musicList.value = await apiGetHistory(page, limit)
+        } else {
+            musicList.value = await apiGetAllLiked(page, limit)
+        }
+    }
+
     return {
         musicList,
         randomMusicList,
         artistsList,
+
+        getMusicList,
     }
 })
 

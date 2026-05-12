@@ -1,10 +1,6 @@
 <script setup lang="ts">
 import {ref, watch, watchEffect} from "vue";
 
-import {apiGetAllMusic, apiSearchMusic} from "../../api/music/music.ts";
-import {apiGetGenresMusic, apiSearchGenresMusic} from "../../api/genre/genre.ts";
-import {apiGetArtistsMusic, apiSearchArtistsMusic} from "../../api/artist/artist.ts";
-
 import {showArtists} from "../../composables/useShowArtists.ts";
 import formatTime from "../../composables/useFormatTime.ts";
 
@@ -16,18 +12,11 @@ import useMenuStore from "../../store/useMenuStore.ts";
 const menuStore = useMenuStore();
 import useAudioStore from "../../store/useAudioStore.ts";
 const audioStore = useAudioStore();
-import useSearchStore from "../../store/useSearchStore.ts";
-const searchStore = useSearchStore();
-import useArtistStore from "../../store/useArtistStore.ts";
-const artistStore = useArtistStore();
-
 
 const observerLi = ref<HTMLLIElement | null>(null)
 const listRef = ref<HTMLUListElement | null>(null)
 
 let observer: IntersectionObserver | null = null
-
-const isFetching = ref<boolean>(false)
 
 const initObserver = () => {
   const observerOptions = {
@@ -38,7 +27,7 @@ const initObserver = () => {
   const observerCallback = (entries: IntersectionObserverEntry[]) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        addNewMusic()
+        itemsStore.getMusicList()
       }
     })
   }
@@ -49,45 +38,6 @@ const initObserver = () => {
 
 const clearObserver = () => {
   if (observer) observer.disconnect()
-}
-
-const addNewMusic = async () => {
-  if (isFetching.value) return
-  isFetching.value = true
-
-  const page = itemsStore.musicList!.page + 1
-
-  let data
-
-  if (artistStore.artistId >= 0) {
-    if (searchStore.searchName) {
-      data = await apiSearchArtistsMusic(searchStore.searchName, artistStore.artistId, page)
-    } else {
-      data = await apiGetArtistsMusic(artistStore.artistId, page)
-    }
-  } else if (menuStore.activeGenreId < 0) {
-    if (searchStore.searchName) {
-      data = await apiSearchMusic(searchStore.searchName, page)
-    } else {
-      data = await apiGetAllMusic(page)
-    }
-  } else if (searchStore.searchName) {
-    data = await apiSearchGenresMusic(searchStore.searchName, menuStore.activeGenreId, page)
-  } else {
-    data = await apiGetGenresMusic(menuStore.activeGenreId, page)
-  }
-
-  if (data) {
-    itemsStore.musicList = {
-      music: [...itemsStore.musicList!.music, ...data.music],
-      total: data.total,
-      page: data.page,
-      limit: data.limit,
-      has_more: data.has_more,
-    }
-  }
-
-  isFetching.value = false
 }
 
 watch(
@@ -134,10 +84,6 @@ watchEffect((onCleanup) => {
         <p class="list__duration">{{formatTime(item.duration)}}</p>
       </div>
     </li>
-
-    <li class="list__active active-index position-absolute w-100"
-        :style="{'--active-index': String(menuStore.musicIndex)}"
-    />
   </ul>
 
   <Transition name="list">

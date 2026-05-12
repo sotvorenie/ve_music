@@ -1,9 +1,6 @@
 <script setup lang="ts">
 import {computed} from "vue";
 
-import {apiSearchMusic} from "../../api/music/music.ts";
-import {apiSearchArtist, apiSearchArtistsMusic} from "../../api/artist/artist.ts";
-
 import SearchIcon from "../../assets/icons/SearchIcon.vue";
 import CrossIcon from "../../assets/icons/CrossIcon.vue";
 
@@ -14,7 +11,6 @@ const menuStore = useMenuStore();
 import useItemsStore from "../../store/useItemsStore.ts";
 const itemsStore = useItemsStore();
 import useArtistStore from "../../store/useArtistStore.ts";
-import {apiSearchGenresMusic} from "../../api/genre/genre.ts";
 const artistStore = useArtistStore();
 
 
@@ -37,22 +33,9 @@ const placeholder = computed(() => {
 })
 
 
-const handleSearch = async () => {
-  menuStore.musicIndex = 0
-
-  if (menuStore.listMode === menuStore.allListModes.music) {
-    if (menuStore.activeGenreId < 0) {
-      itemsStore.musicList = await apiSearchMusic(searchStore.searchName)
-    } else {
-      itemsStore.musicList = await apiSearchGenresMusic(searchStore.searchName, menuStore.activeGenreId)
-    }
-  } else if (menuStore.listMode === menuStore.allListModes.artists) {
-    itemsStore.artistsList = await apiSearchArtist(searchStore.searchName)
-  } else if (menuStore.listMode === menuStore.allListModes.artistMusic) {
-    itemsStore.musicList = await apiSearchArtistsMusic(searchStore.searchName, artistStore.artistId)
-  }
+const handleSearch = () => {
+  itemsStore.getMusicList()
 }
-
 </script>
 
 <template>
@@ -60,7 +43,7 @@ const handleSearch = async () => {
   <Transition name="scale">
     <button class="search__open recolor-svg position-absolute hover-color-accent z-10"
             type="button"
-            title="Открыть блок поиска"
+            :title="searchStore.isOpen ? 'Закрыть блок поиска' : 'Открыть блок поиска'"
             @click="searchStore.isOpen = !searchStore.isOpen"
             :key="`${searchStore.isOpen}`"
     >

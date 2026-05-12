@@ -3,10 +3,7 @@ import {ref, watch} from "vue";
 
 import { GenresList } from "../../types/genre";
 
-import {apiGetAllGenres, apiGetGenresMusic, apiSearchGenresMusic} from "../../api/genre/genre.ts";
-import {apiGetAllMusic, apiSearchMusic} from "../../api/music/music.ts";
-import {apiGetHistory} from "../../api/history/history.ts";
-import {apiGetAllLiked} from "../../api/like/like.ts";
+import {apiGetAllGenres} from "../../api/genre/genre.ts";
 
 import Modal from "../common/Modal.vue";
 
@@ -20,10 +17,8 @@ import useUserStore from "../../store/useUserStore.ts";
 const userStore = useUserStore();
 import useItemsStore from "../../store/useItemsStore.ts";
 const itemsStore = useItemsStore();
-import useAudioStore from "../../store/useAudioStore.ts";
-const audioStore = useAudioStore();
-import useSearchStore from "../../store/useSearchStore.ts";
-const searchStore = useSearchStore();
+import useArtistStore from "../../store/useArtistStore.ts";
+const artistStore = useArtistStore();
 
 
 const musicIndex = defineModel('musicIndex',{type: Number})
@@ -88,50 +83,10 @@ const handleErrorModal = (type: string, func: Function) => {
 
 watch(
     () => menuStore.activeGenreId,
-    async (id: number) => {
+    () => {
       menuStore.listMode = menuStore.allListModes.music
-
-      if (searchStore.searchName) {
-        if (menuStore.activeGenreId < 0) {
-          itemsStore.musicList = await apiSearchMusic(searchStore.searchName)
-        } else {
-          itemsStore.musicList = await apiSearchGenresMusic(searchStore.searchName, menuStore.activeGenreId)
-        }
-      } else {
-        let data
-
-        data = id >= 0 ? await apiGetGenresMusic(id) : await apiGetAllMusic()
-
-        if (data) {
-          itemsStore.musicList = data
-          await audioStore.updateMusic()
-        }
-      }
-    }
-)
-
-watch(
-    () => menuStore.menuMode,
-    async (newMode: string) => {
-      if (newMode === menuStore.allMenuModes.genres) {
-        if (searchStore.searchName) {
-          if (menuStore.activeGenreId < 0) {
-            itemsStore.musicList = await apiSearchMusic(searchStore.searchName)
-          } else {
-            itemsStore.musicList = await apiSearchGenresMusic(searchStore.searchName, menuStore.activeGenreId)
-          }
-        } else if (menuStore.activeGenreId >= 0) {
-          itemsStore.musicList = await apiGetGenresMusic(menuStore.activeGenreId)
-        } else {
-          itemsStore.musicList = await apiGetAllMusic()
-        }
-      } else if (newMode === menuStore.allMenuModes.history) {
-        itemsStore.musicList = await apiGetHistory()
-      } else {
-        itemsStore.musicList = await apiGetAllLiked()
-      }
-
-      await audioStore.updateMusic()
+      artistStore.artistId = -1
+      itemsStore.getMusicList()
     }
 )
 </script>

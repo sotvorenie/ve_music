@@ -72,12 +72,11 @@ const useAudioStore = defineStore('audioStore', () => {
         }
     }
 
-    // функция для загрузки музыки по id (причем при клике на музыку, при next/prev у нас передается id, а при первоначальной загрузке или при переходе между музыкой/музыкой_артиста мы просто берем id первого трека)
-    const updateMusic = async (id?: number) => {
+    // функция для загрузки музыки по id
+    const updateMusic = async (id: number) => {
         if (!itemsStore.musicList?.music?.length) return
 
-        const usedId = id || itemsStore.musicList.music?.[0]?.id
-        const data = await apiGetMusic(usedId)
+        const data = await apiGetMusic(id)
 
         if (data) {
             Object.assign(activeTrack, data)

@@ -1,9 +1,4 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
-
-import {apiGetArtistsMusic} from "../../api/artist/artist.ts";
-import {apiGetAllMusic} from "../../api/music/music.ts";
-
 import ListMusic from "./ListMusic.vue";
 import ListArtists from "./ListArtists.vue";
 
@@ -17,36 +12,14 @@ import useItemsStore from "../../store/useItemsStore.ts";
 const itemsStore = useItemsStore();
 import useArtistStore from "../../store/useArtistStore.ts";
 const artistStore = useArtistStore();
-import useAudioStore from "../../store/useAudioStore.ts";
-const audioStore = useAudioStore();
 
-itemsStore.musicList = await apiGetAllMusic()
-await audioStore.updateMusic()
+await itemsStore.getMusicList()
 
-const isLoadingMusicList = ref<boolean>(false)
-
-watch(
-    () => menuStore.listMode,
-    async (newVal: string, oldVal: string) => {
-
-      isLoadingMusicList.value = true
-      if (oldVal === menuStore.allListModes.artistMusic) {
-        itemsStore.musicList = await apiGetAllMusic()
-
-        if (itemsStore.musicList?.music?.length) {
-          await audioStore.updateMusic()
-        }
-      } else if (newVal === menuStore.allListModes.artistMusic) {
-        itemsStore.musicList = await apiGetArtistsMusic(artistStore.artistId)
-
-        if (itemsStore.musicList?.music?.length) {
-          await audioStore.updateMusic()
-        }
-      }
-
-      isLoadingMusicList.value = false
-    }
-)
+const handleMusic = async () => {
+  artistStore.artistId = -1
+  await itemsStore.getMusicList()
+  menuStore.listMode = menuStore.allListModes.music;
+}
 </script>
 
 <template>
@@ -60,7 +33,7 @@ watch(
          :class="{'is-hidden': menuStore.menuMode !== menuStore.allMenuModes.genres}"
     >
       <ButtonUi :is-active="menuStore.listMode === menuStore.allListModes.music"
-                @click="menuStore.listMode = menuStore.allListModes.music"
+                @click="handleMusic"
       >Музыка</ButtonUi>
       <ButtonUi :is-active="menuStore.listMode === menuStore.allListModes.artists"
                 @click="menuStore.listMode = menuStore.allListModes.artists"
@@ -82,13 +55,9 @@ watch(
       Исполнителей: {{itemsStore.artistsList?.total || 0}}
     </span>
 
-    <MusicListSkeleton v-if="isLoadingMusicList"/>
+    <ListMusic v-if="menuStore.listMode !== menuStore.allListModes.artists"/>
 
-    <template v-else>
-      <ListMusic v-show="menuStore.listMode !== menuStore.allListModes.artists"/>
-
-      <ListArtists v-show="menuStore.listMode === menuStore.allListModes.artists"/>
-    </template>
+    <ListArtists v-else/>
   </div>
 
 </template>

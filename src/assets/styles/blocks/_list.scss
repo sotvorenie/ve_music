@@ -68,6 +68,7 @@
     &.is-active {
       cursor: default !important;
       pointer-events: none;
+      background: var(--color-dark-15);
     }
   }
 

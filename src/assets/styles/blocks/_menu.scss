@@ -71,8 +71,13 @@
 
   &__btn {
     height: rem(60);
+    transition: backdrop-filter var(--transition-duration);
 
     @include hover {
+      backdrop-filter: brightness(.8);
+    }
+
+    &.is-active {
       backdrop-filter: brightness(.8);
     }
   }

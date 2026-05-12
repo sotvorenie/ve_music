@@ -29,7 +29,7 @@ const useMenuStore = defineStore("menuStore", () => {
     const activeGenreId = ref<number>(-1)
 
     // индекс активной музыки
-    const musicIndex = ref<number>(0)
+    const musicIndex = ref<number>(-1)
 
     // количество всех песен
     const musicListLength = ref<number>(0)
