@@ -82,7 +82,7 @@ const handleErrorModal = (type: string, func: Function) => {
 }
 
 watch(
-    () => menuStore.activeGenreId,
+    () => [menuStore.activeGenreId, menuStore.menuMode],
     () => {
       menuStore.listMode = menuStore.allListModes.music
       artistStore.artistId = -1

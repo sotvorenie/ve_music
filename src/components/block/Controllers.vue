@@ -114,6 +114,13 @@ watch(
     }
 )
 
+watch(
+    () => audioStore.isPlaying,
+    (newVal) => {
+      newVal ? audioStore.audio.play() : audioStore.audio.pause()
+    }
+)
+
 onMounted(() => {
   getVolumeFromLocStore()
   getIsRandomFromLocStore()

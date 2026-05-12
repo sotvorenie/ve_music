@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, onUnmounted, ref, watch} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 
 import {checkMe} from "./utils/auth.ts";
 
@@ -16,10 +16,6 @@ import Search from "./components/block/Search.vue";
 
 import useAudioStore from "./store/useAudioStore.ts";
 const audioStore = useAudioStore();
-import useMenuStore from "./store/useMenuStore.ts";
-const menuStore = useMenuStore();
-import useItemsStore from "./store/useItemsStore.ts";
-const itemsStore = useItemsStore();
 
 
 const visible = ref(false)
@@ -56,20 +52,6 @@ const handleKey = (e: KeyboardEvent) => {
       break
   }
 }
-
-watch(
-    () => audioStore.isPlaying,
-    (newVal) => {
-      newVal ? audioStore.audio.play() : audioStore.audio.pause()
-    }
-)
-
-watch(
-    () => menuStore.menuMode,
-    () => {
-      itemsStore.getMusicList()
-    }
-)
 
 onMounted(async () => {
   globalThis.addEventListener("keydown", handleKey)
