@@ -1,6 +1,6 @@
 import {defineStore} from "pinia";
 import {ref, watch} from "vue";
-import {MusicForList, MusicList} from "../types/music.ts";
+import {Music, MusicForList, MusicList} from "../types/music.ts";
 import {ArtistsList} from "../types/artist.ts";
 import {apiGetMusicList} from "../api/music/music.ts";
 import {apiGetHistory} from "../api/history/history.ts";
@@ -11,7 +11,13 @@ const useItemsStore = defineStore("itemsStore", () => {
     const menuStore = useMenuStore();
 
     // список музыки
-    const musicList = ref<MusicList>()
+    const musicList = ref<MusicList>({
+        music: [] as Music[],
+        page: 1 as number,
+        limit: 21 as number,
+        has_more: false as boolean,
+        total: 0 as number
+    })
 
     // seed для случайного порядка проигрывания музыки
     const randomSeed = ref<number>((Math.random() * 2) - 1)
@@ -55,12 +61,21 @@ const useItemsStore = defineStore("itemsStore", () => {
         page: number = 1,
         limit: number = 21,
     ) => {
+        let data: MusicList
         if (menuStore.menuMode === menuStore.allMenuModes.genres) {
-            musicList.value = await apiGetMusicList(page, limit)
+            data = await apiGetMusicList(page, limit)
         } else if (menuStore.menuMode === menuStore.allMenuModes.history) {
-            musicList.value = await apiGetHistory(page, limit)
+            data = await apiGetHistory(page, limit)
         } else {
-            musicList.value = await apiGetAllLiked(page, limit)
+            data = await apiGetAllLiked(page, limit)
+        }
+
+        if (data) {
+            musicList.value.music = [...musicList.value.music, ...data.music]
+            musicList.value.page = data.page
+            musicList.value.limit = data.limit
+            musicList.value.has_more = data.has_more
+            musicList.value.total = data.total
         }
     }
 

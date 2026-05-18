@@ -27,7 +27,7 @@ const initObserver = () => {
   const observerCallback = (entries: IntersectionObserverEntry[]) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        itemsStore.getMusicList()
+        itemsStore.getMusicList(itemsStore.musicList!.page + 1)
       }
     })
   }
