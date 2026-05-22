@@ -28,8 +28,15 @@
     gap: rem(30);
   }
 
+  &__item, &__btn {
+    @include square(50);
+  }
+
   &__btn {
-    @include square(40);
+
+    svg {
+      width: 80%;
+    }
   }
 
   &__avatar {

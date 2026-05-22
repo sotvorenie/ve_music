@@ -61,9 +61,9 @@ const handleSearch = () => {
   <Transition name="scale">
     <button class="search__open recolor-svg position-absolute hover-color-accent z-10"
             type="button"
-            :title="searchStore.isOpen ? 'Закрыть блок поиска' : 'Открыть блок поиска'"
             @click="searchStore.isOpen = !searchStore.isOpen"
             :key="`${searchStore.isOpen}`"
+            :title="searchStore.isOpen ? 'Закрыть блок поиска' : 'Открыть блок поиска'"
     >
       <SearchIcon v-if="!searchStore.isOpen"/>
       <CrossIcon v-else/>

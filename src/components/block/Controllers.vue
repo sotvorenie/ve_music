@@ -48,7 +48,7 @@ const disabledNextButton = computed(() => {
 const cursorTime = ref(0)
 const timelineInfoRef = ref<HTMLDivElement | null>(null)
 const mouseMoveTimeline = (e: MouseEvent) => {
-  if (!timelineInfoRef.value) return
+  if (!timelineInfoRef.value || audioStore.activeTrack.id < 0) return
 
   const timelineWrapper = e.currentTarget as HTMLDivElement
   const timelineWrapperRect = timelineWrapper.getBoundingClientRect()
@@ -132,11 +132,12 @@ onMounted(() => {
 
   <div class="controllers">
     <div class="controllers__timeline-wrapper position-relative"
+         :style="{'pointer-events': audioStore.activeTrack.id >= 0 ? 'auto' : 'none'}"
          @mousemove="mouseMoveTimeline"
     >
       <span class="controllers__timeline-info position-absolute text-numeric" ref="timelineInfoRef">
-      {{formatTime(cursorTime)}}
-    </span>
+        {{formatTime(cursorTime)}}
+      </span>
       <input class="controllers__timeline w-100"
              type="range"
              v-model="audioStore.currentTime"

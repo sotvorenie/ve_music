@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
 
+import {apiRedactUserAvatar} from "../../api/user/user.ts";
+
 import {logout} from "../../utils/auth.ts";
+import {showError} from "../../utils/modals.ts";
 
 import UserRedact from "./UserRedact.vue";
 import Auth from "./Auth.vue";
@@ -12,8 +15,6 @@ import CrossIcon from "../../assets/icons/CrossIcon.vue";
 import FoxIcon from "../../assets/icons/FoxIcon.vue";
 
 import useUserStore from "../../store/useUserStore.ts";
-import {showError} from "../../utils/modals.ts";
-import {apiRedactUserAvatar} from "../../api/user/user.ts";
 const userStore = useUserStore();
 
 const isOpen = ref<boolean>(false)
@@ -142,38 +143,47 @@ const updateName = () => {
     >
       <ul class="aside__list flex flex-column">
         <li class="aside__item">
-          <button class="aside__btn recolor-svg hover-color-accent"
-                  type="button"
-                  @click="closeAside"
-                  :disabled="isUserRedact || isAuth"
-          >
-            <CrossIcon/>
-          </button>
+          <Tooltip position="right">
+            <template #activator>
+              <button class="aside__btn recolor-svg hover-color-accent"
+                      type="button"
+                      @click="closeAside"
+                      :disabled="isUserRedact || isAuth"
+              >
+                <CrossIcon/>
+              </button>
+            </template>
+            <template #default>Закрыть меню</template>
+          </Tooltip>
         </li>
         <li class="aside__item">
-          <div class="aside__avatar aside__btn position-relative cursor-pointer"
-               :class="{'is-active': isUserRedact}"
-               @click="handleAvatar"
-          >
-            <div class="border position-absolute z-10000"></div>
-            <div class="img-container position-absolute z-10000"
-                 :title="avatarTitle"
-                 @click="handleRedactAvatar"
-            >
-              <input type="file"
-                     ref="fileInput"
-                     class="visually-hidden"
-                     accept="image/*"
-                     @change="updateAvatar"
+          <Tooltip position="right">
+            <template #activator>
+              <div class="aside__avatar aside__btn position-relative cursor-pointer"
+                   :class="{'is-active': isUserRedact}"
+                   @click="handleAvatar"
               >
+                <div class="border position-absolute z-10000"></div>
+                <div class="img-container position-absolute z-10000"
+                     @click="handleRedactAvatar"
+                >
+                  <input type="file"
+                         ref="fileInput"
+                         class="visually-hidden"
+                         accept="image/*"
+                         @change="updateAvatar"
+                  >
 
-              <FoxIcon v-if="!userStore.user?.avatar_url"/>
-              <img v-else
-                   :src="`http://localhost:81/${userStore.user.avatar_url}`"
-                   :alt="userStore.user.name"
-              />
-            </div>
-          </div>
+                  <FoxIcon v-if="!userStore.user?.avatar_url"/>
+                  <img v-else
+                       :src="`http://localhost:81/${userStore.user.avatar_url}`"
+                       :alt="userStore.user.name"
+                  />
+                </div>
+              </div>
+            </template>
+            <template #default>{{avatarTitle}}</template>
+          </Tooltip>
         </li>
       </ul>
 

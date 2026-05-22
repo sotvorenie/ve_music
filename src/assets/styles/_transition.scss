@@ -68,10 +68,11 @@
 }
 
 .aside-enter-active, .aside-leave-active {
-  transition: transform var(--transition-duration) ease !important;
+  transition: opacity var(--transition-duration) ease, transform var(--transition-duration) ease !important;
 }
 .aside-enter-from, .aside-leave-to {
   transform: translateX(-100%);
+  opacity: 0;
 }
 
 .scale-enter-active, .scale-leave-active {

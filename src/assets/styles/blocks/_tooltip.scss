@@ -1,25 +1,49 @@
 @use '../helpers' as *;
 
 .tooltip {
-  height: 100%;
 
   @include hover {
     .tooltip__content {
       opacity: 1;
-      transform: translateX(-50%) translateY(0);
+
+      &.top {
+        transform: translate(-50%, 0);
+      }
+      &.right {
+        transform: translate(0, -50%);
+      }
+      &.bottom-right {
+        transform: translate(0, 0);
+      }
     }
   }
 
   &__content {
-    @include abs-x;
-
-    bottom: calc(100% + #{rem(10)});
     opacity: 0;
     pointer-events: none;
     transition: opacity var(--transition-duration), transform var(--transition-duration);
     background: var(--color-dark-15);
     border-radius: var(--radius-regular);
     padding: rem(10);
-    transform: translateX(-50%) translateY(10px);
+    width: fit-content;
+
+    &.top {
+      @include abs-x;
+
+      bottom: calc(100% + #{rem(10)});
+      transform: translate(-50%, 10px);
+    }
+    &.right {
+      @include abs-y;
+
+      left: calc(100% + #{rem(10)});
+      transform: translate(-10px, -50%);
+    }
+    &.bottom-right {
+      @include abs-y;
+      left: 0;
+      top: calc(100% + #{rem(10)});
+      transform: translate(0, -10px);
+    }
   }
 }
