@@ -29,10 +29,12 @@ const fileInput = ref<HTMLInputElement | null>(null)
 const isLoading = ref<boolean>(false)
 
 const closeAside = () => {
-  if (isUserRedact.value || isAuth.value) return
-
-  isUserRedact.value = false
-  isOpen.value = false
+  if (isUserRedact.value || isAuth.value) {
+    isUserRedact.value = false
+    isAuth.value = false
+  } else {
+    isOpen.value = false
+  }
 }
 
 // title у блока аватарки перед открытием
