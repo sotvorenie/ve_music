@@ -50,17 +50,9 @@ const activeTabIndex = ref<number>(0)
 const handleGenre = async (id: number, index: number, genreName?: string) => {
   musicIndex.value = 0
   menuStore.activeGenreIndex = index + 1
-  updateMenuBlock(index)
 
   menuStore.activeGenreId = id
   menuStore.activeGenreName = genreName || ''
-}
-
-const updateMenuBlock = (index: number) => {
-  const el = menuActive.value[0]
-  if (!el) return
-
-  el.style.setProperty('--active-index', String(index + 1))
 }
 
 const handleTab = (index: number) => {
@@ -84,9 +76,11 @@ const handleErrorModal = (type: string, func: Function) => {
 watch(
     () => [menuStore.activeGenreId, menuStore.menuMode],
     () => {
-      menuStore.listMode = menuStore.allListModes.music
-      artistStore.artistId = -1
-      itemsStore.getMusicList()
+      if (menuStore.activeGenreId >= -1) {
+        menuStore.listMode = menuStore.allListModes.music
+        artistStore.artistId = -1
+        itemsStore.getMusicList()
+      }
     }
 )
 </script>

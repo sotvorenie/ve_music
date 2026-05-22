@@ -71,7 +71,7 @@ const useItemsStore = defineStore("itemsStore", () => {
         }
 
         if (data) {
-            musicList.value.music = [...musicList.value.music, ...data.music]
+            musicList.value.music = page === 1 ? data.music : [...musicList.value.music, ...data.music]
             musicList.value.page = data.page
             musicList.value.limit = data.limit
             musicList.value.has_more = data.has_more

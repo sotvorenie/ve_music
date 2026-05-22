@@ -11,6 +11,7 @@ const searchStore = useSearchStore();
 import useItemsStore from "../../store/useItemsStore.ts";
 const itemsStore = useItemsStore();
 import useArtistStore from "../../store/useArtistStore.ts";
+import {watch} from "vue";
 const artistStore = useArtistStore();
 
 await itemsStore.getMusicList()
@@ -20,6 +21,15 @@ const handleMusic = async () => {
   await itemsStore.getMusicList()
   menuStore.listMode = menuStore.allListModes.music;
 }
+
+watch(
+    () => menuStore.listMode,
+    () => {
+      if (menuStore.listMode === menuStore.allListModes.artistMusic) {
+        menuStore.activeGenreId = -2
+      }
+    }
+)
 </script>
 
 <template>
