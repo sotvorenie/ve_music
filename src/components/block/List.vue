@@ -36,7 +36,7 @@ watch(
 
   <div class="list-wrapper position-absolute z-10"
        :class="{
-         'is-active': searchStore.isOpen && menuStore.menuMode === menuStore.allMenuModes.genres
+         'is-active': searchStore.isOpen
        }"
   >
     <div class="list-tabs flex flex-justify-center"

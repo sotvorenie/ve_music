@@ -18,18 +18,26 @@ const allPlaceholders = {
   all: 'Поиск по всем трекам',
   genre: 'Поиск треков в жанре',
   artists: 'Поиск исполнителя',
-  artistSong: 'Поиск треков исполнителя'
+  artistSong: 'Поиск треков исполнителя',
+  history: 'Поиск треков в истории',
+  favorites: 'Поиск треков в избранном',
 }
 
 const placeholder = computed(() => {
-  if (menuStore.listMode === menuStore.allListModes.music && menuStore.activeGenreIndex === 0)
-    return allPlaceholders.all
-  if (menuStore.listMode === menuStore.allListModes.music && menuStore.activeGenreIndex > 0)
-    return allPlaceholders.genre + ' ' + menuStore.activeGenreName
-  if (menuStore.listMode === menuStore.allListModes.artists)
-    return allPlaceholders.artists
-  if (menuStore.listMode === menuStore.allListModes.artistMusic)
-    return allPlaceholders.artistSong + ' ' + artistStore.artistName
+  if (menuStore.menuMode === menuStore.allMenuModes.genres) {
+    if (menuStore.listMode === menuStore.allListModes.music && menuStore.activeGenreId === -1)
+      return allPlaceholders.all
+    if (menuStore.listMode === menuStore.allListModes.music && menuStore.activeGenreId >= 0)
+      return allPlaceholders.genre + ' ' + menuStore.activeGenreName
+    if (menuStore.listMode === menuStore.allListModes.artists)
+      return allPlaceholders.artists
+    if (menuStore.listMode === menuStore.allListModes.artistMusic)
+      return allPlaceholders.artistSong + ' ' + artistStore.artistName
+  }
+  if (menuStore.menuMode === menuStore.allMenuModes.history)
+    return allPlaceholders.history
+  if (menuStore.menuMode === menuStore.allMenuModes.favorites)
+    return allPlaceholders.favorites
 })
 
 
@@ -54,12 +62,12 @@ const handleSearch = () => {
 
   <Transition name="list">
     <div class="search__content position-absolute z-10 flex overflow-hidden"
-         v-if="searchStore.isOpen && menuStore.menuMode === menuStore.allMenuModes.genres"
+         v-if="searchStore.isOpen"
     >
       <Transition name="fade" mode="out-in">
         <input type="text"
                class="search__input w-100"
-               :key="`${menuStore.listMode}-${menuStore.activeGenreIndex}`"
+               :key="`${menuStore.menuMode}-${menuStore.listMode}-${menuStore.activeGenreId}`"
                v-model="searchStore.searchName"
                :title="searchStore.searchName"
                :placeholder="placeholder"

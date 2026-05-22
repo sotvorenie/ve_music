@@ -47,9 +47,8 @@ const menuList = ref([
 
 const activeTabIndex = ref<number>(0)
 
-const handleGenre = async (id: number, index: number, genreName?: string) => {
+const handleGenre = async (id: number, genreName?: string) => {
   musicIndex.value = 0
-  menuStore.activeGenreIndex = index + 1
 
   menuStore.activeGenreId = id
   menuStore.activeGenreName = genreName || ''
@@ -131,19 +130,19 @@ watch(
                 <button class="menu__btn text-w500 w-100 text-left"
                         type="button"
                         :class="{'is-active': menuStore.activeGenreId === -1}"
-                        @click="handleGenre(-1, -1)"
+                        @click="handleGenre(-1)"
                 >
                   All
                 </button>
               </li>
-              <li v-for="(genreItem, genreIndex) in genresList?.genres"
+              <li v-for="genreItem in genresList?.genres"
                   :key="genreItem.id"
                   class="menu__item w-100 z-1"
               >
                 <button class="menu__btn text-w500 w-100 text-left"
                         type="button"
                         :class="{'is-active': menuStore.activeGenreId === genreItem.id}"
-                        @click="handleGenre(genreItem.id, genreIndex, genreItem.name)"
+                        @click="handleGenre(genreItem.id, genreItem.name)"
                 >
                   {{genreItem?.name}}
                 </button>
