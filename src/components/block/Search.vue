@@ -40,6 +40,11 @@ const placeholder = computed(() => {
     return allPlaceholders.favorites
 })
 
+const handleClear = () => {
+  searchStore.searchName = ''
+  itemsStore.getMusicList()
+}
+
 
 const handleSearch = () => {
   itemsStore.getMusicList()
@@ -80,7 +85,7 @@ const handleSearch = () => {
                 type="button"
                 title="Очистить поле"
                 v-if="searchStore.searchName"
-                @click="searchStore.searchName = ''"
+                @click="handleClear"
         >
           <CrossIcon/>
         </button>
