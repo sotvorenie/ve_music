@@ -50,12 +50,17 @@ const timelineInfoRef = ref<HTMLDivElement | null>(null)
 const mouseMoveTimeline = (e: MouseEvent) => {
   if (!timelineInfoRef.value || audioStore.activeTrack.id < 0) return
 
-  const timelineWrapper = e.currentTarget as HTMLDivElement
-  const timelineWrapperRect = timelineWrapper.getBoundingClientRect()
-  const percent = (e.clientX - timelineWrapperRect.left) / timelineWrapperRect.width
-  cursorTime.value = audioStore.audio.duration * percent
+  const input = e.currentTarget as HTMLInputElement
+  const rect = input.getBoundingClientRect()
 
-  timelineInfoRef.value.style.left = `${Math.round(percent * 100)}%`
+  const thumbWidth = 16
+  const trackWidth = rect.width - thumbWidth
+  let x = e.clientX - rect.left - (thumbWidth / 2)
+  let percent = x / trackWidth
+  percent = Math.min(Math.max(percent, 0), 1)
+  cursorTime.value = audioStore.audio.duration * percent
+  const visualPercent = (e.clientX - rect.left) / rect.width
+  timelineInfoRef.value.style.left = `${visualPercent * 100}%`
 }
 
 const handleModeBtn = (mode: string) => {
