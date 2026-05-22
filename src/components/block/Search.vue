@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import {computed} from "vue";
 
+import {debounce} from "../../composables/useDebounce.ts";
+
 import SearchIcon from "../../assets/icons/SearchIcon.vue";
 import CrossIcon from "../../assets/icons/CrossIcon.vue";
 
@@ -45,6 +47,9 @@ const handleClear = () => {
   itemsStore.getMusicList()
 }
 
+const inputSearchName = debounce(() => {
+  itemsStore.getMusicList()
+}, 500)
 
 const handleSearch = () => {
   itemsStore.getMusicList()
@@ -77,6 +82,7 @@ const handleSearch = () => {
                :title="searchStore.searchName"
                :placeholder="placeholder"
                @keydown.enter="handleSearch"
+               @input="inputSearchName"
         >
       </Transition>
 
