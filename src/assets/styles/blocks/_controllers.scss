@@ -7,21 +7,19 @@
     @include hover {
       .controllers__timeline-info {
         opacity: 1;
-        transform: translateY(0);
+        transform: translate(-50%, 0);
       }
     }
   }
 
   &__timeline-info {
-    @include abs-x;
-
     bottom: 95%;
     background: var(--color-dark-15);
     border-radius: var(--radius-regular);
     padding: rem(10);
     transition: opacity var(--transition-duration), transform var(--transition-duration);
     opacity: 0;
-    transform: translateY(10px);
+    transform: translate(-50%, 10px);
     pointer-events: none;
   }
 
