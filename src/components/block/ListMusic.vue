@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import {ref, watch, watchEffect} from "vue";
 
-import {showArtists} from "../../composables/useShowArtists.ts";
-import formatTime from "../../composables/useFormatTime.ts";
+import {BASE_URL} from "@api/url.ts";
 
-import Empty from "../ui/empty/Empty.vue";
+import {showArtists} from "@composables/useShowArtists.ts";
+import {formatTime} from "@composables/useFormatTime.ts";
 
-import useItemsStore from "../../store/useItemsStore.ts";
+import Empty from "@ui/empty/Empty.vue";
+
+import useItemsStore from "@store/useItemsStore.ts";
 const itemsStore = useItemsStore();
-import useMenuStore from "../../store/useMenuStore.ts";
+import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
-import useAudioStore from "../../store/useAudioStore.ts";
+import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 
 const observerLi = ref<HTMLLIElement | null>(null)
@@ -49,7 +51,7 @@ watch(
 )
 
 watchEffect((onCleanup) => {
-  if (!listRef.value || !itemsStore.musicList?.music?.length || !itemsStore.musicList?.has_more) return
+  if (!listRef.value || !itemsStore.musicList?.music?.length || !itemsStore.musicList?.hasMore) return
 
   initObserver()
 
@@ -76,7 +78,7 @@ watchEffect((onCleanup) => {
         :ref="(el) => { if (index === itemsStore.musicList!.music.length - 2) observerLi = el as HTMLLIElement }"
     >
       <div class="list__left img-container">
-        <img v-if="item?.preview_url" :src="`http://localhost:81/${item?.preview_url}`" :alt="item?.name">
+        <img v-if="item?.previewUrl" :src="`${BASE_URL}${item?.previewUrl}`" :alt="item?.name">
       </div>
       <div class="list__right overflow-hidden">
         <p class="list__name text-w500 text-ellipsis">{{item?.name}}</p>

@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import {computed, onMounted, ref, watch} from "vue";
 
-import formatTime from "../../composables/useFormatTime.ts";
+import {formatTime} from "@composables/useFormatTime.ts";
 
-import PlayButton from "../ui/PlayButton.vue";
-import Tooltip from "../common/Tooltip.vue";
+import PlayButton from "@ui/PlayButton.vue";
+import Tooltip from "@common/Tooltip.vue";
 
-import ImgIcon from "../../assets/icons/ImgIcon.vue";
-import VideoIcon from "../../assets/icons/VideoIcon.vue";
-import RandomIcon from "../../assets/icons/RandomIcon.vue";
-import RepeatIcon from "../../assets/icons/RepeatIcon.vue";
-import SoundOnIcon from "../../assets/icons/SoundOnIcon.vue";
-import SoundOffIcon from "../../assets/icons/SoundOffIcon.vue";
-import ArrowIcon from "../../assets/icons/ArrowIcon.vue";
+import ImgIcon from "@icons/ImgIcon.vue";
+import VideoIcon from "@icons/VideoIcon.vue";
+import RandomIcon from "@icons/RandomIcon.vue";
+import RepeatIcon from "@icons/RepeatIcon.vue";
+import SoundOnIcon from "@icons/SoundOnIcon.vue";
+import SoundOffIcon from "@icons/SoundOffIcon.vue";
+import ArrowIcon from "@icons/ArrowIcon.vue";
 
-import useAudioStore from "../../store/useAudioStore.ts";
-import useMenuStore from "../../store/useMenuStore.ts";
-import useControllersStore from "../../store/useControllersStore.ts";
+import useAudioStore from "@store/useAudioStore.ts";
+import useMenuStore from "@store/useMenuStore.ts";
+import useControllersStore from "@store/useControllersStore.ts";
 const audioStore = useAudioStore();
 const menuStore = useMenuStore();
 const controllersStore = useControllersStore();
@@ -255,7 +255,7 @@ onMounted(() => {
           <template #activator>
             <Transition name="scale">
               <button class="controllers__mode-btn controllers__small-btn recolor-svg hover-color-accent flex-center"
-                      v-if="audioStore.activeTrack.video_clip_url"
+                      v-if="audioStore.activeTrack.videoClipUrl"
                       :class="{'is-active': controllersStore.mode === controllersStore.modesList.video}"
                       type="button"
                       @click="handleModeBtn(controllersStore.modesList.video)"

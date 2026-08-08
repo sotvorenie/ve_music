@@ -1,10 +1,11 @@
 import {defineStore} from "pinia";
 import {reactive, ref} from "vue";
-import useMenuStore from "./useMenuStore.ts";
-import {Music, MusicForList} from "../types/music.ts";
-import useControllersStore from "./useControllersStore.ts";
-import {apiGetMusic} from "../api/music/music.ts";
-import useItemsStore from "./useItemsStore.ts";
+import {Music, MusicForList} from "@/types/music.ts";
+import {BASE_URL} from "@api/url.ts";
+import {apiGetMusic} from "@api/music/music.ts";
+import useMenuStore from "@store/useMenuStore.ts";
+import useControllersStore from "@store//useControllersStore.ts";
+import useItemsStore from "@store/useItemsStore.ts";
 
 const useAudioStore = defineStore('audioStore', () => {
     const menuStore = useMenuStore();
@@ -42,17 +43,13 @@ const useAudioStore = defineStore('audioStore', () => {
         id: -1,
         name: '',
         duration: 0,
-        audio_url: '',
-        auditions: 0,
-        likes: 0,
-        preview_url: '',
-        video_clip_url: '',
-        genre_id: -1,
-        genre: {
-            id: -1,
-            name: '',
-        },
-        artists: [{id: -1, name: '', avatar_url: ''}]
+        url: '',
+        auditionsCount: 0,
+        likesCount: 0,
+        previewUrl: '',
+        videoClipUrl: '',
+        isLiked: false,
+        artists: [{id: -1, name: '', avatarUrl: ''}]
     })
 
     // уровень громкости
@@ -64,7 +61,7 @@ const useAudioStore = defineStore('audioStore', () => {
     // загружаем данные о музыке
     const loadAndPlay = () => {
         currentTime.value = 0
-        audio.src = `http://localhost:81/${activeTrack.audio_url}`
+        audio.src = `${BASE_URL}${activeTrack.url}`
         audio.load()
 
         if (isPlaying.value) {
@@ -84,7 +81,7 @@ const useAudioStore = defineStore('audioStore', () => {
 
             menuStore.musicIndex = itemsStore.musicList?.music.findIndex((music: MusicForList) => music.id === activeTrack.id) ?? 0
 
-            if (controllersStore.mode === controllersStore.modesList.video && !activeTrack.video_clip_url) {
+            if (controllersStore.mode === controllersStore.modesList.video && !activeTrack.videoClipUrl) {
                 controllersStore.mode = controllersStore.modesList.img
             }
         }

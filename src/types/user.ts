@@ -1,12 +1,7 @@
 export interface User {
     id: number
     name: string
-    avatar_url: string
-}
-
-export interface Token {
-    access_token: string
-    token_type: string
+    avatarUrl: string
 }
 
 export interface UserWithToken {
@@ -15,5 +10,5 @@ export interface UserWithToken {
 }
 
 export interface UserAvatar {
-    new_avatar_url: string
+    newAvatarUrl: string
 }

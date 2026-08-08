@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import {ref, watchEffect} from "vue";
 
-import {apiGetAllArtists, apiSearchArtist} from "../../api/artist/artist.ts";
+import {BASE_URL} from "@api/url.ts";
+import {apiGetAllArtists, apiSearchArtist} from "@api/artist/artist.ts";
 
-import FoxIcon from "../../assets/icons/FoxIcon.vue";
+import FoxIcon from "@icons/FoxIcon.vue";
 
-import useItemsStore from "../../store/useItemsStore.ts";
+import useItemsStore from "@store/useItemsStore.ts";
 const itemsStore = useItemsStore();
-import useArtistStore from "../../store/useArtistStore.ts";
+import useArtistStore from "@store/useArtistStore.ts";
 const artistStore = useArtistStore();
-import useMenuStore from "../../store/useMenuStore.ts";
+import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
-import useSearchStore from "../../store/useSearchStore.ts";
+import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
 
 
@@ -53,7 +54,7 @@ const addNewArtists = async () => {
       total: data.total,
       page: data.page,
       limit: data.limit,
-      has_more: data.has_more,
+      hasMore: data.hasMore,
     }
   }
 
@@ -83,7 +84,7 @@ const clearObserver = () => {
 }
 
 watchEffect((onCleanup) => {
-  if (!listRef.value || !itemsStore.artistsList?.artists?.length || !itemsStore.artistsList?.has_more) return
+  if (!listRef.value || !itemsStore.artistsList?.artists?.length || !itemsStore.artistsList?.hasMore) return
 
   initObserver()
 
@@ -107,7 +108,7 @@ watchEffect((onCleanup) => {
         :ref="(el) => { if (index === itemsStore.artistsList!.artists.length - 2) observerLi = el as HTMLLIElement }"
     >
       <div class="list__artist-img-container img-container">
-        <img v-if="item?.avatar_url" :src="`http://localhost:81/${item?.avatar_url}`" :alt="item?.name">
+        <img v-if="item?.avatarUrl" :src="`${BASE_URL}${item?.avatarUrl}`" :alt="item?.name">
         <FoxIcon v-else/>
       </div>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
-
-import ButtonUi from "../ui/ButtonUi.vue";
 import {onBeforeUnmount, onMounted} from "vue";
+
+import ButtonUi from "@ui/ButtonUi.vue";
 
 defineProps({
   closeVisible: {

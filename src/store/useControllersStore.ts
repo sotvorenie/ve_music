@@ -1,7 +1,7 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import useItemsStore from "./useItemsStore.ts";
-import useAudioStore from "./useAudioStore.ts";
+import useItemsStore from "@store/useItemsStore.ts";
+import useAudioStore from "@store/useAudioStore.ts";
 
 const useControllersStore = defineStore("controllersStore", () => {
     const itemsStore = useItemsStore();
@@ -20,18 +20,8 @@ const useControllersStore = defineStore("controllersStore", () => {
     // активен ли "Повтор композиции"
     const isRepeat = ref(false)
 
-    const getCurrentInfo = (): any => {
-        const checkRandom =
-            isRandom.value && itemsStore.randomMusicList?.length
-        const currentList =
-            checkRandom ? itemsStore.randomMusicList : itemsStore.musicList?.music
-
-        if (!currentList?.length) return
-
-        return {
-            currentIndex: currentList.findIndex(m => m.id === audioStore.activeTrack.id),
-            currentList
-        }
+    const getCurrentIndex = (): any => {
+        return itemsStore.musicList?.music.findIndex(m => m.id === audioStore.activeTrack.id)
     }
     const prevItem = async () => {
         if (audioStore.currentTime > 20) {
@@ -39,16 +29,18 @@ const useControllersStore = defineStore("controllersStore", () => {
             return
         }
 
-        const {currentIndex, currentList} = getCurrentInfo()
+        const currentIndex = getCurrentIndex()
+        const musicList = itemsStore.musicList?.music
 
-        const prevIndexInCurrentList = (currentIndex - 1 + currentList.length) % currentList.length
-        await audioStore.updateMusic(currentList[prevIndexInCurrentList].id)
+        const prevIndexInCurrentList = (currentIndex - 1 + musicList?.length) % musicList.length
+        await audioStore.updateMusic(musicList?.[prevIndexInCurrentList].id)
     }
     const nextItem = async () => {
-        const {currentIndex, currentList} = getCurrentInfo()
+        const currentIndex = getCurrentIndex()
+        const musicList = itemsStore.musicList?.music
 
-        const nextIndexInCurrentList = (currentIndex + 1) % currentList.length
-        await audioStore.updateMusic(currentList[nextIndexInCurrentList].id)
+        const nextIndexInCurrentList = (currentIndex + 1) % musicList?.length
+        await audioStore.updateMusic(musicList?.[nextIndexInCurrentList].id)
     }
 
     return {

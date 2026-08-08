@@ -1,23 +1,25 @@
 <script setup lang="ts">
 import {computed, onMounted, onUnmounted, ref} from "vue";
 
-import useAudioStore from "../../store/useAudioStore.ts";
+import {BASE_URL} from "@api/url.ts";
+
+import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
-import useControllersStore from "../../store/useControllersStore.ts";
+import useControllersStore from "@store/useControllersStore.ts";
 const controllersStore = useControllersStore();
 
 const visibleImage = computed(() => {
-  return controllersStore.mode === controllersStore.modesList.img && audioStore.activeTrack.preview_url
+  return controllersStore.mode === controllersStore.modesList.img && audioStore.activeTrack.previewUrl
 })
 
 const videoRef = ref<HTMLVideoElement | null>(null)
 
 const visibleVideo = computed(() => {
-  return controllersStore.mode === controllersStore.modesList.video && audioStore.activeTrack.video_clip_url
+  return controllersStore.mode === controllersStore.modesList.video && audioStore.activeTrack.videoClipUrl
 })
 
 const onPlay = () => {
-  if (!videoRef.value || !audioStore.activeTrack.video_clip_url) return
+  if (!videoRef.value || !audioStore.activeTrack.videoClipUrl) return
   videoRef.value?.play()
 }
 
@@ -52,12 +54,12 @@ onUnmounted(() => {
        :class="{'is-active': audioStore.isPlaying && (controllersStore.mode !== controllersStore.modesList.video)}"
        :key="audioStore.activeTrack.id"
   >
-    <img :src="`http://localhost:81/${audioStore.activeTrack.preview_url}`"
+    <img :src="`${BASE_URL}${audioStore.activeTrack.previewUrl}`"
          :alt="audioStore.activeTrack?.name"
          draggable="false"
          :class="{'is-active': visibleImage}"
     >
-    <video :src="`http://localhost:81/${audioStore.activeTrack?.video_clip_url}`"
+    <video :src="`${BASE_URL}${audioStore.activeTrack?.videoClipUrl}`"
            muted
            ref="videoRef"
            preload="auto"

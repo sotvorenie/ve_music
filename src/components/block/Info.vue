@@ -1,23 +1,20 @@
 <script setup lang="ts">
 import {nextTick, ref, watch} from "vue";
 
-import {apiCheckIsLike, apiLike} from "../../api/like/like.ts";
-import {apiSetToHistory} from "../../api/history/history.ts";
+import {apiLike} from "@api/like/like.ts";
 
-import {showArtists} from "../../composables/useShowArtists.ts";
+import {showArtists} from "@composables/useShowArtists.ts";
 
-import Tooltip from "../common/Tooltip.vue";
-import Like from "../ui/Like.vue";
-import Modal from "../common/Modal.vue";
+import Tooltip from "@common/Tooltip.vue";
+import Like from "@ui/Like.vue";
+import Modal from "@common/Modal.vue";
 
-import ViewIcon from "../../assets/icons/ViewIcon.vue";
+import ViewIcon from "@icons/ViewIcon.vue";
 
-import useAudioStore from "../../store/useAudioStore.ts";
+import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
-import useUserStore from "../../store/useUserStore.ts";
+import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
-import useMenuStore from "../../store/useMenuStore.ts";
-const menuStore = useMenuStore();
 
 
 const nameTrackRef = ref<HTMLDivElement | null>(null)
@@ -36,9 +33,9 @@ const handleLike = async () => {
     const response = await apiLike(audioStore.activeTrack.id)
 
     if (response?.is_liked) {
-      audioStore.activeTrack.likes = audioStore.activeTrack.likes + 1
+      audioStore.activeTrack.likesCount = audioStore.activeTrack.likesCount + 1
     } else {
-      audioStore.activeTrack.likes = Math.max(audioStore.activeTrack.likes - 1, 0)
+      audioStore.activeTrack.likesCount = Math.max(audioStore.activeTrack.likesCount - 1, 0)
     }
   } catch (err) {
     console.error(err)
@@ -73,26 +70,10 @@ const checkWidth = async () => {
   }
 }
 
-const checkIsLiked = async () => {
-  if (audioStore.activeTrack?.id < 0 || userStore.user.id < 0) return
-
-  const check = await apiCheckIsLike(audioStore.activeTrack.id)
-
-  isLiked.value = check?.is_liked
-}
-
-const setToHistory = async () => {
-  if (userStore.user.id < 0 || menuStore.menuMode === menuStore.allMenuModes.history) return
-
-  await apiSetToHistory(audioStore.activeTrack.id)
-}
-
 watch(
     () => audioStore.activeTrack.id,
     () => {
       checkWidth()
-      checkIsLiked()
-      setToHistory()
     },
     {immediate: true, deep: true}
 )
@@ -112,7 +93,7 @@ watch(
                         @click="userStore.user.id >= 0 ? handleLike() : open()"
                 >
                   <Like :is-liked="isLiked"/>
-                  {{audioStore.activeTrack?.likes || 0}}
+                  {{audioStore.activeTrack?.likesCount || 0}}
                 </button>
               </template>
 
@@ -130,7 +111,7 @@ watch(
           <template #activator>
             <div class="info__statistics-item recolor-svg flex flex-align-center">
               <ViewIcon/>
-              {{(audioStore.activeTrack?.auditions || 0).toLocaleString()}}
+              {{(audioStore.activeTrack?.auditionsCount || 0).toLocaleString()}}
             </div>
           </template>
           <template #default>

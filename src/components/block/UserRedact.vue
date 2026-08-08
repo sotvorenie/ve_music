@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
 
-import InputUi from "../ui/InputUi.vue";
-import ButtonUi from "../ui/ButtonUi.vue";
+import {apiRedactUserName} from "@api/user/user.ts";
 
-import useUserStore from "../../store/useUserStore.ts";
-import {showConfirm, showError} from "../../utils/modals.ts";
-import {apiRedactUserName} from "../../api/user/user.ts";
+import {showConfirm, showError} from "@utils/modals.ts";
+
+import InputUi from "@ui/InputUi.vue";
+import ButtonUi from "@ui/ButtonUi.vue";
+
+import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
 
 defineProps({

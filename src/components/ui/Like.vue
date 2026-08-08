@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LikeIcon from "../../assets/icons/LikeIcon.vue";
+import LikeIcon from "@icons/LikeIcon.vue";
 
 defineProps({
   isLiked: {

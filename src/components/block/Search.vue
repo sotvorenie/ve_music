@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import {computed} from "vue";
 
-import {debounce} from "../../composables/useDebounce.ts";
+import {debounce} from "@composables/useDebounce.ts";
 
-import SearchIcon from "../../assets/icons/SearchIcon.vue";
-import CrossIcon from "../../assets/icons/CrossIcon.vue";
+import SearchIcon from "@icons/SearchIcon.vue";
+import CrossIcon from "@icons/CrossIcon.vue";
 
-import useSearchStore from "../../store/useSearchStore.ts";
+import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
-import useMenuStore from "../../store/useMenuStore.ts";
+import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
-import useItemsStore from "../../store/useItemsStore.ts";
+import useItemsStore from "@store/useItemsStore.ts";
 const itemsStore = useItemsStore();
-import useArtistStore from "../../store/useArtistStore.ts";
+import useArtistStore from "@store/useArtistStore.ts";
 const artistStore = useArtistStore();
 
 

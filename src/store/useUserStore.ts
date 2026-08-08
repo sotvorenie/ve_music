@@ -1,13 +1,13 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import {User} from "../types/user.ts";
+import {User} from "@/types/user.ts";
 
 const useUserStore = defineStore('userStore', () => {
     // данные о пользователе
     const user = ref<User>({
         id: -1,
         name: '',
-        avatar_url: ''
+        avatarUrl: ''
     })
 
     // пользователь вошел или нет
@@ -20,7 +20,7 @@ const useUserStore = defineStore('userStore', () => {
         user.value = {
             id: -1,
             name: '',
-            avatar_url: ''
+            avatarUrl: ''
         }
         isLogged.value = false
         token.value = ''

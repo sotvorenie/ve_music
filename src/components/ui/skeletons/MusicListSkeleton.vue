@@ -1,7 +1,3 @@
-<script setup lang="ts">
-
-</script>
-
 <template>
 
   <ul class="skeleton-music position-absolute z-10">

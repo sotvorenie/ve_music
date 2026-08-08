@@ -2,7 +2,7 @@
 import {ref, watch} from "vue";
 import {createTimeline} from "animejs";
 
-import useAudioStore from "../../store/useAudioStore.ts";
+import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 
 const pathRef = ref<SVGPathElement | null>(null)
@@ -43,7 +43,6 @@ watch(
           <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" result="blur" />
           <feColorMatrix
               in="blur"
-              mode="matrix"
               values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 24 -11"
           />
         </filter>

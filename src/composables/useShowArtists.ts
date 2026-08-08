@@ -1,4 +1,4 @@
-import {Artist} from "../types/artist.ts";
+import {Artist} from "@/types/artist.ts";
 
 const emptyArtist: string = 'Неизвестный исполнитель'
 

@@ -1,16 +1,16 @@
 <script setup lang="ts">
-import ListMusic from "./ListMusic.vue";
-import ListArtists from "./ListArtists.vue";
+import ListMusic from "@components/ListMusic.vue";
+import ListArtists from "@components/ListArtists.vue";
 
-import ButtonUi from "../ui/ButtonUi.vue";
+import ButtonUi from "@ui/ButtonUi.vue";
 
-import useMenuStore from "../../store/useMenuStore.ts";
+import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
-import useSearchStore from "../../store/useSearchStore.ts";
+import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
-import useItemsStore from "../../store/useItemsStore.ts";
+import useItemsStore from "@store/useItemsStore.ts";
 const itemsStore = useItemsStore();
-import useArtistStore from "../../store/useArtistStore.ts";
+import useArtistStore from "@store/useArtistStore.ts";
 import {watch} from "vue";
 const artistStore = useArtistStore();
 
@@ -50,7 +50,9 @@ watch(
       >Исполнители</ButtonUi>
     </div>
 
-    <span v-if="menuStore.listMode === menuStore.allListModes.artistMusic" class="mb-10">
+    <span v-if="menuStore.listMode === menuStore.allListModes.artistMusic"
+          class="mb-10"
+    >
       Музыка исполнителя {{artistStore.artistName}}
     </span>
 

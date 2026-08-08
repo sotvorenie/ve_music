@@ -1,6 +1,5 @@
 <script setup lang="ts">
-
-import EmptyIcon from "../../../assets/icons/EmptyIcon.vue";
+import EmptyIcon from "@icons/EmptyIcon.vue";
 </script>
 
 <template>

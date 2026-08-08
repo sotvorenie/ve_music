@@ -6,7 +6,7 @@ export interface MusicForList {
     id: number
     name: string
     duration: number
-    preview_url: string | null
+    previewUrl: string | null
 
     genre: Genre
     artists: Artist[]
@@ -16,14 +16,13 @@ export interface Music {
     id: number
     name: string
     duration: number
-    audio_url: string
-    auditions: number
-    likes: number
-    preview_url: string
-    video_clip_url: string | null
-    genre_id: number
+    url: string
+    auditionsCount: number
+    likesCount: number
+    previewUrl: string
+    videoClipUrl: string | null
+    isLiked: boolean
 
-    genre: Genre
     artists: Artist[]
 }
 

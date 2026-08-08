@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import {ref, watch} from "vue";
 
-import { GenresList } from "../../types/genre";
+import { GenresList } from "@/types/genre.ts";
 
-import {apiGetAllGenres} from "../../api/genre/genre.ts";
+import {apiGetAllGenres} from "@api/genre/genre.ts";
 
-import Modal from "../common/Modal.vue";
+import Modal from "@common/Modal.vue";
 
-import MusicIcon from "../../assets/icons/MusicIcon.vue";
-import HistoryIcon from "../../assets/icons/HistoryIcon.vue";
-import LikeIcon from "../../assets/icons/LikeIcon.vue";
+import MusicIcon from "@icons/MusicIcon.vue";
+import HistoryIcon from "@icons/HistoryIcon.vue";
+import LikeIcon from "@icons/LikeIcon.vue";
 
-import useMenuStore from "../../store/useMenuStore.ts";
+import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
-import useUserStore from "../../store/useUserStore.ts";
+import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
-import useItemsStore from "../../store/useItemsStore.ts";
+import useItemsStore from "@store/useItemsStore.ts";
 const itemsStore = useItemsStore();
-import useArtistStore from "../../store/useArtistStore.ts";
+import useArtistStore from "@store/useArtistStore.ts";
 const artistStore = useArtistStore();
 
 

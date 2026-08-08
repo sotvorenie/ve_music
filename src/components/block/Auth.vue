@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import {ref} from "vue";
 
-import {Auth} from "../../types/auth.ts";
-import {UserWithToken} from "../../types/user.ts";
+import {Auth} from "@/types/auth.ts";
+import {UserWithToken} from "@/types/user.ts";
 
-import {apiAuth, apiRegister} from "../../api/auth/auth.ts";
+import {apiAuth, apiRegister} from "@api/auth/auth.ts";
 
-import {onBlur, onInput, onSubmit} from "../../composables/useFormValidate.ts";
-import {login} from "../../utils/auth.ts";
-import {showError} from "../../utils/modals.ts";
+import {onBlur, onInput, onSubmit} from "@composables/useFormValidate.ts";
+import {login} from "@utils/auth.ts";
+import {showError} from "@utils/modals.ts";
 
-import InputUi from "../ui/InputUi.vue";
-import ButtonUi from "../ui/ButtonUi.vue";
+import InputUi from "@ui/InputUi.vue";
+import ButtonUi from "@ui/ButtonUi.vue";
 
 const emits = defineEmits(['successAuth'])
 

@@ -3,5 +3,5 @@ import {GenresList} from "../../types/genre.ts";
 import {apiGet} from "../index.ts";
 
 export const apiGetAllGenres = async (): Promise<GenresList> => {
-    return await apiGet(`/genre/all`)
+    return apiGet(`/genre/all`)
 }

@@ -14,9 +14,9 @@ export const apiGetMusicList = async (
     const artistStore = useArtistStore();
     const menuStore = useMenuStore();
 
-    return await apiGet(`/music/list?name=${searchStore.searchName}&genre_id=${menuStore.activeGenreId}&artist_id=${artistStore.artistId}&page=${page}&limit=${limit}`);
+    return apiGet(`/music/list?name=${searchStore.searchName}&genre_id=${menuStore.activeGenreId}&artist_id=${artistStore.artistId}&page=${page}&limit=${limit}`);
 }
 
-export const apiGetMusic = async (musicId: number, setView: boolean = true): Promise<Music> => {
-    return await apiGet(`/music/${musicId}?set_view=${setView}`);
+export const apiGetMusic = async (musicId: number): Promise<Music> => {
+    return apiGet(`/music/${musicId}`);
 }

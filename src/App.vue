@@ -3,18 +3,18 @@ import {onMounted, onUnmounted, ref} from "vue";
 
 import {checkMe} from "./utils/auth.ts";
 
-import Menu from "./components/block/Menu.vue";
-import Info from "./components/block/Info.vue";
-import Controls from "./components/block/Controllers.vue";
-import List from "./components/block/List.vue";
-import Vignette from "./components/ui/Vignette.vue";
-import Aside from "./components/block/Aside.vue";
-import GenresSkeleton from "./components/ui/skeletons/GenresSkeleton.vue";
-import MusicListSkeleton from "./components/ui/skeletons/MusicListSkeleton.vue";
-import Preview from "./components/block/Preview.vue";
-import Search from "./components/block/Search.vue";
+import Menu from "@components/Menu.vue";
+import Info from "@components/Info.vue";
+import Controls from "@components/Controllers.vue";
+import List from "@components/List.vue";
+import Aside from "@components/Aside.vue";
+import Preview from "@components/Preview.vue";
+import Search from "@components/Search.vue";
+import GenresSkeleton from "@ui/skeletons/GenresSkeleton.vue";
+import MusicListSkeleton from "@ui/skeletons/MusicListSkeleton.vue";
+import Vignette from "@ui/Vignette.vue";
 
-import useAudioStore from "./store/useAudioStore.ts";
+import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 
 

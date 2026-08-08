@@ -1,20 +1,22 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
 
-import {apiRedactUserAvatar} from "../../api/user/user.ts";
+import {BASE_URL} from "@api/url.ts";
+import {apiRedactUserAvatar} from "@api/user/user.ts";
 
-import {logout} from "../../utils/auth.ts";
-import {showError} from "../../utils/modals.ts";
+import {logout} from "@utils/auth.ts";
+import {showError} from "@utils/modals.ts";
 
-import UserRedact from "./UserRedact.vue";
+import UserRedact from "@components/UserRedact.vue";
 import Auth from "./Auth.vue";
-import TopMessage from "../ui/TopMessage.vue";
+import Tooltip from "@common/Tooltip.vue";
+import TopMessage from "@ui/TopMessage.vue";
 
-import MenuIcon from "../../assets/icons/MenuIcon.vue";
-import CrossIcon from "../../assets/icons/CrossIcon.vue";
-import FoxIcon from "../../assets/icons/FoxIcon.vue";
+import MenuIcon from "@icons/MenuIcon.vue";
+import CrossIcon from "@icons/CrossIcon.vue";
+import FoxIcon from "@icons/FoxIcon.vue";
 
-import useUserStore from "../../store/useUserStore.ts";
+import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
 
 const isOpen = ref<boolean>(false)
@@ -41,14 +43,9 @@ const closeAside = () => {
 // title у блока аватарки перед открытием
 const avatarTitle = computed(() => {
   if (!isUserRedact.value && !isAuth.value) {
-    if (userStore.user.id >= 0) {
-      return 'Редактировать профиль'
-    } else {
-      return 'Войти/Зарегистрироваться'
-    }
-  } else {
-    return ''
+    return userStore.user.id >= 0 ? 'Редактировать профиль' : 'Войти/Зарегистрироваться'
   }
+  return ''
 })
 
 // клик по аватарке
@@ -92,8 +89,8 @@ const updateAvatar = async (event: Event) => {
     try {
       const response = await apiRedactUserAvatar(file)
 
-      if (response.new_avatar_url) {
-        userStore.user.avatar_url = response.new_avatar_url
+      if (response.newAvatarUrl) {
+        userStore.user.avatarUrl = response.newAvatarUrl
 
         message.value = "Аватарка обновлена!!"
         messageVisible.value = true
@@ -174,9 +171,9 @@ const updateName = () => {
                          @change="updateAvatar"
                   >
 
-                  <FoxIcon v-if="!userStore.user?.avatar_url"/>
+                  <FoxIcon v-if="!userStore.user?.avatarUrl"/>
                   <img v-else
-                       :src="`http://localhost:81/${userStore.user.avatar_url}`"
+                       :src="`${BASE_URL}${userStore.user.avatarUrl}?t=${Date.now()}`"
                        :alt="userStore.user.name"
                   />
                 </div>

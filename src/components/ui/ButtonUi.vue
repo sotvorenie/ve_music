@@ -1,6 +1,5 @@
 <script setup lang="ts">
-
-import LoadingIcon from "../../assets/icons/LoadingIcon.vue";
+import LoadingIcon from "@icons/LoadingIcon.vue";
 
 defineProps({
   isLoading: {
