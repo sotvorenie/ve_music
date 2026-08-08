@@ -50,8 +50,8 @@ const activeTabIndex = ref<number>(0)
 const handleGenre = async (id: number, genreName?: string) => {
   musicIndex.value = 0
 
-  menuStore.activeGenreId = id
-  menuStore.activeGenreName = genreName || ''
+  menuStore.activeGenre.id = id
+  menuStore.activeGenre.name = genreName || ''
 }
 
 const handleTab = (index: number) => {
@@ -73,9 +73,9 @@ const handleErrorModal = (type: string, func: Function) => {
 }
 
 watch(
-    () => [menuStore.activeGenreId, menuStore.menuMode],
+    () => [menuStore.activeGenre.id, menuStore.menuMode],
     () => {
-      if (menuStore.activeGenreId >= -1) {
+      if (menuStore.activeGenre.id >= -1) {
         menuStore.listMode = menuStore.allListModes.music
         artistStore.artistId = -1
         itemsStore.getMusicList()
@@ -129,7 +129,7 @@ watch(
               <li class="menu__genre w-100 z-1" v-if="genresList?.genres">
                 <button class="menu__btn text-w500 w-100 text-left"
                         type="button"
-                        :class="{'is-active': menuStore.activeGenreId === -1}"
+                        :class="{'is-active': menuStore.activeGenre.id === -1}"
                         @click="handleGenre(-1)"
                 >
                   All
@@ -141,7 +141,7 @@ watch(
               >
                 <button class="menu__btn text-w500 w-100 text-left"
                         type="button"
-                        :class="{'is-active': menuStore.activeGenreId === genreItem.id}"
+                        :class="{'is-active': menuStore.activeGenre.id === genreItem.id}"
                         @click="handleGenre(genreItem.id, genreItem.name)"
                 >
                   {{genreItem?.name}}

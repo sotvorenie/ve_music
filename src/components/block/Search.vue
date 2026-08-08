@@ -27,10 +27,10 @@ const allPlaceholders = {
 
 const placeholder = computed(() => {
   if (menuStore.menuMode === menuStore.allMenuModes.genres) {
-    if (menuStore.listMode === menuStore.allListModes.music && menuStore.activeGenreId === -1)
+    if (menuStore.listMode === menuStore.allListModes.music && menuStore.activeGenre.id === -1)
       return allPlaceholders.all
-    if (menuStore.listMode === menuStore.allListModes.music && menuStore.activeGenreId >= 0)
-      return allPlaceholders.genre + ' ' + menuStore.activeGenreName
+    if (menuStore.listMode === menuStore.allListModes.music && menuStore.activeGenre.id >= 0)
+      return allPlaceholders.genre + ' ' + menuStore.activeGenre.name
     if (menuStore.listMode === menuStore.allListModes.artists)
       return allPlaceholders.artists
     if (menuStore.listMode === menuStore.allListModes.artistMusic)
@@ -77,7 +77,7 @@ const handleSearch = () => {
       <Transition name="fade" mode="out-in">
         <input type="text"
                class="search__input w-100"
-               :key="`${menuStore.menuMode}-${menuStore.listMode}-${menuStore.activeGenreId}`"
+               :key="`${menuStore.menuMode}-${menuStore.listMode}-${menuStore.activeGenre?.id}`"
                v-model="searchStore.searchName"
                :title="searchStore.searchName"
                :placeholder="placeholder"

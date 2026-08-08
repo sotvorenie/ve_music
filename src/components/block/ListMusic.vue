@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watch, watchEffect} from "vue";
+import {ref, watchEffect} from "vue";
 
 import {BASE_URL} from "@api/url.ts";
 
@@ -10,8 +10,6 @@ import Empty from "@ui/empty/Empty.vue";
 
 import useItemsStore from "@store/useItemsStore.ts";
 const itemsStore = useItemsStore();
-import useMenuStore from "@store/useMenuStore.ts";
-const menuStore = useMenuStore();
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 
@@ -41,14 +39,6 @@ const initObserver = () => {
 const clearObserver = () => {
   if (observer) observer.disconnect()
 }
-
-watch(
-    () => itemsStore.musicList,
-    () => {
-      menuStore.musicListLength = itemsStore.musicList?.total ? itemsStore.musicList.total : 0
-    },
-    {immediate: true}
-)
 
 watchEffect((onCleanup) => {
   if (!listRef.value || !itemsStore.musicList?.music?.length || !itemsStore.musicList?.hasMore) return

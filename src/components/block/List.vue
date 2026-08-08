@@ -26,7 +26,8 @@ watch(
     () => menuStore.listMode,
     () => {
       if (menuStore.listMode === menuStore.allListModes.artistMusic) {
-        menuStore.activeGenreId = -2
+        menuStore.activeGenre.name = ''
+        menuStore.activeGenre.id = -1
       }
     }
 )

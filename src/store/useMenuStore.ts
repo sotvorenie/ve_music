@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ref} from "vue";
+import {reactive, ref} from "vue";
 
 const useMenuStore = defineStore("menuStore", () => {
 
@@ -21,26 +21,18 @@ const useMenuStore = defineStore("menuStore", () => {
     // мод: жанры, история или избранное
     const menuMode = ref<string>(allMenuModes.genres)
 
-    // название активного жанра
-    const activeGenreName = ref<string>('')
-    // id активного жанра
-    const activeGenreId = ref<number>(-1)
-
-    // индекс активной музыки
-    const musicIndex = ref<number>(-1)
-
-    // количество всех песен
-    const musicListLength = ref<number>(0)
+    // активный жанр
+    const activeGenre = reactive({
+        name: '',
+        id: -1
+    })
 
     return {
         allListModes,
         listMode,
         allMenuModes,
         menuMode,
-        activeGenreName,
-        activeGenreId,
-        musicIndex,
-        musicListLength,
+        activeGenre,
     }
 })
 

@@ -1,14 +1,12 @@
 import {defineStore} from "pinia";
 import {reactive, ref} from "vue";
-import {Music, MusicForList} from "@/types/music.ts";
+import {Music} from "@/types/music.ts";
 import {BASE_URL} from "@api/url.ts";
 import {apiGetMusic} from "@api/music/music.ts";
-import useMenuStore from "@store/useMenuStore.ts";
 import useControllersStore from "@store//useControllersStore.ts";
 import useItemsStore from "@store/useItemsStore.ts";
 
 const useAudioStore = defineStore('audioStore', () => {
-    const menuStore = useMenuStore();
     const controllersStore = useControllersStore();
     const itemsStore = useItemsStore();
 
@@ -78,8 +76,6 @@ const useAudioStore = defineStore('audioStore', () => {
         if (data) {
             Object.assign(activeTrack, data)
             loadAndPlay()
-
-            menuStore.musicIndex = itemsStore.musicList?.music.findIndex((music: MusicForList) => music.id === activeTrack.id) ?? 0
 
             if (controllersStore.mode === controllersStore.modesList.video && !activeTrack.videoClipUrl) {
                 controllersStore.mode = controllersStore.modesList.img

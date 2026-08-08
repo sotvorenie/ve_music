@@ -15,10 +15,8 @@ import SoundOffIcon from "@icons/SoundOffIcon.vue";
 import ArrowIcon from "@icons/ArrowIcon.vue";
 
 import useAudioStore from "@store/useAudioStore.ts";
-import useMenuStore from "@store/useMenuStore.ts";
-import useControllersStore from "@store/useControllersStore.ts";
 const audioStore = useAudioStore();
-const menuStore = useMenuStore();
+import useControllersStore from "@store/useControllersStore.ts";
 const controllersStore = useControllersStore();
 
 
@@ -39,10 +37,10 @@ const volumeStyle = computed(() => {
 })
 
 const disabledPrevButton = computed(() => {
-  return (controllersStore.isRandom ? false : menuStore.musicIndex === 0) || audioStore.activeTrack.id < 0
+  return audioStore.activeTrack.id < 0
 })
 const disabledNextButton = computed(() => {
-  return (controllersStore.isRandom ? false : menuStore.musicIndex === menuStore.musicListLength - 1) || audioStore.activeTrack.id < 0
+  return audioStore.activeTrack.id < 0
 })
 
 const cursorTime = ref(0)
