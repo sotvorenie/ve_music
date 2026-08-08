@@ -38,5 +38,9 @@
     border-radius: rem(32);
     padding: rem(25);
     width: 50vw;
+
+    @include laptop {
+      width: 48vw;
+    }
   }
 }

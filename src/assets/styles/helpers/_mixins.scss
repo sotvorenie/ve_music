@@ -52,6 +52,11 @@
   min-height: rem($size) !important;
 }
 
+@mixin fluid-square($maxSize, $minSize) {
+  width: fluid($maxSize, $minSize) !important;
+  height: fluid($maxSize, $minSize) !important;
+}
+
 @mixin visually-hidden {
   position: absolute !important;
   width: 1px !important;

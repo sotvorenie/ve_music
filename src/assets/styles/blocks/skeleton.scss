@@ -44,13 +44,13 @@
 }
 
 .skeleton-music__item, .skeleton-artists__item {
-  width: rem(400);
-  height: rem(130);
+  width: fluid(400, 250);
+  height: fluid(130, 90);
 }
 
 .skeleton-music {
   top: rem(100);
-  left: rem(400);
+  left: fluid(400, 250);
 
   &__item {
     border-radius: var(--radius-medium);

@@ -28,7 +28,7 @@
   }
 
   &__btn-bar {
-    gap: rem(20);
+    gap: fluid(20, 10);
   }
   &__btn {
     @include flex-center();
@@ -55,16 +55,19 @@
     }
 
     &.play-pause {
-      width: rem(80);
-      height: rem(80);
+      @include fluid-square(80, 50);
     }
 
     &.prev, &.next {
-      @include square(55);
+      @include fluid-square(55, 35);
 
       svg {
         width: 100%;
         height: auto;
+
+        @include laptop {
+          width: 80%;
+        }
       }
     }
 
@@ -89,9 +92,9 @@
   }
 
   &__small-btn {
-    @include square(50);
+    @include fluid-square(50, 30);
 
-    padding: rem(10);
+    padding: fluid(10, 5);
     color: var(--color-light);
     border-radius: var(--radius-regular);
 
@@ -107,7 +110,7 @@
 
   &__modes, &__settings {
     position: absolute;
-    gap: rem(10);
+    gap: fluid(0, 10);
   }
 
   &__modes {
@@ -124,10 +127,14 @@
 
   &__settings {
     left: rem(25);
+
+    @include laptop {
+      left: 0;
+    }
   }
 
   &__sound {
-    margin-right: rem(110);
+    margin-right: fluid(110, 20);
 
     @include hover {
       .controllers__sound-number, .controllers__sound-range {
@@ -146,7 +153,7 @@
     }
 
     &-range {
-      --range-wigth: #{rem(100)};
+      --range-wigth: #{fluid(100, 50)};
 
       @include abs-y;
 
