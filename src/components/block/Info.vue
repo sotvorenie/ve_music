@@ -24,12 +24,8 @@ const isNameShadow = ref(false)
 
 const timer = ref<number | null>(null)
 
-const isLiked = ref<boolean>(false)
-
 const handleLike = async () => {
   try {
-    isLiked.value = !isLiked.value
-
     const response = await apiLike(audioStore.activeTrack.id)
 
     if (response?.is_liked) {
@@ -40,7 +36,7 @@ const handleLike = async () => {
   } catch (err) {
     console.error(err)
 
-    isLiked.value = false
+    audioStore.activeTrack.isLiked = false
   }
 }
 
@@ -92,7 +88,7 @@ watch(
                         type="button"
                         @click="userStore.user.id >= 0 ? handleLike() : open()"
                 >
-                  <Like :is-liked="isLiked"/>
+                  <Like :is-liked="audioStore.activeTrack?.isLiked"/>
                   {{audioStore.activeTrack?.likesCount || 0}}
                 </button>
               </template>
@@ -103,7 +99,7 @@ watch(
             </Modal>
           </template>
           <template #default>
-            {{isLiked ? 'Удалить из Избранного' : 'Добавить в Избранное'}}
+            {{audioStore.activeTrack?.isLiked ? 'Удалить из Избранного' : 'Добавить в Избранное'}}
           </template>
         </Tooltip>
 
