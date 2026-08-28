@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import {watch} from "vue";
 
-defineProps({
-  message: String,
-  theme: {
-    type: String,
-    default: 'light',
-  },
-})
+withDefaults(
+    defineProps<{
+      message: string
+      theme: 'light' | 'dark'
+    }>(), {
+      theme: 'light'
+    }
+)
 
-const visible = defineModel({type: Boolean, default: false})
+const visible = defineModel<boolean>({default: false})
 
 watch(
     () => visible.value,

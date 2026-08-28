@@ -1,10 +1,11 @@
 <script setup lang="ts">
-defineProps({
-  position: {
-    type: String,
-    default: 'top'
-  }
-})
+withDefaults(
+    defineProps<{
+      position?: string
+    }>(), {
+      position: 'top',
+    }
+)
 </script>
 
 <template>
@@ -12,7 +13,7 @@ defineProps({
   <div class="tooltip position-relative">
     <slot name="activator"/>
 
-    <div :class="['tooltip__content z-10000 text-nowrap', $props.position]">
+    <div :class="['tooltip__content z-10000 text-nowrap', position]">
       <slot/>
     </div>
   </div>

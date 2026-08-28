@@ -2,7 +2,7 @@ import axios from 'axios'
 
 import {BASE_URL} from "@api/url.ts";
 
-import {logout} from "../utils/auth.ts";
+import {logout} from "@utils/auth.ts";
 
 const client = axios.create({
     baseURL: `${BASE_URL}/api`,

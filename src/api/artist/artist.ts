@@ -1,6 +1,6 @@
-import {ArtistsList} from "../../types/artist.ts";
+import {ArtistsList} from "@/types/artist.ts";
 
-import {apiGet} from "../index.ts";
+import {apiGet} from "@api/index.ts";
 
 export const apiGetAllArtists = async(page: number = 1, limit: number = 21): Promise<ArtistsList> => {
     return apiGet(`/artist/all?page=${page}&limit=${limit}`)

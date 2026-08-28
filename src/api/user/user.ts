@@ -1,7 +1,7 @@
-import {SuccessResponse} from "../../types/SuccessResponse.ts";
-import {UserAvatar} from "../../types/user.ts";
+import {SuccessResponse} from "@/types/SuccessResponse.ts";
+import {UserAvatar} from "@/types/user.ts";
 
-import {apiPatch, apiPost} from "../index.ts";
+import {apiPatch, apiPost} from "@api/index.ts";
 
 export const apiRedactUserName = async (name: string): Promise<SuccessResponse> => {
     return apiPatch(`/user/redact_name`, {

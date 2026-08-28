@@ -34,7 +34,7 @@ const placeholder = computed(() => {
     if (menuStore.listMode === menuStore.allListModes.artists)
       return allPlaceholders.artists
     if (menuStore.listMode === menuStore.allListModes.artistMusic)
-      return allPlaceholders.artistSong + ' ' + artistStore.artistName
+      return allPlaceholders.artistSong + ' ' + artistStore.currentArtist.name
   }
   if (menuStore.menuMode === menuStore.allMenuModes.history)
     return allPlaceholders.history

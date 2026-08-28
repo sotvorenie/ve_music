@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import {ref, watchEffect} from "vue";
 
+import {Artist} from "@/types/artist.ts";
+
 import {BASE_URL} from "@api/url.ts";
 import {apiGetAllArtists, apiSearchArtist} from "@api/artist/artist.ts";
 
@@ -16,11 +18,10 @@ import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
 
 
-itemsStore.artistsList = itemsStore.artistsList && artistStore.artistId >= 0 ? itemsStore.artistsList : await apiGetAllArtists(1, 21)
+itemsStore.artistsList = itemsStore.artistsList && artistStore.currentArtist.id >= 0 ? itemsStore.artistsList : await apiGetAllArtists(1, 21)
 
-const handleArtist = async (artistId: number, artistName: string) => {
-  artistStore.artistId = artistId
-  artistStore.artistName = artistName
+const handleArtist = async (artist: Artist) => {
+  artistStore.currentArtist = artist
 
   await itemsStore.getMusicList()
 
@@ -104,7 +105,7 @@ watchEffect((onCleanup) => {
     <li v-for="(item, index) in itemsStore.artistsList?.artists"
         :key="item.id"
         class="list__item flex flex-align-center cursor-pointer"
-        @click="handleArtist(item.id, item.name)"
+        @click="handleArtist(item)"
         :ref="(el) => { if (index === itemsStore.artistsList!.artists.length - 2) observerLi = el as HTMLLIElement }"
     >
       <div class="list__artist-img-container img-container">

@@ -8,7 +8,7 @@ import {logout} from "@utils/auth.ts";
 import {showError} from "@utils/modals.ts";
 
 import UserRedact from "@components/UserRedact.vue";
-import Auth from "./Auth.vue";
+import Auth from "@components/Auth.vue";
 import Tooltip from "@common/Tooltip.vue";
 import TopMessage from "@ui/TopMessage.vue";
 

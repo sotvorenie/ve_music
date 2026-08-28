@@ -93,11 +93,8 @@ const clear = () => {
     >
       <TransitionGroup name="list-fade">
         <InputUi class="auth__input"
-                 name="Логин"
-                 id="login"
                  title="Логин"
                  required
-                 aria-describedby="login-error"
                  v-model="form.login"
                  @blur="onBlur"
                  @input="onInput"
@@ -105,11 +102,8 @@ const clear = () => {
                  :readonly="isLoading"
         />
         <InputUi class="auth__input"
-                 name="Пароль"
-                 id="password"
                  title="Пароль"
                  required
-                 aria-describedby="password-error"
                  v-model="form.password"
                  @blur="onBlur"
                  @input="onInput"
@@ -119,11 +113,8 @@ const clear = () => {
 
         <InputUi class="auth__input"
                  v-if="!isLogin"
-                 name="Имя"
-                 id="name"
                  title="Имя пользователя"
                  required
-                 aria-describedby="name-error"
                  v-model="form.name"
                  @blur="onBlur"
                  @input="onInput"

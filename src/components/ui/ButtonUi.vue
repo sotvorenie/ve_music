@@ -1,25 +1,19 @@
 <script setup lang="ts">
 import LoadingIcon from "@icons/LoadingIcon.vue";
 
-defineProps({
-  isLoading: {
-    type: Boolean,
-    default: false,
-  },
-  isDisabled: {
-    type: Boolean,
-    default: false,
-  },
-  isActive: {
-    type: Boolean,
-    default: false,
-  },
-  isSubmit: {
-    type: Boolean,
-    default: false,
-  },
-})
-
+withDefaults(
+    defineProps<{
+      isLoading?: boolean
+      isDisabled?: boolean
+      isActive?: boolean
+      isSubmit?: boolean
+    }>(), {
+      isLoading: false,
+      isDisabled: false,
+      isActive: false,
+      isSubmit: false,
+    }
+)
 </script>
 
 <template>

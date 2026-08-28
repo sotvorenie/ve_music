@@ -3,22 +3,19 @@ import {onBeforeUnmount, onMounted} from "vue";
 
 import ButtonUi from "@ui/ButtonUi.vue";
 
-defineProps({
-  closeVisible: {
-    type: Boolean,
-    default: false,
-  },
-  closeText: {
-    type: String,
-    default: 'Ок',
-  },
-  size: {
-    type: Number,
-    default: 400,
-  },
-})
+withDefaults(
+    defineProps<{
+      closeVisible?: boolean
+      closeText?: string
+      size?: number
+    }>(), {
+      closeVisible: false,
+      closeText: 'Ок',
+      size: 400,
+    }
+)
 
-const isVisible = defineModel({type: Boolean, default: false})
+const isVisible = defineModel<boolean>({default: false})
 
 const open = () => {
   isVisible.value = true

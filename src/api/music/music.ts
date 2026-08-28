@@ -1,10 +1,10 @@
-import {MusicList, Music} from "../../types/music.ts";
+import {MusicList, Music} from "@/types/music.ts";
 
-import {apiGet} from "../index.ts";
+import {apiGet} from "@api/index.ts";
 
-import useSearchStore from "../../store/useSearchStore.ts";
-import useArtistStore from "../../store/useArtistStore.ts";
-import useMenuStore from "../../store/useMenuStore.ts";
+import useSearchStore from "@store/useSearchStore.ts";
+import useArtistStore from "@store/useArtistStore.ts";
+import useMenuStore from "@store/useMenuStore.ts";
 
 export const apiGetMusicList = async (
     page: number = 1,
@@ -14,7 +14,7 @@ export const apiGetMusicList = async (
     const artistStore = useArtistStore();
     const menuStore = useMenuStore();
 
-    return apiGet(`/music/list?name=${searchStore.searchName}&genre_id=${menuStore.activeGenreId}&artist_id=${artistStore.artistId}&page=${page}&limit=${limit}`);
+    return apiGet(`/music/list?name=${searchStore.searchName}&genre_id=${menuStore.activeGenre.id}&artist_id=${artistStore.artistId}&page=${page}&limit=${limit}`);
 }
 
 export const apiGetMusic = async (musicId: number): Promise<Music> => {

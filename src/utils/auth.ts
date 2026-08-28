@@ -1,6 +1,6 @@
-import useUserStore from "../store/useUserStore.ts";
-import {apiCheckMe} from "../api/auth/auth.ts";
-import {UserWithToken} from "../types/user.ts";
+import useUserStore from "@store/useUserStore.ts";
+import {apiCheckMe} from "@api/auth/auth.ts";
+import {UserWithToken} from "@/types/user.ts";
 
 export const login = (data: UserWithToken): void => {
     const userStore = useUserStore();

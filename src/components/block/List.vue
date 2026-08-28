@@ -17,7 +17,7 @@ const artistStore = useArtistStore();
 await itemsStore.getMusicList()
 
 const handleMusic = async () => {
-  artistStore.artistId = -1
+  artistStore.currentArtist.id = -1
   await itemsStore.getMusicList()
   menuStore.listMode = menuStore.allListModes.music;
 }
@@ -54,7 +54,7 @@ watch(
     <span v-if="menuStore.listMode === menuStore.allListModes.artistMusic"
           class="mb-10"
     >
-      Музыка исполнителя {{artistStore.artistName}}
+      Музыка исполнителя {{artistStore.currentArtist.name}}
     </span>
 
     <span class="list-number"

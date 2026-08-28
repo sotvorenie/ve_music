@@ -1,17 +1,17 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
+import {Artist} from "@/types/artist.ts";
 
 const useArtistStore = defineStore("artistStore", () => {
-
-    // id выбранного исполнителя
-    const artistId = ref<number>(-1)
-
-    // имя выбранного исполнителя
-    const artistName = ref<string>('')
+    //выбранный исполнитель
+    const currentArtist = ref<Artist>({
+        id: -1,
+        name: '',
+        avatarUrl: '',
+    })
 
     return {
-        artistId,
-        artistName,
+        currentArtist,
     }
 })
 

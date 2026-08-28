@@ -1,6 +1,6 @@
-import {UserWithToken} from "../../types/user.ts";
+import {UserWithToken} from "@/types/user.ts";
 
-import {apiGet, apiPost} from "../index.ts";
+import {apiGet, apiPost} from "@api/index.ts";
 
 export const apiAuth = async (login: string, password: string): Promise<UserWithToken> => {
     return apiPost(`/auth/login`, {

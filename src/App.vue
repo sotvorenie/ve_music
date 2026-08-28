@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {onMounted, onUnmounted, ref} from "vue";
 
-import {checkMe} from "./utils/auth.ts";
+import {checkMe} from "@utils/auth.ts";
 
 import Menu from "@components/Menu.vue";
 import Info from "@components/Info.vue";

@@ -1,9 +1,9 @@
-import {Like} from "../../types/like.ts";
-import {MusicList} from "../../types/music.ts";
+import {IsLiked} from "@/types/like.ts";
+import {MusicList} from "@/types/music.ts";
 
-import {apiGet, apiPost} from "../index.ts";
+import {apiGet, apiPost} from "@api/index.ts";
 
-export const apiLike = async (musicId: number): Promise<Like> => {
+export const apiLike = async (musicId: number): Promise<IsLiked> => {
     return apiPost(`/like/${musicId}`, {})
 }
 

@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import LikeIcon from "@icons/LikeIcon.vue";
 
-defineProps({
-  isLiked: {
-    type: Boolean,
-    default: false,
-  },
-})
+withDefaults(
+    defineProps<{
+      isLiked: boolean
+    }>(), {
+      isLiked: false,
+    }
+)
 </script>
 
 <template>

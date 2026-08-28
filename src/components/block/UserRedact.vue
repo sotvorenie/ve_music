@@ -11,16 +11,20 @@ import ButtonUi from "@ui/ButtonUi.vue";
 import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
 
-defineProps({
-  isUserRedact: {
-    type: Boolean,
-    default: false,
-  },
-})
+withDefaults(
+    defineProps<{
+      isUserRedact?: boolean
+    }>(), {
+      isUserRedact: false,
+    }
+)
 
-const isLoading = defineModel({type: Boolean, default: false})
+const isLoading = defineModel<boolean>({default: false})
 
-const emits = defineEmits(['logout', 'updateName'])
+const emits = defineEmits<{
+  logout: [],
+  updateName: [],
+}>()
 
 const nameCopy = ref<string>('')
 
