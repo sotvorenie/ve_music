@@ -15,7 +15,7 @@ export const apiRedactUserPassword = async (password: string): Promise<SuccessRe
     })
 }
 
-export const apiRedactUserAvatar = async (file: File): Promise<UserAvatar> => {
+export const apiUploadUserAvatar = async (file: File): Promise<UserAvatar> => {
     const formData = new FormData();
     formData.append('avatar', file);
 

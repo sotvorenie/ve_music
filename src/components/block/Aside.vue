@@ -2,7 +2,7 @@
 import {computed, ref} from "vue";
 
 import {BASE_URL} from "@api/url.ts";
-import {apiRedactUserAvatar} from "@api/user/user.ts";
+import {apiUploadUserAvatar} from "@api/user/user.ts";
 
 import {logout} from "@utils/auth.ts";
 import {showError} from "@utils/modals.ts";
@@ -87,7 +87,7 @@ const updateAvatar = async (event: Event) => {
     isLoading.value = true
 
     try {
-      const response = await apiRedactUserAvatar(file)
+      const response = await apiUploadUserAvatar(file)
 
       if (response.newAvatarUrl) {
         userStore.user.avatarUrl = response.newAvatarUrl

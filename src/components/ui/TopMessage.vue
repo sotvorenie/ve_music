@@ -4,7 +4,7 @@ import {watch} from "vue";
 withDefaults(
     defineProps<{
       message: string
-      theme: 'light' | 'dark'
+      theme?: 'light' | 'dark'
     }>(), {
       theme: 'light'
     }
