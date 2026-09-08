@@ -29,7 +29,7 @@ export const checkMe = async (): Promise<void> => {
 
     try {
         const data: UserWithToken = await apiCheckMe()
-        login(data)
+        if (data.token) login(data)
     } catch (err) {
         console.error(err)
         userStore.isLogged = false
