@@ -59,6 +59,7 @@ watchEffect((onCleanup) => {
   <ul class="list position-relative"
       v-if="itemsStore.musicList?.music?.length"
       ref="listRef"
+      v-auto-animate
   >
     <li v-for="(item, index) in itemsStore.musicList?.music"
         :key="item.id"

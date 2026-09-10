@@ -2,6 +2,7 @@
 
 .list {
   display: grid;
+  grid-auto-rows: fluid(130, 80);
   overflow-y: auto;
   max-height: 80vh;
   padding-right: rem(10);
@@ -49,9 +50,10 @@
     border-radius: rem(12);
     transition: background-color var(--transition-duration);
     width: rem(400);
+    box-shadow: inset 0 0 rem(3) rem(1) var(--color-dark);
 
     @include hover() {
-      background: var(--color-dark-15);
+      background: color-mix(in srgb, var(--color-dark-15), transparent 50%);
 
       img {
         transform: scale(1.1);
@@ -66,7 +68,7 @@
     &.is-active {
       cursor: default !important;
       pointer-events: none;
-      background: var(--color-dark-15);
+      background: color-mix(in srgb, var(--color-dark-15), transparent 25%);
     }
   }
 
@@ -77,7 +79,7 @@
     border-radius: rem(12);
 
     @include laptop {
-      @include square(90);
+      @include square(80);
     }
   }
 

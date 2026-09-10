@@ -98,7 +98,7 @@ watchEffect((onCleanup) => {
 
 <template>
 
-  <ul class="list" ref="listRef">
+  <ul class="list" ref="listRef" v-auto-animate>
     <li v-for="(item, index) in itemsStore.artistsList?.artists"
         :key="item.id"
         class="list__item flex flex-align-center cursor-pointer"

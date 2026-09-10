@@ -67,10 +67,11 @@
   }
 
   &__genres {
-    background: var(--color-dark-15);
+    background: color-mix(in srgb, var(--color-dark-15), transparent 25%);
     border-radius: rem(12);
     margin-left: rem(20);
     margin-top: rem(10);
+    box-shadow: inset 0 0 rem(3) rem(1) var(--color-dark);
   }
 
   &__btn {
@@ -78,7 +79,7 @@
     transition: backdrop-filter var(--transition-duration);
 
     @include hover {
-      backdrop-filter: brightness(.8);
+      backdrop-filter: brightness(.88);
     }
 
     &.is-active {
