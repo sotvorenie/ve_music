@@ -6,8 +6,12 @@
     @include square(40);
 
     color: var(--color-light);
-    top: rem(30);
-    left: rem(30);
+    top: fluid(30, 15);
+    left: fluid(30, 15);
+
+    @include laptop {
+      @include square(35);
+    }
   }
 
   &__background {

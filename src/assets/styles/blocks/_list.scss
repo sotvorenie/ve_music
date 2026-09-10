@@ -2,7 +2,6 @@
 
 .list {
   display: grid;
-  grid-auto-rows: rem(130);
   overflow-y: auto;
   max-height: 80vh;
   padding-right: rem(10);
@@ -13,7 +12,7 @@
   &-wrapper {
     width: rem(420);
     top: rem(60);
-    left: rem(400);
+    left: fluid(400, 100);
     transition: transform var(--transition-duration-big);
     height: 80vh;
 
@@ -46,11 +45,10 @@
 
   &__item {
     gap: rem(15);
-    padding-inline: rem(25);
+    padding: fluid(25, 0);
     border-radius: rem(12);
     transition: background-color var(--transition-duration);
     width: rem(400);
-    height: rem(130);
 
     @include hover() {
       background: var(--color-dark-15);
@@ -73,9 +71,14 @@
   }
 
   &__left {
-    flex: 0 0 rem(100);
-    height: rem(100);
+    @include square(100);
+
+    flex-shrink: 0;
     border-radius: rem(12);
+
+    @include laptop {
+      @include square(90);
+    }
   }
 
   &__artist, &__duration {
@@ -95,6 +98,10 @@
 
       border-radius: 50%;
       background: var(--color-dark-15);
+
+      @include laptop {
+        @include square(80);
+      }
     }
   }
 }

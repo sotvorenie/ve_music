@@ -3,18 +3,22 @@
 .menu {
   @include abs-y;
 
-  left: rem(30);
-  width: rem(280);
+  left: fluid(30, 15);
+  width: fluid(280, 100);
 
   &__list, &__genres {
     padding: rem(16) rem(10);
+
+    @include laptop {
+      padding: 0;
+    }
   }
 
   &__item-btn, &__btn {
     color: currentColor;
     background: transparent;
     border-radius: rem(12);
-    padding-inline: rem(20);
+    padding-inline: fluid(20, 10);
 
     &.is-active {
       cursor: default;
@@ -25,8 +29,8 @@
   &__item {
 
     &-btn {
+      padding: fluid(20, 10);
       gap: rem(10);
-      height: rem(80);
 
       &.is-active {
         background: var(--color-dark-15);
@@ -34,6 +38,10 @@
 
       svg {
         @include square(35);
+
+        @include laptop {
+          @include square(30);
+        }
       }
     }
   }
@@ -63,10 +71,6 @@
     border-radius: rem(12);
     margin-left: rem(20);
     margin-top: rem(10);
-  }
-
-  &__genre {
-    min-width: rem(200);
   }
 
   &__btn {

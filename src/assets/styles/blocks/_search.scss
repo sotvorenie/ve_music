@@ -5,8 +5,12 @@
   &__open {
     @include square(40);
 
-    top: rem(30);
-    left: rem(100);
+    top: fluid(30, 15);
+    left: fluid(100, 60);
+
+    @include laptop {
+      @include square(35);
+    }
   }
 
   &__content {

@@ -26,7 +26,8 @@
     line-height: 1.2;
   }
   &__title {
-    font-size: rem(100);
+    @include fluid-text(100, 30);
+
     transition: transform var(--transition-duration-big);
 
     &.shadow {
@@ -34,7 +35,8 @@
     }
   }
   &__author {
-    font-size: rem(42);
+    @include fluid-text(42, 16);
+
     text-overflow: ellipsis
   }
 
@@ -51,6 +53,10 @@
 
     svg {
       @include square(30);
+
+      @include laptop {
+        @include square(25);
+      }
     }
   }
 }
