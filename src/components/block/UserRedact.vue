@@ -82,13 +82,12 @@ onMounted(() => {
 
     <div class="user-redact__btn-bar flex">
       <ButtonUi :is-disabled="!redactIsActive || !nameCopy.length"
-                :is-loading="isLoading"
                 @click="handleRedact"
       >
         Редактировать
       </ButtonUi>
       <ButtonUi @click="handleLogout"
-                :is-loading="isLoading"
+                :is-disabled="isLoading"
       >
         Выйти
       </ButtonUi>

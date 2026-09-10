@@ -50,7 +50,7 @@ const handleUpload = async (file: File) => {
     >
 
       <img v-if="imgUrl"
-           :src="`${BASE_URL}${imgUrl}`"
+           :src="`${BASE_URL}${imgUrl}?t=${Date.now()}`"
            alt="фото"
       >
 
@@ -66,7 +66,7 @@ const handleUpload = async (file: File) => {
       />
 
       <button v-if="imgUrl && canDelete"
-              class="upload-img__delete flex-center z-10 position-absolute hover-color-accent"
+              class="upload-img__delete flex-center z-10 position-absolute hover-color-accent recolor-svg"
               :disabled="disabled"
               type="button"
               title="Удалить"

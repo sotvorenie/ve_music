@@ -97,6 +97,7 @@ const deleteAvatar = async () => {
     isLoading.value = true
 
     await apiDeleteUserAvatar()
+    userStore.user.avatarUrl = ''
   } catch (err) {
     console.error(err)
     await showError(
