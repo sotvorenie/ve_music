@@ -28,7 +28,7 @@ const handleArtist = async (artist: Artist) => {
 
   await itemsStore.getMusicList()
 
-  menuStore.listMode = menuStore.allListModes.artistMusic
+  menuStore.listMode = 'artistMusic'
 }
 
 const observerLi = ref<HTMLLIElement | null>(null)

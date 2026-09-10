@@ -9,13 +9,13 @@ import useControllersStore from "@store/useControllersStore.ts";
 const controllersStore = useControllersStore();
 
 const visibleImage = computed(() => {
-  return controllersStore.mode === controllersStore.modesList.img && audioStore.activeTrack.previewUrl
+  return controllersStore.mode === 'img' && audioStore.activeTrack.previewUrl
 })
 
 const videoRef = ref<HTMLVideoElement | null>(null)
 
 const visibleVideo = computed(() => {
-  return controllersStore.mode === controllersStore.modesList.video && audioStore.activeTrack.videoClipUrl
+  return controllersStore.mode === 'video' && audioStore.activeTrack.videoClipUrl
 })
 
 const onPlay = () => {
@@ -51,7 +51,7 @@ onUnmounted(() => {
 <template>
 
   <div class="music__img-container img-container position-absolute"
-       :class="{'is-active': audioStore.isPlaying && (controllersStore.mode !== controllersStore.modesList.video)}"
+       :class="{'is-active': audioStore.isPlaying && (controllersStore.mode !== 'video')}"
        :key="audioStore.activeTrack.id"
   >
     <img :src="`${BASE_URL}${audioStore.activeTrack.previewUrl}`"

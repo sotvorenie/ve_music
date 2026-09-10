@@ -61,10 +61,6 @@ const mouseMoveTimeline = (e: MouseEvent) => {
   timelineInfoRef.value.style.left = `${visualPercent * 100}%`
 }
 
-const handleModeBtn = (mode: string) => {
-  controllersStore.mode = mode
-}
-
 const handleTimeline = (event: Event) => {
   const target = event.target as HTMLInputElement
 
@@ -238,9 +234,9 @@ onMounted(() => {
         <Tooltip>
           <template #activator>
             <button class="controllers__mode-btn controllers__small-btn recolor-svg hover-color-accent flex-center"
-                    :class="{'is-active': controllersStore.mode === controllersStore.modesList.img}"
+                    :class="{'is-active': controllersStore.mode === 'img'}"
                     type="button"
-                    @click="handleModeBtn(controllersStore.modesList.img)"
+                    @click="controllersStore.mode = 'img'"
             >
               <ImgIcon/>
             </button>
@@ -254,9 +250,9 @@ onMounted(() => {
             <Transition name="scale">
               <button class="controllers__mode-btn controllers__small-btn recolor-svg hover-color-accent flex-center"
                       v-if="audioStore.activeTrack.videoClipUrl"
-                      :class="{'is-active': controllersStore.mode === controllersStore.modesList.video}"
+                      :class="{'is-active': controllersStore.mode === 'video'}"
                       type="button"
-                      @click="handleModeBtn(controllersStore.modesList.video)"
+                      @click="controllersStore.mode = 'video'"
               >
                 <VideoIcon/>
               </button>

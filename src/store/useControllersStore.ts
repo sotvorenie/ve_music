@@ -7,13 +7,8 @@ const useControllersStore = defineStore("controllersStore", () => {
     const itemsStore = useItemsStore();
     const audioStore = useAudioStore();
 
-    // все виды модов
-    const modesList: Record<string, string> = {
-        img: 'img',
-        video: 'video',
-    }
     // активный мод
-    const mode = ref<string>(modesList.img)
+    const mode = ref<'img' | 'video'>('img')
 
     // активен ли "Рандом"
     const isRandom = ref(false)
@@ -44,7 +39,6 @@ const useControllersStore = defineStore("controllersStore", () => {
     }
 
     return {
-        modesList,
         mode,
 
         isRandom,

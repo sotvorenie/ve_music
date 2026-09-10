@@ -30,17 +30,17 @@ const genresList = ref<GenresList>()
 const menuList = ref([
   {
     name: 'Жанры',
-    value: menuStore.allMenuModes.genres,
+    value: 'genres',
     icon: MusicIcon,
   },
   {
     name: 'История',
-    value: menuStore.allMenuModes.history,
+    value: 'history',
     icon: HistoryIcon,
   },
   {
     name: 'Избранное',
-    value: menuStore.allMenuModes.favorites,
+    value: 'favorites',
     icon: LikeIcon,
   },
 ])
@@ -56,16 +56,16 @@ const handleGenre = async (id: number, genreName?: string) => {
 
 const handleTab = (index: number) => {
   activeTabIndex.value = index
-  menuStore.menuMode = menuList.value[index].value
+  menuStore.menuMode = menuList.value[index].value as 'genres' | 'history' | 'favorites'
 }
 
 genresList.value = await apiGetAllGenres()
 
 const modalText = ref<string>('')
 const indexErrorText = 'необходимо авторизоваться'
-const allErrorsText = {
-  [menuStore.allMenuModes.history]: `Для доступа к истории прослушиваний ${indexErrorText}`,
-  [menuStore.allMenuModes.favorites]: `Для доступа к понравившимся трекам ${indexErrorText}`,
+const allErrorsText: Record<string, string> = {
+  history: `Для доступа к истории прослушиваний ${indexErrorText}`,
+  favorites: `Для доступа к понравившимся трекам ${indexErrorText}`,
 }
 const handleErrorModal = (type: string, func: Function) => {
   modalText.value = allErrorsText[type]
@@ -76,8 +76,8 @@ watch(
     () => [menuStore.activeGenre.id, menuStore.menuMode],
     () => {
       if (menuStore.activeGenre.id >= -1) {
-        menuStore.listMode = menuStore.allListModes.music
-        artistStore.artistId = -1
+        menuStore.listMode = 'music'
+        artistStore.currentArtist.id = -1
         itemsStore.getMusicList()
       }
     }

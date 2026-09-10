@@ -28,14 +28,13 @@ const handleLike = async () => {
   try {
     const response = await apiLike(audioStore.activeTrack.id)
 
-    if (response?.is_liked) {
+    if (response?.isLiked) {
       audioStore.activeTrack.likesCount = audioStore.activeTrack.likesCount + 1
     } else {
       audioStore.activeTrack.likesCount = Math.max(audioStore.activeTrack.likesCount - 1, 0)
     }
   } catch (err) {
     console.error(err)
-
     audioStore.activeTrack.isLiked = false
   }
 }

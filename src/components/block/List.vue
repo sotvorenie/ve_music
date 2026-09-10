@@ -19,13 +19,13 @@ await itemsStore.getMusicList()
 const handleMusic = async () => {
   artistStore.currentArtist.id = -1
   await itemsStore.getMusicList()
-  menuStore.listMode = menuStore.allListModes.music;
+  menuStore.listMode = 'music';
 }
 
 watch(
     () => menuStore.listMode,
     () => {
-      if (menuStore.listMode === menuStore.allListModes.artistMusic) {
+      if (menuStore.listMode === 'artistMusic') {
         menuStore.activeGenre.name = ''
         menuStore.activeGenre.id = -1
       }
@@ -41,34 +41,28 @@ watch(
        }"
   >
     <div class="list-tabs flex flex-justify-center"
-         :class="{'is-hidden': menuStore.menuMode !== menuStore.allMenuModes.genres}"
+         :class="{'is-hidden': menuStore.menuMode !== 'genres'}"
     >
-      <ButtonUi :is-active="menuStore.listMode === menuStore.allListModes.music"
+      <ButtonUi :is-active="menuStore.listMode === 'music'"
                 @click="handleMusic"
       >Музыка</ButtonUi>
-      <ButtonUi :is-active="menuStore.listMode === menuStore.allListModes.artists"
-                @click="menuStore.listMode = menuStore.allListModes.artists"
+      <ButtonUi :is-active="menuStore.listMode === 'artists'"
+                @click="menuStore.listMode = 'artists'"
       >Исполнители</ButtonUi>
     </div>
 
-    <span v-if="menuStore.listMode === menuStore.allListModes.artistMusic"
-          class="mb-10"
-    >
+    <span v-if="menuStore.listMode === 'artistMusic'" class="mb-10">
       Музыка исполнителя {{artistStore.currentArtist.name}}
     </span>
 
-    <span class="list-number"
-          v-if="menuStore.listMode !== menuStore.allListModes.artists"
-    >
+    <span class="list-number" v-if="menuStore.listMode !== 'artists'">
       Треков: {{itemsStore.musicList?.total || 0}}
     </span>
-    <span class="list-number"
-          v-if="menuStore.listMode === menuStore.allListModes.artists"
-    >
+    <span class="list-number" v-if="menuStore.listMode === 'artists'">
       Исполнителей: {{itemsStore.artistsList?.total || 0}}
     </span>
 
-    <ListMusic v-if="menuStore.listMode !== menuStore.allListModes.artists"/>
+    <ListMusic v-if="menuStore.listMode !== 'artists'"/>
 
     <ListArtists v-else/>
   </div>

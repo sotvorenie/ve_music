@@ -26,19 +26,19 @@ const allPlaceholders = {
 }
 
 const placeholder = computed(() => {
-  if (menuStore.menuMode === menuStore.allMenuModes.genres) {
-    if (menuStore.listMode === menuStore.allListModes.music && menuStore.activeGenre.id === -1)
+  if (menuStore.menuMode === 'genres') {
+    if (menuStore.listMode === 'music' && menuStore.activeGenre.id === -1)
       return allPlaceholders.all
-    if (menuStore.listMode === menuStore.allListModes.music && menuStore.activeGenre.id >= 0)
+    if (menuStore.listMode === 'music' && menuStore.activeGenre.id >= 0)
       return allPlaceholders.genre + ' ' + menuStore.activeGenre.name
-    if (menuStore.listMode === menuStore.allListModes.artists)
+    if (menuStore.listMode === 'artists')
       return allPlaceholders.artists
-    if (menuStore.listMode === menuStore.allListModes.artistMusic)
+    if (menuStore.listMode === 'artistMusic')
       return allPlaceholders.artistSong + ' ' + artistStore.currentArtist.name
   }
-  if (menuStore.menuMode === menuStore.allMenuModes.history)
+  if (menuStore.menuMode === 'history')
     return allPlaceholders.history
-  if (menuStore.menuMode === menuStore.allMenuModes.favorites)
+  if (menuStore.menuMode === 'favorites')
     return allPlaceholders.favorites
 })
 
