@@ -4,7 +4,7 @@ import {ref, watchEffect} from "vue";
 import {Artist} from "@/types/artist.ts";
 
 import {BASE_URL} from "@api/url.ts";
-import {apiGetAllArtists, apiSearchArtist} from "@api/artist/artist.ts";
+import {apiGetArtists} from "@api/artist/artist.ts";
 
 import FoxIcon from "@icons/FoxIcon.vue";
 
@@ -18,7 +18,10 @@ import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
 
 
-itemsStore.artistsList = itemsStore.artistsList && artistStore.currentArtist.id >= 0 ? itemsStore.artistsList : await apiGetAllArtists(1, 21)
+itemsStore.artistsList =
+    itemsStore.artistsList && artistStore.currentArtist.id >= 0
+        ? itemsStore.artistsList
+        : await apiGetArtists(searchStore?.searchName, 1, 21)
 
 const handleArtist = async (artist: Artist) => {
   artistStore.currentArtist = artist
@@ -41,21 +44,15 @@ const addNewArtists = async () => {
 
   const page = itemsStore.artistsList!.page + 1
 
-  let data
+  const response = await apiGetArtists(searchStore?.searchName, page)
 
-  if (searchStore.searchName) {
-    data = await apiSearchArtist(searchStore.searchName, page)
-  } else {
-    data = await apiGetAllArtists(page)
-  }
-
-  if (data) {
+  if (response) {
     itemsStore.artistsList = {
-      artists: [...itemsStore.artistsList!.artists, ...data.artists],
-      total: data.total,
-      page: data.page,
-      limit: data.limit,
-      hasMore: data.hasMore,
+      artists: [...itemsStore.artistsList!.artists, ...response.artists],
+      total: response.total,
+      page: response.page,
+      limit: response.limit,
+      hasMore: response.hasMore,
     }
   }
 
