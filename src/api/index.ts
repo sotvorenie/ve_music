@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, {AxiosRequestConfig} from 'axios'
 
 import {BASE_URL} from "@api/url.ts";
 
@@ -18,39 +18,51 @@ client.interceptors.request.use((config) => {
 client.interceptors.response.use(
     response => response,
     async error => {
-        if (error.response?.status === 401) {
+        if (axios.isCancel(error) || error.code === 'ERR_CANCELED') return { data: null, detail: 'canceled' as const }
+
+        if (error.response?.status === 401 && error.response?.data?.code === 'JWT_INVALID') {
             logout()
+            return { data: null, detail: 'canceled' as const }
         }
-        return Promise.reject(error)
+
+        if (error.response?.status === 404) {
+            const errorData = error.response?.data || { detail: "404: Ресурс не найден" }
+            return Promise.reject(errorData)
+        }
+
+        const errorData = error.response?.data || { detail: error.message || "Ошибка сети" }
+        return Promise.reject(errorData)
     }
 )
 
-export const apiGet = async <T>(url: string, params?: any, signal?: AbortSignal): Promise<T> => {
-    const res = await client.get(url, { params, signal })
+export const apiGet = async <T>(url: string, config?: AxiosRequestConfig): Promise<T> => {
+    const res = await client.get(url, config)
     return res.data as T
 }
 
+
 export const apiPost = async <T>(
     url: string,
-    data?: any,
-    config?: any,
-    signal?: AbortSignal
+    data?: unknown,
+    config?: AxiosRequestConfig,
 ): Promise<T> => {
-    const finalConfig = { ...config, signal }
-    const res = await client.post(url, data, finalConfig)
+    const res = await client.post(url, data, config)
     return res.data as T
 }
 
 export const apiPatch = async <T>(
     url: string,
-    data?: any,
-    config?: any,
-    signal?: AbortSignal
+    data?: unknown,
+    config?: AxiosRequestConfig,
 ): Promise<T> => {
-    const finalConfig = {
-        ...config,
-        signal,
-    }
-    const res = await client.patch(url, data, finalConfig)
+    const res = await client.patch(url, data, config)
+    return res.data as T
+}
+
+export const apiDelete = async <T>(
+    url: string,
+    config?: AxiosRequestConfig,
+): Promise<T> => {
+    const res = await client.delete(url, config)
     return res.data as T
 }

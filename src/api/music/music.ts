@@ -14,7 +14,7 @@ export const apiGetMusicList = async (
     const artistStore = useArtistStore();
     const menuStore = useMenuStore();
 
-    return apiGet(`/music/list?name=${searchStore.searchName}&genre_id=${menuStore.activeGenre.id}&artist_id=${artistStore.artistId}&page=${page}&limit=${limit}`);
+    return apiGet(`/music/list?name=${searchStore.searchName}&genre_id=${menuStore.activeGenre.id}&artist_id=${artistStore.currentArtist.id}&page=${page}&limit=${limit}`);
 }
 
 export const apiGetMusic = async (musicId: number): Promise<Music> => {

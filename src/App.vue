@@ -13,10 +13,12 @@ import Search from "@components/Search.vue";
 import GenresSkeleton from "@ui/skeletons/GenresSkeleton.vue";
 import MusicListSkeleton from "@ui/skeletons/MusicListSkeleton.vue";
 import Vignette from "@ui/Vignette.vue";
+import TopMessage from "@ui/TopMessage.vue";
 
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
-
+import useMessageStore from "@store/useMessageStore.ts";
+const messageStore = useMessageStore();
 
 const visible = ref(false)
 
@@ -31,7 +33,6 @@ const handleKey = (e: KeyboardEvent) => {
   if (target.tagName === 'INPUT' ||
       target.tagName === "TEXTAREA" ||
       target.isContentEditable) return
-
 
   const audio = audioStore.audio
 
@@ -55,21 +56,19 @@ const handleKey = (e: KeyboardEvent) => {
 
 onMounted(async () => {
   globalThis.addEventListener("keydown", handleKey)
-
   await checkMe()
-
   visible.value = true
 })
 
-onUnmounted(() => {
-  globalThis.removeEventListener("keydown", handleKey)
-})
+onUnmounted(() => globalThis.removeEventListener("keydown", handleKey))
 </script>
 
 <template>
 
   <Transition name="fade">
     <div class="music" v-if="visible">
+      <TopMessage v-if="messageStore.isVisible"/>
+
       <Vignette/>
 
       <Aside/>

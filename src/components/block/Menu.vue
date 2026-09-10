@@ -5,11 +5,11 @@ import { GenresList } from "@/types/genre.ts";
 
 import {apiGetAllGenres} from "@api/genre/genre.ts";
 
-import Modal from "@common/Modal.vue";
+import Modal from "@ui/Modal.vue";
 
-import MusicIcon from "@icons/MusicIcon.vue";
-import HistoryIcon from "@icons/HistoryIcon.vue";
-import LikeIcon from "@icons/LikeIcon.vue";
+import MusicIcon from "@/components/icons/MusicIcon.vue";
+import HistoryIcon from "@/components/icons/HistoryIcon.vue";
+import LikeIcon from "@/components/icons/LikeIcon.vue";
 
 import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();

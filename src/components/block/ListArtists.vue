@@ -6,7 +6,7 @@ import {Artist} from "@/types/artist.ts";
 import {BASE_URL} from "@api/url.ts";
 import {apiGetArtists} from "@api/artist/artist.ts";
 
-import FoxIcon from "@icons/FoxIcon.vue";
+import FoxIcon from "@/components/icons/FoxIcon.vue";
 
 import useItemsStore from "@store/useItemsStore.ts";
 const itemsStore = useItemsStore();

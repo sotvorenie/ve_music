@@ -15,8 +15,8 @@
 
   &__content {
     top: rem(60);
-    left: rem(400);
-    height: rem(60);
+    left: fluid(400, 100);
+    height: fluid(60, 40);
     width: rem(420);
     background: var(--color-dark-15);
     border-radius: var(--radius-big);

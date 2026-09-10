@@ -1,33 +1,28 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
 
-import {BASE_URL} from "@api/url.ts";
-import {apiUploadUserAvatar} from "@api/user/user.ts";
+import {apiDeleteUserAvatar, apiUploadUserAvatar} from "@api/user/user.ts";
 
 import {logout} from "@utils/auth.ts";
-import {showError} from "@utils/modals.ts";
+import {showConfirm, showError} from "@utils/modals.ts";
 
 import UserRedact from "@components/UserRedact.vue";
 import Auth from "@components/Auth.vue";
-import Tooltip from "@common/Tooltip.vue";
-import TopMessage from "@ui/TopMessage.vue";
+import Tooltip from "@ui/Tooltip.vue";
 
-import MenuIcon from "@icons/MenuIcon.vue";
-import CrossIcon from "@icons/CrossIcon.vue";
-import FoxIcon from "@icons/FoxIcon.vue";
+import MenuIcon from "@/components/icons/MenuIcon.vue";
+import CrossIcon from "@/components/icons/CrossIcon.vue";
 
 import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
+import useMessageStore from "@store/useMessageStore.ts";
+import ImgUpload from "@ui/ImgUpload.vue";
+const messageStore = useMessageStore();
 
 const isOpen = ref<boolean>(false)
 
 const isUserRedact = ref<boolean>(false)
 const isAuth = ref<boolean>(false)
-
-const message = ref('')
-const messageVisible = ref<boolean>(false)
-
-const fileInput = ref<HTMLInputElement | null>(null)
 
 const isLoading = ref<boolean>(false)
 
@@ -61,62 +56,64 @@ const handleAvatar = () => {
 
 const successAuth = (messageText: string) => {
   isAuth.value = false
-  message.value = messageText
-  messageVisible.value = true
+  messageStore.show(messageText)
 }
 
 const successLogout = () => {
-  isUserRedact.value = false
   logout()
-  message.value = 'До новых встреч!!)'
-  messageVisible.value = true
+  messageStore.show('До новых встреч!!)')
 }
 
-const handleRedactAvatar = (event: MouseEvent) => {
-  if (isUserRedact.value && !isLoading.value) {
-    event.stopPropagation()
-    fileInput.value?.click()
+const updateAvatar = async (file: File) => {
+  try {
+    isLoading.value = true
+
+    const response = await apiUploadUserAvatar(file)
+    if (response) {
+      userStore.user.avatarUrl = response.url
+      messageStore.show('Аватарка обновлена!!')
+    }
+  } catch (err) {
+    console.error(err)
+    await showError(
+        'Ошибка загрузки фото',
+        'Не удалось загрузить аватар..'
+    )
+  } finally {
+    isLoading.value = false
   }
 }
 
-const updateAvatar = async (event: Event) => {
-  const target = event.target as HTMLInputElement
-  const file = target.files?.[0]
+const handleDeleteAvatar = async () => {
+  const confirm = await showConfirm(
+      'Удаление аватарки пользователя',
+      'Вы действительно хотите удалить аватарку?'
+  )
+  if (confirm) await deleteAvatar()
+}
 
-  if (file) {
+const deleteAvatar = async () => {
+  try {
     isLoading.value = true
 
-    try {
-      const response = await apiUploadUserAvatar(file)
-
-      if (response.newAvatarUrl) {
-        userStore.user.avatarUrl = response.newAvatarUrl
-
-        message.value = "Аватарка обновлена!!"
-        messageVisible.value = true
-      }
-    } catch (err) {
-      console.error(err)
-
-      await showError(
-          'Ошибка загрузки фото',
-          'Не удалось загрузить аватар..'
-      )
-    } finally {
-      isLoading.value = false
-    }
+    await apiDeleteUserAvatar()
+  } catch (err) {
+    console.error(err)
+    await showError(
+        'Ошибка удаления аватарки',
+        'Не удалось удалить аватарку'
+    )
+  } finally {
+    isLoading.value = false
   }
 }
 
 const updateName = () => {
-  message.value = 'Имя пользователя изменено!!'
-  messageVisible.value = true
+  messageStore.show('Имя пользователя изменено!!')
 }
 </script>
 
 <template>
-
-  <TopMessage :message="message" v-model="messageVisible"/>
 
   <button class="aside__open recolor-svg position-absolute hover-color-accent z-10"
           type="button"
@@ -154,29 +151,27 @@ const updateName = () => {
           </Tooltip>
         </li>
         <li class="aside__item">
-          <Tooltip position="right">
+          <Tooltip position="right"
+                   :hidden="isUserRedact"
+          >
             <template #activator>
               <div class="aside__avatar aside__btn position-relative cursor-pointer"
                    :class="{'is-active': isUserRedact}"
-                   @click="handleAvatar"
               >
-                <div class="border position-absolute z-10000"></div>
-                <div class="img-container position-absolute z-10000"
-                     @click="handleRedactAvatar"
-                >
-                  <input type="file"
-                         ref="fileInput"
-                         class="visually-hidden"
-                         accept="image/*"
-                         @change="updateAvatar"
-                  >
+                <div class="border position-absolute"
+                     :class="isUserRedact && 'is-active'"
+                     @click="handleAvatar"
+                />
 
-                  <FoxIcon v-if="!userStore.user?.avatarUrl"/>
-                  <img v-else
-                       :src="`${BASE_URL}${userStore.user.avatarUrl}?t=${Date.now()}`"
-                       :alt="userStore.user.name"
-                  />
-                </div>
+                <ImgUpload :img-url="userStore.user.avatarUrl"
+                           :disabled="isLoading || !isUserRedact"
+                           :can-delete="isUserRedact"
+                           @select="(file: File) => updateAvatar(file)"
+                           @delete="handleDeleteAvatar"
+                           class="aside__upload position-absolute z-10000"
+                           :class="isUserRedact && 'is-active'"
+                           @click.stop
+                />
               </div>
             </template>
             <template #default>{{avatarTitle}}</template>

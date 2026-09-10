@@ -77,8 +77,8 @@ const useAudioStore = defineStore('audioStore', () => {
             Object.assign(activeTrack, data)
             loadAndPlay()
 
-            if (controllersStore.mode === controllersStore.modesList.video && !activeTrack.videoClipUrl) {
-                controllersStore.mode = controllersStore.modesList.img
+            if (controllersStore.mode === 'video' && !activeTrack.videoClipUrl) {
+                controllersStore.mode = 'img'
             }
         }
     }

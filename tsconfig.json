@@ -27,12 +27,11 @@
     "paths": {
       "@/*": ["src/*"],
       "@api/*": ["src/api/*"],
-      "@icons/*": ["src/assets/icons/*"],
+      "@icons/*": ["src/components/icons/*"],
       "@composables/*": ["src/composables/*"],
       "@store/*": ["src/store/*"],
       "@utils/*": ["src/utils/*"],
       "@components/*": ["src/components/block/*"],
-      "@common/*": ["src/components/common/*"],
       "@ui/*": ["src/components/ui/*"],
     }
   },

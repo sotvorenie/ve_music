@@ -37,6 +37,7 @@
   }
 
   &__btn {
+    border-radius: 50%;
 
     svg {
       width: 80%;
@@ -64,6 +65,11 @@
     .border {
       border-radius: 50%;
       border: 1px dashed var(--color-light);
+      scale: 1.02;
+
+      &.is-active {
+        z-index: 10001;
+      }
     }
 
     .img-container {
@@ -82,5 +88,9 @@
     left: rem(410);
     top: rem(200);
     border-radius: var(--radius-big);
+  }
+
+  &__upload {
+    border-radius: 50%;
   }
 }

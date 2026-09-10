@@ -31,9 +31,9 @@ const useItemsStore = defineStore("itemsStore", () => {
         limit: number = 21,
     ) => {
         let data: MusicList
-        if (menuStore.menuMode === menuStore.allMenuModes.genres) {
+        if (menuStore.menuMode === 'genres') {
             data = await apiGetMusicList(page, limit)
-        } else if (menuStore.menuMode === menuStore.allMenuModes.history) {
+        } else if (menuStore.menuMode === 'history') {
             data = await apiGetHistory(page, limit)
         } else {
             data = await apiGetAllLiked(page, limit)

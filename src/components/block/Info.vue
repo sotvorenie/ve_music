@@ -5,11 +5,11 @@ import {apiLike} from "@api/like/like.ts";
 
 import {showArtists} from "@composables/useShowArtists.ts";
 
-import Tooltip from "@common/Tooltip.vue";
+import Tooltip from "@ui/Tooltip.vue";
 import Like from "@ui/Like.vue";
-import Modal from "@common/Modal.vue";
+import Modal from "@ui/Modal.vue";
 
-import ViewIcon from "@icons/ViewIcon.vue";
+import ViewIcon from "@/components/icons/ViewIcon.vue";
 
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();

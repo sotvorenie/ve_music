@@ -53,15 +53,11 @@ const handleRedact = async () => {
     try {
       isLoading.value = true
 
-      const response = await apiRedactUserName(nameCopy.value)
-
-      if (response.success) {
-        userStore.user.name = nameCopy.value
-        emits('updateName')
-      }
+      await apiRedactUserName(nameCopy.value)
+      userStore.user.name = nameCopy.value
+      emits('updateName')
     } catch (err) {
       console.error(err)
-
       await showError(
           'Ошибка редактирования профиля',
           'Не удалось редактировать профиль'

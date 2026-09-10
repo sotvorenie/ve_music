@@ -4,15 +4,15 @@ import {computed, onMounted, ref, watch} from "vue";
 import {formatTime} from "@composables/useFormatTime.ts";
 
 import PlayButton from "@ui/PlayButton.vue";
-import Tooltip from "@common/Tooltip.vue";
+import Tooltip from "@ui/Tooltip.vue";
 
-import ImgIcon from "@icons/ImgIcon.vue";
-import VideoIcon from "@icons/VideoIcon.vue";
-import RandomIcon from "@icons/RandomIcon.vue";
-import RepeatIcon from "@icons/RepeatIcon.vue";
-import SoundOnIcon from "@icons/SoundOnIcon.vue";
-import SoundOffIcon from "@icons/SoundOffIcon.vue";
-import ArrowIcon from "@icons/ArrowIcon.vue";
+import ImgIcon from "@/components/icons/ImgIcon.vue";
+import VideoIcon from "@/components/icons/VideoIcon.vue";
+import RandomIcon from "@/components/icons/RandomIcon.vue";
+import RepeatIcon from "@/components/icons/RepeatIcon.vue";
+import SoundOnIcon from "@/components/icons/SoundOnIcon.vue";
+import SoundOffIcon from "@/components/icons/SoundOffIcon.vue";
+import ArrowIcon from "@/components/icons/ArrowIcon.vue";
 
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();

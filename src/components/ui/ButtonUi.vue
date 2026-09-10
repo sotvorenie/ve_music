@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LoadingIcon from "@icons/LoadingIcon.vue";
+import LoadingIcon from "@/components/icons/LoadingIcon.vue";
 
 withDefaults(
     defineProps<{

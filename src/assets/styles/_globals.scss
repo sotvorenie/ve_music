@@ -69,7 +69,9 @@ svg * {
   transition:
           color var(--transition-duration),
           background-color var(--transition-duration),
-          border-color var(--transition-duration);
+          border-color var(--transition-duration),
+          opacity var(--transition-duration),
+          transform var(--transition-duration);
 }
 
 a {
