@@ -70,6 +70,26 @@
       pointer-events: none;
       background: color-mix(in srgb, var(--color-dark-15), transparent 25%);
     }
+
+    &-record {
+      top: 50%;
+      color: var(--color-accent);
+      background: color-mix(in srgb, var(--color-dark-15), transparent 25%);
+      animation: rotate 10s infinite linear;
+      left: 0;
+      margin-left: rem(50);
+      border-radius: 50%;
+      translate: 0 -50%;
+
+      @keyframes rotate {
+        from {
+          rotate: 0;
+        }
+        to {
+          rotate: 360deg;
+        }
+      }
+    }
   }
 
   &__left {
@@ -80,6 +100,14 @@
 
     @include laptop {
       @include square(80);
+    }
+  }
+
+  &__right {
+    transition: padding var(--transition-duration);
+
+    &.is-active {
+      padding-left: rem(25);
     }
   }
 

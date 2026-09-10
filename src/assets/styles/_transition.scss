@@ -91,3 +91,10 @@
   opacity: 0;
   transform: translate(-50%, -100%) !important;
 }
+
+.record-enter-active, .record-leave-active {
+  transition: margin var(--transition-duration) ease !important;
+}
+.record-enter-from, .record-leave-to {
+  margin-left: rem(20) !important;
+}
