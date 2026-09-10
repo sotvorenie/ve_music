@@ -32,7 +32,7 @@
   }
 
   &__card {
-    right: rem(80);
+    right: fluid(80, 0);
     bottom: rem(60);
     backdrop-filter: blur(2px);
     border-radius: rem(32);
@@ -40,7 +40,7 @@
     width: 50vw;
 
     @include laptop {
-      width: 48vw;
+      padding: 0;
     }
   }
 }

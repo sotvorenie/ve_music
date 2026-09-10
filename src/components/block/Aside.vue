@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed, onBeforeUnmount, onMounted, ref} from "vue";
 
 import {apiDeleteUserAvatar, apiUploadUserAvatar} from "@api/user/user.ts";
 
@@ -27,6 +27,8 @@ const isAuth = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 
 const closeAside = () => {
+  if (isLoading.value) return
+
   if (isUserRedact.value || isAuth.value) {
     isUserRedact.value = false
     isAuth.value = false
@@ -112,6 +114,13 @@ const deleteAvatar = async () => {
 const updateName = () => {
   messageStore.show('Имя пользователя изменено!!')
 }
+
+const handleKey = (e: KeyboardEvent) => {
+  if (e.key === 'Escape') closeAside()
+}
+
+onMounted(() => window.addEventListener('keydown', handleKey))
+onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
 </script>
 
 <template>
