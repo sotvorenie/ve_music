@@ -72,6 +72,8 @@
     margin-left: rem(20);
     margin-top: rem(10);
     box-shadow: inset 0 0 rem(3) rem(1) var(--color-dark);
+    max-height: 50vh;
+    overflow-y: auto;
   }
 
   &__btn {
