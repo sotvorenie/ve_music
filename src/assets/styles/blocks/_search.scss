@@ -16,7 +16,7 @@
   &__content {
     top: rem(60);
     left: fluid(400, 100);
-    height: fluid(60, 40);
+    height: fluid(60, 35);
     width: rem(420);
     background: var(--color-dark-15);
     border-radius: rem(16);
@@ -27,12 +27,23 @@
     background: transparent;
     height: 100%;
     padding-inline: rem(20) rem(55);
+
+    @include laptop {
+      padding-inline: rem(20) rem(100);
+    }
   }
 
   &__clear {
     @include square(30);
     @include abs-y;
+
     right: 20%;
+
+    @include laptop {
+      @include square(25);
+
+      right: 14%;
+    }
   }
 
   &__submit {
@@ -45,6 +56,10 @@
     transform: translateX(100%);
     transition: transform var(--transition-duration), opacity var(--transition-duration);
     opacity: 0;
+
+    @include laptop {
+      width: 12%;
+    }
 
     svg {
       width: 100%;
