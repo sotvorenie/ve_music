@@ -4,7 +4,7 @@ import {MusicForList, MusicList} from "@/types/music.ts";
 import {ArtistsList} from "@/types/artist.ts";
 import {apiGetMusicList} from "@api/music/music.ts";
 import {apiGetHistory} from "@api/history/history.ts";
-import {apiGetAllLiked} from "@api/like/like.ts";
+import {apiGetLiked} from "@api/like/like.ts";
 import useMenuStore from "@store/useMenuStore.ts";
 
 const useItemsStore = defineStore("itemsStore", () => {
@@ -30,21 +30,24 @@ const useItemsStore = defineStore("itemsStore", () => {
         page: number = 1,
         limit: number = 21,
     ) => {
-        let data: MusicList
-        if (menuStore.menuMode === 'genres') {
-            data = await apiGetMusicList(page, limit)
-        } else if (menuStore.menuMode === 'history') {
-            data = await apiGetHistory(page, limit)
-        } else {
-            data = await apiGetAllLiked(page, limit)
-        }
+        try {
+            const allApis = {
+                genres: () => apiGetMusicList(page, limit),
+                history: () => apiGetHistory(page, limit),
+                favorites: () => apiGetLiked(page, limit),
+            }
 
-        if (data) {
-            musicList.value.music = page === 1 ? data.music : [...musicList.value.music, ...data.music]
-            musicList.value.page = data.page
-            musicList.value.limit = data.limit
-            musicList.value.hasMore = data.hasMore
-            musicList.value.total = data.total
+            const response: MusicList = await allApis?.[menuStore.menuMode]?.()
+
+            if (response) {
+                musicList.value.music = page === 1 ? response.music : [...musicList.value.music, ...response.music]
+                musicList.value.page = response.page
+                musicList.value.limit = response.limit
+                musicList.value.hasMore = response.hasMore
+                musicList.value.total = response.total
+            }
+        } catch (err) {
+            console.error(err)
         }
     }
 
