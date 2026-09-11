@@ -3,8 +3,10 @@ import {ref} from "vue";
 
 import {Auth} from "@/types/auth.ts";
 import {UserWithToken} from "@/types/user.ts";
+import {IsLiked} from "@/types/like.ts";
 
 import {apiAuth, apiRegister} from "@api/auth/auth.ts";
+import {apiCheckLike} from "@api/like/like.ts";
 
 import {onBlur, onInput, onSubmit} from "@composables/useFormValidate.ts";
 import {login} from "@utils/auth.ts";
@@ -12,6 +14,9 @@ import {showError} from "@utils/modals.ts";
 
 import InputUi from "@ui/InputUi.vue";
 import ButtonUi from "@ui/ButtonUi.vue";
+
+import useAudioStore from "@store/useAudioStore.ts";
+const audioStore = useAudioStore();
 
 const emits = defineEmits(['successAuth'])
 
@@ -45,6 +50,8 @@ const handleSubmit = async (e: Event) => {
 
       login(response)
       emits('successAuth', message.value)
+
+      if (audioStore.activeTrack.id >= 0) await checkLike()
     } catch (err: any) {
       await showError(
           'Ошибка авторизации',
@@ -53,6 +60,15 @@ const handleSubmit = async (e: Event) => {
     } finally {
       isLoading.value = false
     }
+  }
+}
+
+const checkLike = async () => {
+  try {
+    const response: IsLiked = await apiCheckLike(audioStore.activeTrack.id)
+    audioStore.activeTrack.isLiked = response?.isLiked ?? false
+  } catch (err) {
+    console.error(err)
   }
 }
 

@@ -39,6 +39,7 @@ const successAuth = (messageText: string) => {
 }
 
 const successLogout = () => {
+  isUserRedact.value = false
   logout()
   messageStore.show('До новых встреч!!)')
 }

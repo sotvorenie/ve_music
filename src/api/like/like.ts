@@ -10,3 +10,7 @@ export const apiLike = async (musicId: number): Promise<IsLiked> => {
 export const apiGetAllLiked = async (page: number = 1, limit: number = 21): Promise<MusicList> => {
     return apiGet(`/like/all?page=${page}&limit=${limit}`)
 }
+
+export const apiCheckLike = async (musicId: number): Promise<IsLiked> => {
+    return apiGet(`/like/check/${musicId}`)
+}
