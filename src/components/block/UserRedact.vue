@@ -10,6 +10,8 @@ import ButtonUi from "@ui/ButtonUi.vue";
 
 import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
+import useMessageStore from "@store/useMessageStore.ts";
+const messageStore = useMessageStore();
 
 withDefaults(
     defineProps<{
@@ -23,7 +25,6 @@ const isLoading = defineModel<boolean>({default: false})
 
 const emits = defineEmits<{
   logout: [],
-  update: [],
 }>()
 
 const name = ref<string>('')
@@ -72,23 +73,7 @@ const redactUser = async () => {
 
     const results = await Promise.allSettled(promises)
 
-    let hasError = false
-    let errorMessage = ''
-
-    results.forEach((result, index) => {
-      const actionType = actions[index]
-
-      if (result.status === 'fulfilled') {
-        if (actionType === 'name') userStore.user.name = name.value
-      } else {
-        hasError = true
-        errorMessage = actionType === 'password' ? result.reason?.detail : 'Не удалось обновить имя'
-      }
-    })
-
-    if (hasError) await showError('Ошибка редактирования профиля', errorMessage)
-
-    emits('update')
+    await showDetails(results, actions)
   } catch (err) {
     console.error(err)
     await showError(
@@ -98,6 +83,26 @@ const redactUser = async () => {
   } finally {
     isLoading.value = false
   }
+}
+
+const showDetails = async (results:  PromiseSettledResult<void>[], actions: string[]) => {
+  let hasError = false
+  let errorMessage = ''
+
+  results.forEach((result, index) => {
+    const actionType = actions[index]
+
+    if (result.status === 'fulfilled') {
+      if (actionType === 'name') userStore.user.name = name.value
+    } else {
+      hasError = true
+      errorMessage = actionType === 'password' ? result.reason?.detail : 'Не удалось обновить имя'
+    }
+  })
+
+  if (hasError) await showError('Ошибка редактирования профиля', errorMessage)
+
+  messageStore.show('Данные пользователя изменены!!')
 }
 
 onMounted(() => {
