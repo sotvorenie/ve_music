@@ -30,20 +30,20 @@ const message = ref<string>('приветик')
 const handleSubmit = async (e: Event) => {
   if (onSubmit(e)) {
 
-    let data: UserWithToken
+    let response: UserWithToken
 
     try {
       isLoading.value = true
 
       if (isLogin.value) {
-        data = await apiAuth(form.value.login, form.value.password)
-        message.value = `Добро пожаловать, ${data.user.name}!!)`
+        response = await apiAuth(form.value.login, form.value.password)
+        message.value = `Добро пожаловать, ${response.user.name}!!)`
       } else {
-        data = await apiRegister(form.value.login, form.value.password, form.value.name)
+        response = await apiRegister(form.value.login, form.value.password, form.value.name)
         message.value = 'Пользователь успешно зарегистрирован!!'
       }
 
-      login(data)
+      login(response)
       emits('successAuth', message.value)
     } catch (err: any) {
       await showError(
