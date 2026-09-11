@@ -67,7 +67,7 @@ onUnmounted(() => globalThis.removeEventListener("keydown", handleKey))
 
   <Transition name="fade">
     <div class="music" v-if="visible">
-      <TopMessage v-if="messageStore.isVisible"/>
+      <TopMessage v-model="messageStore.isVisible"/>
 
       <Vignette/>
 

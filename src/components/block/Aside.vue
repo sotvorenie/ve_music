@@ -13,10 +13,11 @@ import Tooltip from "@ui/Tooltip.vue";
 import MenuIcon from "@/components/icons/MenuIcon.vue";
 import CrossIcon from "@/components/icons/CrossIcon.vue";
 
+import ImgUpload from "@ui/ImgUpload.vue";
+
 import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
 import useMessageStore from "@store/useMessageStore.ts";
-import ImgUpload from "@ui/ImgUpload.vue";
 const messageStore = useMessageStore();
 
 const isOpen = ref<boolean>(false)
@@ -111,8 +112,8 @@ const deleteAvatar = async () => {
   }
 }
 
-const updateName = () => {
-  messageStore.show('Имя пользователя изменено!!')
+const updateUserData = () => {
+  messageStore.show('Данные пользователя изменены!!')
 }
 
 const handleKey = (e: KeyboardEvent) => {
@@ -194,7 +195,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
                     :is-user-redact="isUserRedact"
                     v-model="isLoading"
                     @logout="successLogout"
-                    @update-name="updateName"
+                    @update="updateUserData"
         />
       </Transition>
 
