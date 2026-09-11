@@ -7,12 +7,13 @@ import {showArtists} from "@composables/useShowArtists.ts";
 import {formatTime} from "@composables/useFormatTime.ts";
 
 import Empty from "@ui/empty/Empty.vue";
+import Icon from "@ui/Icon.vue";
+
+import MusicRecordIcon from "@icons/MusicRecordIcon.vue";
 
 import useItemsStore from "@store/useItemsStore.ts";
 const itemsStore = useItemsStore();
 import useAudioStore from "@store/useAudioStore.ts";
-import Icon from "@ui/Icon.vue";
-import MusicRecordIcon from "@icons/MusicRecordIcon.vue";
 const audioStore = useAudioStore();
 
 const observerLi = ref<HTMLLIElement | null>(null)
