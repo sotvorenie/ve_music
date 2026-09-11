@@ -14,10 +14,17 @@ const useMenuStore = defineStore("menuStore", () => {
         id: -1
     })
 
+    const clearGenre = () => {
+        activeGenre.name = ''
+        activeGenre.id = -1
+    }
+
     return {
         listMode,
         menuMode,
         activeGenre,
+
+        clearGenre,
     }
 })
 

@@ -25,10 +25,7 @@ const handleMusic = async () => {
 watch(
     () => menuStore.listMode,
     () => {
-      if (menuStore.listMode === 'artistMusic') {
-        menuStore.activeGenre.name = ''
-        menuStore.activeGenre.id = -1
-      }
+      if (menuStore.listMode === 'artistMusic') menuStore.clearGenre()
     }
 )
 </script>
