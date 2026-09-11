@@ -29,9 +29,7 @@ const initObserver = () => {
   }
   const observerCallback = (entries: IntersectionObserverEntry[]) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        itemsStore.getMusicList(itemsStore.musicList!.page + 1)
-      }
+      if (entry.isIntersecting) itemsStore.getMusicList(itemsStore.musicList!.page + 1)
     })
   }
 
@@ -45,16 +43,9 @@ const clearObserver = () => {
 
 watchEffect((onCleanup) => {
   if (!listRef.value || !itemsStore.musicList?.music?.length || !itemsStore.musicList?.hasMore) return
-
   initObserver()
-
-  if (observerLi.value) {
-    observer?.observe(observerLi.value)
-  }
-
-  onCleanup(() => {
-    clearObserver()
-  })
+  if (observerLi.value) observer?.observe(observerLi.value)
+  onCleanup(() => clearObserver())
 })
 </script>
 
