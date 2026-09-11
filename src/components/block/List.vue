@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {watch} from "vue";
+
 import ListMusic from "@components/ListMusic.vue";
 import ListArtists from "@components/ListArtists.vue";
 
@@ -11,7 +13,6 @@ const searchStore = useSearchStore();
 import useItemsStore from "@store/useItemsStore.ts";
 const itemsStore = useItemsStore();
 import useArtistStore from "@store/useArtistStore.ts";
-import {watch} from "vue";
 const artistStore = useArtistStore();
 
 await itemsStore.getMusicList()
