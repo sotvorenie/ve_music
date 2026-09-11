@@ -2,6 +2,10 @@ import {ArtistsList} from "@/types/artist.ts";
 
 import {apiGet} from "@api/index.ts";
 
-export const apiGetArtists = async(name: string = '', page: number = 1, limit: number = 21): Promise<ArtistsList> => {
-    return apiGet(`/artist/list?name=${name}&page=${page}&limit=${limit}`)
+import useSearchStore from "@store/useSearchStore.ts";
+
+export const apiGetArtists = async(page: number = 1, limit: number = 21): Promise<ArtistsList> => {
+    const searchStore = useSearchStore();
+
+    return apiGet(`/artist/list?name=${searchStore.searchName}&page=${page}&limit=${limit}`)
 }

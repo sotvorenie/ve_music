@@ -42,18 +42,18 @@ const placeholder = computed(() => {
     return allPlaceholders.favorites
 })
 
+const search = () => {
+  menuStore.listMode === 'artists' ? itemsStore.getArtistsList() : itemsStore.getMusicList()
+}
+
 const handleClear = () => {
   searchStore.searchName = ''
-  itemsStore.getMusicList()
+  search()
 }
 
 const inputSearchName = debounce(() => {
-  itemsStore.getMusicList()
+  search()
 }, 500)
-
-const handleSearch = () => {
-  itemsStore.getMusicList()
-}
 </script>
 
 <template>
@@ -81,7 +81,7 @@ const handleSearch = () => {
                v-model="searchStore.searchName"
                :title="searchStore.searchName"
                :placeholder="placeholder"
-               @keydown.enter="handleSearch"
+               @keydown.enter="search"
                @input="inputSearchName"
         >
       </Transition>
@@ -101,7 +101,7 @@ const handleSearch = () => {
               :class="{'is-active': searchStore.searchName}"
               type="button"
               title="Поиск"
-              @click="handleSearch"
+              @click="search"
       >
         <SearchIcon/>
       </button>

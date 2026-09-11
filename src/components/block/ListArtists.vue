@@ -14,11 +14,8 @@ import useArtistStore from "@store/useArtistStore.ts";
 const artistStore = useArtistStore();
 import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
-import useSearchStore from "@store/useSearchStore.ts";
-const searchStore = useSearchStore();
 
-
-itemsStore.artistsList = await apiGetArtists(searchStore?.searchName, 1, 21)
+itemsStore.artistsList = await apiGetArtists(1, 21)
 
 const handleArtist = async (artist: Artist) => {
   artistStore.currentArtist = artist
@@ -41,7 +38,7 @@ const addNewArtists = async () => {
 
   const page = itemsStore.artistsList!.page + 1
 
-  const response = await apiGetArtists(searchStore?.searchName, page)
+  const response = await apiGetArtists(page)
 
   if (response) {
     itemsStore.artistsList = {
