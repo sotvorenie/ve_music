@@ -80,6 +80,7 @@ watchEffect((onCleanup) => {
               :size="70"
               recolor
               class="list__item-record position-absolute z-10"
+              :class="!audioStore.isPlaying && 'paused'"
         />
       </Transition>
 
