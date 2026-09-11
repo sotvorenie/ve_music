@@ -18,10 +18,7 @@ import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
 
 
-itemsStore.artistsList =
-    itemsStore.artistsList && artistStore.currentArtist.id >= 0
-        ? itemsStore.artistsList
-        : await apiGetArtists(searchStore?.searchName, 1, 21)
+itemsStore.artistsList = await apiGetArtists(searchStore?.searchName, 1, 21)
 
 const handleArtist = async (artist: Artist) => {
   artistStore.currentArtist = artist
@@ -67,9 +64,7 @@ const initObserver = () => {
   }
   const observerCallback = (entries: IntersectionObserverEntry[]) => {
     entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        addNewArtists()
-      }
+      if (entry.isIntersecting) addNewArtists()
     })
   }
 
@@ -83,16 +78,9 @@ const clearObserver = () => {
 
 watchEffect((onCleanup) => {
   if (!listRef.value || !itemsStore.artistsList?.artists?.length || !itemsStore.artistsList?.hasMore) return
-
   initObserver()
-
-  if (observerLi.value) {
-    observer?.observe(observerLi.value)
-  }
-
-  onCleanup(() => {
-    clearObserver()
-  })
+  if (observerLi.value) observer?.observe(observerLi.value)
+  onCleanup(() => clearObserver())
 })
 </script>
 
