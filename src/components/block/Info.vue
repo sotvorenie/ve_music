@@ -29,23 +29,19 @@ const checkWidth = async () => {
 
     if (!containerWidth || !contentWidth) return
 
-    const check = contentWidth > containerWidth
-
-    if (!check) return
-
-    isNameShadow.value = check
-    nameTrackRef.value.style.animationDuration = `${contentWidth / containerWidth * 20}s`
-    timer.value = setTimeout(() => {
-      isNameOverflow.value = check
-    }, 1000)
+    if (contentWidth > containerWidth) {
+      isNameShadow.value = true
+      nameTrackRef.value.style.animationDuration = `${contentWidth / containerWidth * 20}s`
+      timer.value = setTimeout(() => {
+        isNameOverflow.value = true
+      }, 1000)
+    }
   }
 }
 
 watch(
     () => audioStore.activeTrack.id,
-    () => {
-      checkWidth()
-    },
+    () => checkWidth(),
     {immediate: true, deep: true}
 )
 </script>
