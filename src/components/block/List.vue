@@ -51,7 +51,7 @@ watch(
       >Исполнители</ButtonUi>
     </div>
 
-    <span v-if="menuStore.listMode === 'artistMusic'" class="mb-10">
+    <span v-if="menuStore.listMode === 'artistMusic'" class="mb-10 text-ellipsis">
       Музыка исполнителя {{artistStore.currentArtist.name}}
     </span>
 
