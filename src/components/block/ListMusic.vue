@@ -114,13 +114,15 @@ watchEffect((onCleanup) => {
       <Empty v-if="!itemsStore.musicList?.music?.length"/>
     </Transition>
 
-    <button v-if="arrowVisible"
-            class="music-list__btn button flex-center position-absolute"
-            :class="arrowPosition === 'top' ? 'is-top' : 'is-bottom'"
-            @click="scrollToActive"
-            type="button"
-    >
-      <ArrowIcon/>
-    </button>
+    <Transition name="fade-small">
+      <button v-if="arrowVisible"
+              class="music-list__btn button flex-center position-absolute"
+              :class="arrowPosition === 'top' ? 'is-top' : 'is-bottom'"
+              @click="scrollToActive"
+              type="button"
+      >
+        <ArrowIcon/>
+      </button>
+    </Transition>
   </div>
 </template>
