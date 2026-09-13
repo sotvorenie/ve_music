@@ -13,6 +13,10 @@
     transition: transform var(--transition-duration-big);
     will-change: transform;
 
+    @include laptop {
+      width: 65vw;
+    }
+
     &.is-active {
       transform: scale(1.05);
     }
