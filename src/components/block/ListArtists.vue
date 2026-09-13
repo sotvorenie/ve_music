@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import {ref, watchEffect} from "vue";
+import {ref} from "vue";
 
 import {Artist} from "@/types/artist.ts";
 
 import {BASE_URL} from "@api/url.ts";
 import {apiGetArtists} from "@api/artist/artist.ts";
+
+import {observeList} from "@composables/useObserveList.ts";
 
 import FoxIcon from "@/components/icons/FoxIcon.vue";
 
@@ -25,14 +27,19 @@ const handleArtist = async (artist: Artist) => {
   menuStore.listMode = 'artistMusic'
 }
 
-const observerLi = ref<HTMLLIElement | null>(null)
 const listRef = ref<HTMLUListElement | null>(null)
-
-let observer: IntersectionObserver | null = null
+const lastLiRef = ref<HTMLLIElement | null>(null)
 
 const isFetching = ref<boolean>(false)
 
-const addNewArtists = async () => {
+observeList(
+    listRef.value,
+    lastLiRef.value,
+    () => getArtists(),
+    !itemsStore.artistsList?.artists?.length || !itemsStore.artistsList?.hasMore
+)
+
+const getArtists = async () => {
   if (isFetching.value) return
   isFetching.value = true
 
@@ -52,33 +59,6 @@ const addNewArtists = async () => {
 
   isFetching.value = false
 }
-
-const initObserver = () => {
-  const observerOptions = {
-    root: listRef.value,
-    rootMargin: '400px',
-    threshold: 0,
-  }
-  const observerCallback = (entries: IntersectionObserverEntry[]) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) addNewArtists()
-    })
-  }
-
-  observer = new IntersectionObserver(observerCallback, observerOptions)
-  if (observerLi.value) observer.observe(observerLi.value)
-}
-
-const clearObserver = () => {
-  if (observer) observer.disconnect()
-}
-
-watchEffect((onCleanup) => {
-  if (!listRef.value || !itemsStore.artistsList?.artists?.length || !itemsStore.artistsList?.hasMore) return
-  initObserver()
-  if (observerLi.value) observer?.observe(observerLi.value)
-  onCleanup(() => clearObserver())
-})
 </script>
 
 <template>
@@ -88,7 +68,7 @@ watchEffect((onCleanup) => {
         :key="item.id"
         class="list__item flex flex-align-center cursor-pointer"
         @click="handleArtist(item)"
-        :ref="(el) => { if (index === itemsStore.artistsList!.artists.length - 2) observerLi = el as HTMLLIElement }"
+        :ref="(el) => { if (index === itemsStore.artistsList!.artists.length - 2) lastLiRef = el as HTMLLIElement }"
     >
       <div class="list__artist-img-container img-container">
         <img v-if="item?.avatarUrl" :src="`${BASE_URL}${item?.avatarUrl}`" :alt="item?.name">

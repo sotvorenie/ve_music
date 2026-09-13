@@ -1,0 +1,23 @@
+@use '../helpers' as *;
+
+.music-list {
+
+  &__btn {
+    @include square(38);
+
+    border-radius: 50%;
+    left: calc(100% + #{rem(10)});
+    top: rem(10);
+
+    &.is-bottom {
+      rotate: 90deg;
+    }
+    &:not(.is-bottom) {
+      rotate: -90deg;
+    }
+
+    svg {
+      @include square(20);
+    }
+  }
+}

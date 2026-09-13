@@ -50,7 +50,6 @@
     border-radius: rem(12);
     transition: background-color var(--transition-duration);
     width: rem(400);
-    box-shadow: inset 0 0 rem(3) rem(1) var(--color-dark);
 
     @include hover() {
       background: color-mix(in srgb, var(--color-dark-15), transparent 50%);
@@ -69,6 +68,7 @@
       cursor: default !important;
       pointer-events: none;
       background: color-mix(in srgb, var(--color-dark-15), transparent 25%);
+      box-shadow: inset 0 0 rem(3) rem(1) var(--color-dark);
     }
 
     &-record {
