@@ -158,7 +158,12 @@
       @include abs-y;
 
       width: var(--range-wigth);
+      height: rem(4) !important;
       left: calc(100% - #{rem(5)});
+
+      &::-webkit-slider-thumb {
+        @include square(12);
+      }
     }
   }
 }

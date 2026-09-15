@@ -139,14 +139,6 @@ input[type=range] {
     background: var(--color-light);
     border-radius: 50%;
   }
-  &::-moz-range-thumb {
-    width: 14px;
-    height: 14px;
-    background: var(--color-light);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-  }
   &::-moz-focus-outer {
     border: 0;
   }
