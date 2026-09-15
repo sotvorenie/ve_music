@@ -47,7 +47,8 @@ const useAudioStore = defineStore('audioStore', () => {
         previewUrl: '',
         videoClipUrl: '',
         isLiked: false,
-        artists: [{id: -1, name: '', avatarUrl: ''}]
+        artists: [{id: -1, name: '', avatarUrl: ''}],
+        genre: {id: -1, name: ''}
     })
 
     // уровень громкости

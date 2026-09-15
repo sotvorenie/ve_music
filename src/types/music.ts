@@ -7,8 +7,8 @@ export interface MusicForList {
     name: string
     duration: number
     previewUrl: string | null
+    genreId: number
 
-    genre: Genre
     artists: Artist[]
 }
 
@@ -22,6 +22,7 @@ export interface Music {
     previewUrl: string
     videoClipUrl: string | null
     isLiked: boolean
+    genre: Genre
 
     artists: Artist[]
 }

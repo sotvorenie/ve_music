@@ -32,7 +32,7 @@ const handleLike = async () => {
 
 <template>
 
-  <div class="info__statistics flex flex-align-center">
+  <div class="info__statistics flex">
     <Tooltip>
       <template #activator>
         <Modal close-visible>
@@ -65,6 +65,17 @@ const handleLike = async () => {
       </template>
       <template #default>
         Кол-во прослушиваний
+      </template>
+    </Tooltip>
+
+    <Tooltip>
+      <template #activator>
+        <span class="info__statistics-item h-100 flex color-accent">
+          {{audioStore.activeTrack?.genre?.name}}
+        </span>
+      </template>
+      <template #default>
+        Жанр трека
       </template>
     </Tooltip>
   </div>

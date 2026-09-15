@@ -5,7 +5,9 @@ export interface Genre {
 
 export interface GenresList {
     genres: Genre[]
-}export interface Genre {
+}
+
+export interface Genre {
     id: number
     name: string
 }
