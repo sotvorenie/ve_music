@@ -55,7 +55,7 @@ const handleSubmit = async (e: Event) => {
     } catch (err: any) {
       await showError(
           'Ошибка авторизации',
-          err.response?.data?.detail
+          err?.detail
       )
     } finally {
       isLoading.value = false
