@@ -55,11 +55,11 @@
     }
 
     &.play-pause {
-      @include fluid-square(80, 50);
+      @include fluid-square(70, 50);
     }
 
     &.prev, &.next {
-      @include fluid-square(55, 35);
+      @include fluid-square(50, 35);
 
       svg {
         width: 100%;
