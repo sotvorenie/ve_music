@@ -14,7 +14,7 @@
       {
         "title": "veMusic",
         "fullscreen": true,
-        "resizable": true
+        "resizable": false
       }
     ],
     "security": {

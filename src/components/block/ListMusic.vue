@@ -70,7 +70,7 @@ watchEffect((onCleanup) => {
 </script>
 
 <template>
-  <div class="music-list position-relative">
+  <div class="music-list position-relative h-100">
     <ul class="list position-relative"
         v-if="itemsStore.musicList?.music?.length"
         ref="listRef"
