@@ -85,7 +85,7 @@ const deleteAvatar = async () => {
 <template>
 
   <Tooltip position="right"
-           :hidden="isUserRedact"
+           :hidden="isUserRedact || isAuth"
   >
     <template #activator>
       <div class="aside__avatar aside__btn position-relative cursor-pointer"
