@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watchEffect} from "vue";
+import {ref, watch, watchEffect} from "vue";
 
 import {BASE_URL} from "@api/url.ts";
 
@@ -18,6 +18,8 @@ import useItemsStore from "@store/useItemsStore.ts";
 const itemsStore = useItemsStore();
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
+import useSearchStore from "@store/useSearchStore.ts";
+const searchStore = useSearchStore();
 
 const listRef = ref<HTMLUListElement | null>(null)
 
@@ -66,7 +68,12 @@ watchEffect((onCleanup) => {
   updateArrow()
   list.addEventListener('scroll', updateArrow, { passive: true })
   onCleanup(() => list.removeEventListener('scroll', updateArrow))
-} )
+})
+
+watch(
+    () => searchStore.searchName,
+    () => arrowVisible.value = false
+)
 </script>
 
 <template>
