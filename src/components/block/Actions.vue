@@ -11,6 +11,7 @@ import ViewIcon from "@icons/ViewIcon.vue";
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 import useUserStore from "@store/useUserStore.ts";
+import Icon from "@ui/Icon.vue";
 const userStore = useUserStore();
 
 const handleLike = async () => {
@@ -37,7 +38,7 @@ const handleLike = async () => {
       <template #activator>
         <Modal close-visible>
           <template #activator="{open}">
-            <button class="info__statistics-item recolor-svg hover-color-accent flex flex-align-center"
+            <button class="info__statistics-item recolor-svg hover-color-accent h-100 flex-center"
                     type="button"
                     @click="userStore.user.id >= 0 ? handleLike() : open()"
             >
@@ -58,8 +59,8 @@ const handleLike = async () => {
 
     <Tooltip>
       <template #activator>
-        <div class="info__statistics-item recolor-svg flex flex-align-center">
-          <ViewIcon/>
+        <div class="info__statistics-item recolor-svg h-100 flex-center">
+          <Icon :name="ViewIcon" :size="25"/>
           {{(audioStore.activeTrack?.auditionsCount || 0).toLocaleString()}}
         </div>
       </template>
@@ -70,7 +71,7 @@ const handleLike = async () => {
 
     <Tooltip>
       <template #activator>
-        <span class="info__statistics-item h-100 flex color-accent">
+        <span class="info__statistics-item h-100 flex-center color-accent">
           {{audioStore.activeTrack?.genre?.name}}
         </span>
       </template>
