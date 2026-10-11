@@ -29,11 +29,6 @@ const allKeyCodes = {
 }
 
 const handleKey = (e: KeyboardEvent) => {
-  const target = e.target as HTMLElement
-  if (target.tagName === 'INPUT' ||
-      target.tagName === "TEXTAREA" ||
-      target.isContentEditable) return
-
   const audio = audioStore.audio
 
   switch (e.code) {
@@ -55,12 +50,12 @@ const handleKey = (e: KeyboardEvent) => {
 }
 
 onMounted(async () => {
-  globalThis.addEventListener("keydown", handleKey)
+  globalThis.addEventListener("keydown", handleKey, true)
   await checkMe()
   visible.value = true
 })
 
-onUnmounted(() => globalThis.removeEventListener("keydown", handleKey))
+onUnmounted(() => globalThis.removeEventListener("keydown", handleKey, true))
 </script>
 
 <template>
