@@ -64,6 +64,7 @@ const inputSearchName = debounce(() => {
             @click="searchStore.isOpen = !searchStore.isOpen"
             :key="`${searchStore.isOpen}`"
             :title="searchStore.isOpen ? 'Закрыть блок поиска' : 'Открыть блок поиска'"
+            :disabled="!itemsStore.musicList.music?.length"
     >
       <SearchIcon v-if="!searchStore.isOpen"/>
       <CrossIcon v-else/>

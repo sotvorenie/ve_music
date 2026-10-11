@@ -59,7 +59,15 @@ const handleTab = (index: number) => {
   menuStore.menuMode = menuList.value[index].value as 'genres' | 'history' | 'favorites'
 }
 
-genresList.value = await apiGetAllGenres()
+const getGenres = async () => {
+  try {
+    genresList.value = await apiGetAllGenres()
+  } catch (err) {
+    console.error(err)
+  }
+}
+
+await getGenres()
 
 const modalText = ref<string>('')
 const indexErrorText = 'необходимо авторизоваться'
@@ -96,7 +104,9 @@ watch(
     </template>
   </Modal>
 
-  <div class="menu position-absolute z-10">
+  <div v-if="genresList?.genres?.length"
+       class="menu position-absolute z-10"
+  >
     <ul class="menu__list flex flex-column">
       <li v-for="(item, index) in menuList"
           :key="item.name"

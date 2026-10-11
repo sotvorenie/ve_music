@@ -30,6 +30,11 @@ client.interceptors.response.use(
             return Promise.reject(errorData)
         }
 
+        if (error?.message === 'Network Error') {
+            const errorData = { detail: "Отсутствует подключение к серверу" }
+            return Promise.reject(errorData)
+        }
+
         const errorData = error.response?.data || { detail: error.message || "Ошибка сети" }
         return Promise.reject(errorData)
     }

@@ -42,9 +42,11 @@ watch(
          :class="{'is-hidden': menuStore.menuMode !== 'genres'}"
     >
       <ButtonUi :is-active="menuStore.listMode === 'music'"
+                :is-disabled="!itemsStore.musicList.music?.length"
                 @click="handleMusic"
       >Музыка</ButtonUi>
       <ButtonUi :is-active="menuStore.listMode === 'artists'"
+                :is-disabled="!itemsStore.musicList.music?.length"
                 @click="menuStore.listMode = 'artists'"
       >Исполнители</ButtonUi>
     </div>
