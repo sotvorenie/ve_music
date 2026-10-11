@@ -128,7 +128,7 @@
   &__artist {
 
     &-img-container {
-      @include square(110);
+      @include square(100);
 
       border-radius: 50%;
       background: var(--color-dark-15);
