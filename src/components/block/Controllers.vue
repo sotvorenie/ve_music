@@ -36,11 +36,8 @@ const volumeStyle = computed(() => {
   }
 })
 
-const disabledPrevButton = computed(() => {
-  return audioStore.activeTrack.id < 0
-})
-const disabledNextButton = computed(() => {
-  return audioStore.activeTrack.id < 0
+const disabledControlButton = computed(() => {
+  return audioStore.activeTrack.id < 0 || controllersStore.isLoading
 })
 
 const cursorTime = ref(0)
@@ -214,7 +211,7 @@ onMounted(() => {
 
       <button class="controllers__btn prev"
               type="button"
-              :disabled="disabledPrevButton"
+              :disabled="disabledControlButton"
               @click="controllersStore.prevItem"
       >
         <ArrowIcon/>
@@ -224,7 +221,7 @@ onMounted(() => {
 
       <button class="controllers__btn next"
               type="button"
-              :disabled="disabledNextButton"
+              :disabled="disabledControlButton"
               @click="controllersStore.nextItem"
       >
         <ArrowIcon/>

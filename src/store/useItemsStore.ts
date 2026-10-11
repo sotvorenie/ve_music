@@ -1,5 +1,5 @@
 import {defineStore} from "pinia";
-import {ref} from "vue";
+import {ref, watch} from "vue";
 import {MusicForList, MusicList} from "@/types/music.ts";
 import {Artist, ArtistsList} from "@/types/artist.ts";
 import {apiGetMusicList} from "@api/music/music.ts";
@@ -7,9 +7,11 @@ import {apiGetHistory} from "@api/history/history.ts";
 import {apiGetLiked} from "@api/like/like.ts";
 import useMenuStore from "@store/useMenuStore.ts";
 import {apiGetArtists} from "@api/artist/artist.ts";
+import useControllersStore from "@store/useControllersStore.ts";
 
 const useItemsStore = defineStore("itemsStore", () => {
     const menuStore = useMenuStore();
+    const controllersStore = useControllersStore();
 
     // список музыки
     const musicList = ref<MusicList>({
@@ -19,6 +21,9 @@ const useItemsStore = defineStore("itemsStore", () => {
         hasMore: false,
         total: 0
     })
+
+    // список id рандомных треков
+    const randomMusicIds = ref<number[]>([])
 
     // список исполнителей
     const artistsList = ref<ArtistsList>({
@@ -31,6 +36,8 @@ const useItemsStore = defineStore("itemsStore", () => {
 
     // seed для случайного порядка проигрывания музыки
     const randomSeed = ref<number>((Math.random() * 2) - 1)
+    // offset для случайного проигрывания музыки
+    const offset = ref<number>(-1)
 
     // загрузка списка музыки
     const getMusicList = async (
@@ -78,10 +85,21 @@ const useItemsStore = defineStore("itemsStore", () => {
         }
     }
 
+    watch(
+        () => controllersStore.isRandom,
+        () => {
+            randomMusicIds.value = []
+            offset.value = -1
+            randomSeed.value = (Math.random() * 2) - 1
+        }
+    )
+
     return {
         musicList,
+        randomMusicIds,
         artistsList,
         randomSeed,
+        offset,
 
         getMusicList,
         getArtistsList,

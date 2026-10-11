@@ -5,6 +5,7 @@ import {apiGet} from "@api/index.ts";
 import useSearchStore from "@store/useSearchStore.ts";
 import useArtistStore from "@store/useArtistStore.ts";
 import useMenuStore from "@store/useMenuStore.ts";
+import useItemsStore from "@store/useItemsStore.ts";
 
 export const apiGetMusicList = async (
     page: number = 1,
@@ -19,4 +20,13 @@ export const apiGetMusicList = async (
 
 export const apiGetMusic = async (musicId: number): Promise<Music> => {
     return apiGet(`/music/${musicId}`);
+}
+
+export const apiGetRandomMusic = async (): Promise<Music> => {
+    const searchStore = useSearchStore();
+    const artistStore = useArtistStore();
+    const menuStore = useMenuStore();
+    const itemsStore = useItemsStore();
+
+    return apiGet(`/music/random?seed=${itemsStore.randomSeed}&offset=${itemsStore.offset}&exclude_id=${itemsStore.randomMusicIds[-1]}&name=${searchStore.searchName}&genre_id=${menuStore.activeGenre.id}&artist_id=${artistStore.currentArtist.id}`)
 }

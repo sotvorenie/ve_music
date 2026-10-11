@@ -69,18 +69,23 @@ const useAudioStore = defineStore('audioStore', () => {
     }
 
     // функция для загрузки музыки по id
-    const updateMusic = async (id: number) => {
-        if (!itemsStore.musicList?.music?.length) return
+    const updateMusic = async (id: number | undefined, music: Music | null = null) => {
+        try {
+            controllersStore.isLoading = true
 
-        const data = await apiGetMusic(id)
+            let data = music
+            if (id) data = await apiGetMusic(id)
 
-        if (data) {
-            Object.assign(activeTrack, data)
-            loadAndPlay()
+            if (data) {
+                Object.assign(activeTrack, data)
+                loadAndPlay()
 
-            if (controllersStore.mode === 'video' && !activeTrack.videoClipUrl) {
-                controllersStore.mode = 'img'
+                if (controllersStore.mode === 'video' && !activeTrack.videoClipUrl) {
+                    controllersStore.mode = 'img'
+                }
             }
+        } finally {
+            controllersStore.isLoading = false
         }
     }
 
