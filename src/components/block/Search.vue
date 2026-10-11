@@ -87,10 +87,10 @@ const inputSearchName = debounce(() => {
       </Transition>
 
       <Transition name="scale">
-        <button class="search__clear recolor-svg hover-color-accent position-absolute"
+        <button v-if="searchStore.searchName"
+                class="search__clear recolor-svg hover-color-accent"
                 type="button"
                 title="Очистить поле"
-                v-if="searchStore.searchName"
                 @click="handleClear"
         >
           <CrossIcon/>

@@ -38,6 +38,7 @@
     @include abs-y;
 
     right: 20%;
+    transform-origin: top right;
 
     @include laptop {
       @include square(25);

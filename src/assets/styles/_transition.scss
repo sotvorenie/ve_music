@@ -76,10 +76,10 @@
 }
 
 .scale-enter-active, .scale-leave-active {
-  transition: transform var(--transition-duration) ease !important;
+  transition: scale var(--transition-duration) ease !important;
 }
 .scale-enter-from, .scale-leave-to {
-  transform: scale(0);
+  scale: 0;
 }
 
 .from-top-enter-active, .from-top-leave-active {
