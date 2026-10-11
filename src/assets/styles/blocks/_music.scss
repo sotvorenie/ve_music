@@ -41,7 +41,11 @@
     backdrop-filter: blur(2px);
     border-radius: rem(32);
     padding: rem(25);
-    width: 50vw;
+    width: 55vw;
+
+    @include desktop {
+      width: 50vw;
+    }
 
     @include laptop {
       padding: 0;

@@ -6,7 +6,7 @@
   left: fluid(30, 15);
   width: fluid(280, 100);
 
-  &__list, &__genres {
+  &__genres {
     padding: rem(16) rem(10);
 
     @include laptop {
