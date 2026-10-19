@@ -18,12 +18,9 @@ const useItemsStore = defineStore("itemsStore", () => {
         music: [] as MusicForList[],
         page: 1,
         limit: 21,
-        hasMore: false,
+        hasMore: true,
         total: 0
     })
-
-    // список id рандомных треков
-    const randomMusicIds = ref<number[]>([])
 
     // список исполнителей
     const artistsList = ref<ArtistsList>({
@@ -34,6 +31,8 @@ const useItemsStore = defineStore("itemsStore", () => {
         total: 0
     })
 
+    // список id рандомных треков
+    const randomMusicIds = ref<number[]>([])
     // seed для случайного порядка проигрывания музыки
     const randomSeed = ref<number>((Math.random() * 2) - 1)
     // offset для случайного проигрывания музыки

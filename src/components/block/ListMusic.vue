@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import {ref, watch, watchEffect} from "vue";
+import {ref, watchEffect} from "vue";
 
 import {BASE_URL} from "@api/url.ts";
 
 import {showArtists} from "@composables/useShowArtists.ts";
 import {formatTime} from "@composables/useFormatTime.ts";
-import {observeList} from "@composables/useObserveList.ts";
+import {useObserve} from "@composables/useObserve.ts";
 
 import Empty from "@ui/empty/Empty.vue";
 import Icon from "@ui/Icon.vue";
 
 import ArrowIcon from "@icons/ArrowIcon.vue";
-
 import MusicRecordIcon from "@icons/MusicRecordIcon.vue";
 
 import useItemsStore from "@store/useItemsStore.ts";
@@ -26,11 +25,10 @@ const listRef = ref<HTMLUListElement | null>(null)
 const lastLiRef = ref<HTMLLIElement | null>(null)
 const activeLiRef = ref<HTMLLIElement | null>(null)
 
-observeList(
-    listRef.value, 
-    lastLiRef.value,
-    () => itemsStore.getMusicList(itemsStore.musicList!.page + 1),
-    !itemsStore.musicList?.music?.length || !itemsStore.musicList?.hasMore
+useObserve(
+    lastLiRef,
+    () => itemsStore.getMusicList(),
+    itemsStore.musicList?.hasMore
 )
 
 const arrowVisible = ref<boolean>(false)
@@ -64,16 +62,15 @@ const updateArrow = () => {
 watchEffect((onCleanup) => {
   const list = listRef.value
   if (!list || audioStore.activeTrack.id < 0) return
+  if (searchStore.searchName) {
+    arrowVisible.value = false
+    return
+  }
 
   updateArrow()
   list.addEventListener('scroll', updateArrow, { passive: true })
   onCleanup(() => list.removeEventListener('scroll', updateArrow))
 })
-
-watch(
-    () => searchStore.searchName,
-    () => arrowVisible.value = false
-)
 </script>
 
 <template>
@@ -83,15 +80,11 @@ watch(
         ref="listRef"
         v-auto-animate
     >
-      <li v-for="(item, index) in itemsStore.musicList?.music"
+      <li v-for="item in itemsStore.musicList?.music"
           :key="item.id"
           class="list__item flex cursor-pointer flex-align-center position-relative"
           :class="{'is-active': item.id === audioStore.activeTrack.id}"
           @click="audioStore.updateMusic(item.id)"
-          :ref="(el) => {
-          if (index === itemsStore.musicList!.music.length - 2) lastLiRef = el as HTMLLIElement
-          if (audioStore.activeTrack.id === item.id) activeLiRef = el as HTMLLIElement
-        }"
       >
         <div class="list__left img-container z-100">
           <img v-if="item?.previewUrl" :src="`${BASE_URL}${item?.previewUrl}`" :alt="item?.name">
@@ -115,6 +108,8 @@ watch(
           <p class="list__duration">{{formatTime(item.duration)}}</p>
         </div>
       </li>
+
+      <li style="height: 1px;" ref="lastLiRef"/>
     </ul>
 
     <Transition name="list">

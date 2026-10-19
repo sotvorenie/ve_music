@@ -6,7 +6,7 @@ import {Artist} from "@/types/artist.ts";
 import {BASE_URL} from "@api/url.ts";
 import {apiGetArtists} from "@api/artist/artist.ts";
 
-import {observeList} from "@composables/useObserveList.ts";
+import {useObserve} from "@composables/useObserve.ts";
 
 import FoxIcon from "@/components/icons/FoxIcon.vue";
 
@@ -30,45 +30,20 @@ const handleArtist = async (artist: Artist) => {
 const listRef = ref<HTMLUListElement | null>(null)
 const lastLiRef = ref<HTMLLIElement | null>(null)
 
-const isFetching = ref<boolean>(false)
-
-observeList(
-    listRef.value,
-    lastLiRef.value,
-    () => getArtists(),
-    !itemsStore.artistsList?.artists?.length || !itemsStore.artistsList?.hasMore
+useObserve(
+    lastLiRef,
+    () => itemsStore.getArtistsList(),
+    itemsStore.artistsList?.hasMore
 )
-
-const getArtists = async () => {
-  if (isFetching.value) return
-  isFetching.value = true
-
-  const page = itemsStore.artistsList!.page + 1
-
-  const response = await apiGetArtists(page)
-
-  if (response) {
-    itemsStore.artistsList = {
-      artists: [...itemsStore.artistsList!.artists, ...response.artists],
-      total: response.total,
-      page: response.page,
-      limit: response.limit,
-      hasMore: response.hasMore,
-    }
-  }
-
-  isFetching.value = false
-}
 </script>
 
 <template>
 
   <ul class="list" ref="listRef" v-auto-animate>
-    <li v-for="(item, index) in itemsStore.artistsList?.artists"
+    <li v-for="item in itemsStore.artistsList?.artists"
         :key="item.id"
         class="list__item flex flex-align-center cursor-pointer"
         @click="handleArtist(item)"
-        :ref="(el) => { if (index === itemsStore.artistsList!.artists.length - 2) lastLiRef = el as HTMLLIElement }"
     >
       <div class="list__artist-img-container img-container">
         <img v-if="item?.avatarUrl" :src="`${BASE_URL}${item?.avatarUrl}`" :alt="item?.name">
@@ -79,6 +54,8 @@ const getArtists = async () => {
         {{item?.name}}
       </p>
     </li>
+
+    <li style="height: 1px" ref="lastLiRef"/>
   </ul>
 
 </template>

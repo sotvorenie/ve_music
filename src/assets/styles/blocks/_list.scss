@@ -2,20 +2,17 @@
 
 .list {
   display: grid;
-  grid-auto-rows: fluid(130, 80);
   overflow-y: auto;
   max-height: 80vh;
+  height: 100%;
   padding-right: rem(10);
   overflow-x: hidden;
   transition: max-height var(--transition-duration-big);
-  width: rem(420);
 
   &-wrapper {
-    width: rem(420);
     top: rem(60);
     left: fluid(400, 70);
     transition: transform var(--transition-duration-big);
-    height: 80vh;
 
     &.is-active {
       transform: translateY(#{rem(80)});
@@ -46,7 +43,7 @@
 
   &__item {
     gap: rem(15);
-    padding: fluid(25, 0);
+    padding: fluid(15, 0);
     border-radius: rem(12);
     transition: background-color var(--transition-duration);
     width: rem(400);

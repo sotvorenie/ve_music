@@ -27,7 +27,7 @@ const menuActive = ref<HTMLLIElement[]>([])
 
 const genresList = ref<GenresList>()
 
-const menuList = ref([
+const menuList =[
   {
     name: 'Жанры',
     value: 'genres',
@@ -43,7 +43,7 @@ const menuList = ref([
     value: 'favorites',
     icon: LikeIcon,
   },
-])
+]
 
 const activeTabIndex = ref<number>(0)
 

@@ -25,12 +25,16 @@ withDefaults(
   >
     <TransitionGroup name="fade-absolute">
       <span class="button__span"
+            key="label"
             :style="{opacity: isLoading ? 0 : 1}"
       >
         <slot/>
       </span>
 
-      <LoadingIcon v-if="isLoading" class="position-absolute"/>
+      <LoadingIcon v-if="isLoading"
+                   key="loading"
+                   class="position-absolute"
+      />
     </TransitionGroup>
   </button>
 
