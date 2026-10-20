@@ -31,7 +31,7 @@ const value = defineModel<string>()
     >
 
     <span v-if="visibleCounter"
-          class="absolute text-[0.9em] bg-dark-15 leading-none -bottom-2 right-2.5"
+          class="absolute text-[0.9em] bg-dark-15 leading-none -bottom-2 right-2.5 px-1.5"
     >
       {{value?.length || 0}} / {{maxLength}}
     </span>
