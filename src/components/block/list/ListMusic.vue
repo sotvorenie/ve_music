@@ -9,6 +9,7 @@ import {useObserve} from "@composables/useObserve.ts";
 
 import Empty from "@ui/empty/Empty.vue";
 import Icon from "@ui/Icon.vue";
+import Tooltip from "@ui/Tooltip.vue";
 
 import MusicRecordIcon from "@icons/MusicRecordIcon.vue";
 import RadioIcon from "@icons/RadioIcon.vue";
@@ -18,7 +19,6 @@ const audioStore = useAudioStore();
 import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
 import useMusicStore from "@store/useMusicStore.ts";
-import Tooltip from "@ui/Tooltip.vue";
 const musicStore = useMusicStore();
 
 const listRef = ref<HTMLUListElement | null>(null)
