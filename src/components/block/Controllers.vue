@@ -18,6 +18,8 @@ import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 import useControllersStore from "@store/useControllersStore.ts";
 const controllersStore = useControllersStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 
 
 const progressStyle = computed(() => {
@@ -114,6 +116,15 @@ watch(
     () => audioStore.isPlaying,
     (newVal) => {
       newVal ? audioStore.audio.play() : audioStore.audio.pause()
+    }
+)
+
+watch(
+    () => controllersStore.isRandom,
+    () => {
+      musicStore.randomIds = []
+      musicStore.offset = -1
+      musicStore.randomSeed = (Math.random() * 2) - 1
     }
 )
 
