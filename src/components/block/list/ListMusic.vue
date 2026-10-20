@@ -88,7 +88,7 @@ watchEffect((onCleanup) => {
           ]"
           @click="audioStore.updateMusic(item.id)"
       >
-        <div class="square-80 3xl:square-100 shrink-0 rounded-regular img-container z-[100]">
+        <div class="square-20 3xl:square-25 shrink-0 rounded-regular img-container z-[100]">
           <img v-if="item?.previewUrl"
                class="transition-transform group-hover:will-change-transform group-hover:scale-110"
                :src="`${BASE_URL}${item?.previewUrl}`"
@@ -129,7 +129,7 @@ watchEffect((onCleanup) => {
     <Transition name="fade-small">
       <button v-if="arrowVisible"
               :class="[
-                  'button square-38 rounded-full flex-center absolute left-[calc(100% + 0.625rem)] top-2.5',
+                  'button square-9.5 rounded-full flex-center absolute left-[calc(100% + 0.625rem)] top-2.5',
                   arrowPosition === 'top' ? '-rotate-90' : 'rotate-90'
               ]"
               @click="scrollToActive"

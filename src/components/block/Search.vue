@@ -62,7 +62,7 @@ const inputSearchName = debounce(() => {
 
   <Transition name="scale">
     <button :key="`${searchStore.isOpen}`"
-            class="search__open square-35 3xl:square-40 recolor-svg absolute z-10"
+            class="search__open square-9 3xl:square-10 recolor-svg absolute z-10"
             :title="searchStore.isOpen ? 'Закрыть блок поиска' : 'Открыть блок поиска'"
             :disabled="!musicStore.music?.length"
             @click="searchStore.isOpen = !searchStore.isOpen"

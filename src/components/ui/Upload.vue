@@ -114,7 +114,7 @@ const formatSize = (bytes: number) => {
           <span class="text-xs">{{formatSize(file.size)}}</span>
         </div>
 
-        <button class="square-30 rounded-full absolute"
+        <button class="square-7.5 rounded-full absolute"
                 @click="handleDelete(index)"
                 type="button"
         >

@@ -89,7 +89,7 @@ const deleteAvatar = async () => {
   >
     <template #activator>
       <div :class="[
-               'aside__btn square-50 rounded-full relative cursor-pointer',
+               'aside__btn square-12.5 rounded-full relative cursor-pointer',
                isUserRedact && 'is-active'
            ]"
       >

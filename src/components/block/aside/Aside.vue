@@ -58,7 +58,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
 <template>
 
   <div class="aside">
-    <button class="aside__open square-35 3xl:square-40 recolor-svg absolute z-10 text-light"
+    <button class="aside__open square-9 3xl:square-10 recolor-svg absolute z-10 text-light"
             @click="isOpen = true"
             title="Открыть боковое меню"
             type="button"
@@ -79,10 +79,10 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
            @click.stop
       >
         <ul class="flex flex-col gap-7.5">
-          <li class="square-50">
+          <li class="square-12.5">
             <Tooltip position="right">
               <template #activator>
-                <button class="aside__btn square-50 recolor-svg rounded-full"
+                <button class="aside__btn square-12.5 recolor-svg rounded-full"
                         :disabled="isUserRedact || isAuth"
                         @click="closeAside"
                         type="button"
@@ -96,7 +96,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
               </template>
             </Tooltip>
           </li>
-          <li class="square-50">
+          <li class="square-12.5">
             <UserAvatar v-model:is-loading="isLoading"
                         v-model:is-user-redact="isUserRedact"
                         v-model:is-auth="isAuth"

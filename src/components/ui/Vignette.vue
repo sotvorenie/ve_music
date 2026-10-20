@@ -46,6 +46,6 @@ onMounted(() => drawVignette())
 
 <template>
 
-  <canvas ref="canvasRef" class="position-absolute w-100 h-100 pointer-events-none z-1" />
+  <canvas ref="canvasRef" class="absolute w-full h-full pointer-events-none z-1" />
 
 </template>

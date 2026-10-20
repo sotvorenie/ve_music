@@ -47,7 +47,7 @@ useObserve(
         class="list__item flex cursor-pointer items-center relative gap-4 rounded-regular transition-[background-color] w-100 group hover:bg-[color-mix(in srgb, var(--color-dark-15), transparent 50%)]"
         @click="handleArtist(item)"
     >
-      <div class="img-container square-80 3xl:square-100 rounded-full bg-dark-15">
+      <div class="img-container square-20 3xl:square-25 rounded-full bg-dark-15">
         <img v-if="item?.avatarUrl"
              :src="`${BASE_URL}${item?.avatarUrl}`"
              :alt="item?.name"
