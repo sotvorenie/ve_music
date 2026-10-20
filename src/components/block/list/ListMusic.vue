@@ -125,7 +125,7 @@ watchEffect((onCleanup) => {
 
     <Transition name="fade-small">
       <Tooltip v-if="arrowVisible"
-               class="absolute left-[calc(100%_+_1rem)] top-4"
+               class="!absolute left-[calc(100%_+_1rem)] top-4"
                position="right"
       >
         <template #activator>

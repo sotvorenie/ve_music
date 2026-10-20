@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {computed, watch} from "vue";
 
-import PlayButton from "@ui/PlayButton.vue";
+import PlayButton from "@components/musicCard/PlayButton.vue";
 
 import ArrowIcon from "@icons/ArrowIcon.vue";
 
@@ -23,7 +23,7 @@ watch(
 <template>
 
   <div class="flex-center gap-4">
-    <button class="prev square-12.5 flex-center bg-transparent rounded-full text-light border-2 border-current rotate-180 p-1"
+    <button class="prev square-12.5 flex-center bg-transparent rounded-full border-2 border-current rotate-180 p-1"
             :disabled="disabledControlButton"
             @click="controllersStore.prevItem"
             type="button"
@@ -33,7 +33,7 @@ watch(
 
     <PlayButton :disabled="audioStore.activeTrack.id < 0" class="square-20"/>
 
-    <button class="next square-12.5 flex-center bg-transparent rounded-full text-light border-2 border-current p-1"
+    <button class="next square-12.5 flex-center bg-transparent rounded-full border-2 border-current p-1"
             :disabled="disabledControlButton"
             @click="controllersStore.nextItem"
             type="button"

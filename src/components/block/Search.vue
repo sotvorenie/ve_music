@@ -3,6 +3,8 @@ import {computed} from "vue";
 
 import {debounce} from "@composables/useDebounce.ts";
 
+import Tooltip from "@ui/Tooltip.vue";
+
 import SearchIcon from "@/components/icons/SearchIcon.vue";
 import CrossIcon from "@/components/icons/CrossIcon.vue";
 
@@ -60,56 +62,71 @@ const inputSearchName = debounce(() => {
 
 <template>
 
-  <Transition name="scale">
-    <button :key="`${searchStore.isOpen}`"
-            class="search__open square-9 3xl:square-10 recolor-svg absolute z-10"
-            :title="searchStore.isOpen ? 'Закрыть блок поиска' : 'Открыть блок поиска'"
-            :disabled="!musicStore.music?.length"
-            @click="searchStore.isOpen = !searchStore.isOpen"
-            type="button"
+  <div class="search">
+    <Tooltip class="search__open !absolute z-10"
+             position="bottom-right"
     >
-      <SearchIcon v-if="!searchStore.isOpen"/>
-      <CrossIcon v-else/>
-    </button>
-  </Transition>
+      <template #activator>
+        <Transition name="scale" mode="out-in">
+          <button :key="`${searchStore.isOpen}`"
+                  class="recolor-svg square-9 3xl:square-10"
+                  :disabled="!musicStore.music?.length"
+                  @click="searchStore.isOpen = !searchStore.isOpen"
+                  type="button"
+          >
+            <SearchIcon v-if="!searchStore.isOpen"/>
+            <CrossIcon v-else/>
+          </button>
+        </Transition>
+      </template>
 
-  <Transition name="list">
-    <div v-if="searchStore.isOpen"
-         class="search__content absolute z-10 flex overflow-hidden top-15 w-105 bg-dark-15 rounded-[1rem] border border-light"
-    >
-      <Transition name="fade" mode="out-in">
-        <input :key="`${menuStore.menuMode}-${menuStore.listMode}-${genreStore.currentGenre.id}`"
-               class="search__input w-full bg-transparent h-full"
-               v-model="searchStore.searchName"
-               :title="searchStore.searchName"
-               :placeholder="placeholder"
-               @keydown.enter="search"
-               @input="inputSearchName"
-        >
-      </Transition>
+      <template #default>
+        <Transition name="fade-fast" mode="out-in">
+        <span :key="`${searchStore.isOpen}`">
+          {{searchStore.isOpen ? 'Закрыть блок поиска' : 'Открыть блок поиска'}}
+        </span>
+        </Transition>
+      </template>
+    </Tooltip>
 
-      <Transition name="scale">
-        <button v-if="searchStore.searchName"
-                class="recolor-svg square-25 3xl:square-30 abs-y right-[14%] 3xl:right-[20%] origin-top-right"
-                @click="handleClear"
-                title="Очистить поле"
-                type="button"
-        >
-          <CrossIcon/>
-        </button>
-      </Transition>
+    <Transition name="list">
+      <div v-if="searchStore.isOpen"
+           class="search__content absolute z-10 flex overflow-hidden top-15 w-105 bg-dark-15 rounded-[1rem] border border-light"
+      >
+        <Transition name="fade" mode="out-in">
+          <input :key="`${menuStore.menuMode}-${menuStore.listMode}-${genreStore.currentGenre.id}`"
+                 class="search__input w-full bg-transparent h-full"
+                 v-model="searchStore.searchName"
+                 :title="searchStore.searchName"
+                 :placeholder="placeholder"
+                 @keydown.enter="search"
+                 @input="inputSearchName"
+          >
+        </Transition>
 
-      <button :class="[
+        <Transition name="scale">
+          <button v-if="searchStore.searchName"
+                  class="recolor-svg square-25 3xl:square-30 abs-y right-[14%] 3xl:right-[20%] origin-top-right"
+                  @click="handleClear"
+                  title="Очистить поле"
+                  type="button"
+          >
+            <CrossIcon/>
+          </button>
+        </Transition>
+
+        <button :class="[
                   'recolor-svg absolute flex-center top-0 right-0 w-[12%] 3xl:w-[15%] h-full p-4 bg-dark-alt transition-[transform,opacity] opacity-0 translate-x-full',
                   searchStore.searchName && 'translate-x-0 opacity-100'
               ]"
-              @click="search"
-              title="Поиск"
-              type="button"
-      >
-        <SearchIcon class="w-full h-auto"/>
-      </button>
-    </div>
-  </Transition>
+                @click="search"
+                title="Поиск"
+                type="button"
+        >
+          <SearchIcon class="w-full h-auto"/>
+        </button>
+      </div>
+    </Transition>
+  </div>
 
 </template>

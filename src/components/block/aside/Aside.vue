@@ -58,13 +58,22 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey, true))
 <template>
 
   <div class="aside">
-    <button class="aside__open square-9 3xl:square-10 recolor-svg absolute z-10 text-light"
-            @click="isOpen = true"
-            title="Открыть боковое меню"
-            type="button"
+    <Tooltip class="aside__open !absolute z-10"
+             position="bottom-right"
     >
-      <MenuIcon/>
-    </button>
+      <template #activator>
+        <button class="square-9 3xl:square-10 recolor-svg"
+                @click="isOpen = true"
+                type="button"
+        >
+          <MenuIcon/>
+        </button>
+      </template>
+
+      <template #default>
+        Открыть боковое меню
+      </template>
+    </Tooltip>
 
     <Transition name="fade">
       <div v-if="isOpen"
