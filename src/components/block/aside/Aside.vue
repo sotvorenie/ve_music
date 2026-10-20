@@ -51,8 +51,8 @@ const handleKey = (e: KeyboardEvent) => {
   if (e.key === 'Escape') closeAside()
 }
 
-onMounted(() => window.addEventListener('keydown', handleKey))
-onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
+onMounted(() => window.addEventListener('keydown', handleKey, true))
+onBeforeUnmount(() => window.removeEventListener('keydown', handleKey, true))
 </script>
 
 <template>

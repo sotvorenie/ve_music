@@ -30,12 +30,10 @@ const emits = defineEmits<{
 const name = ref<string>('')
 const password = ref<string>('')
 
-// активность кнопки "Редактировать"
 const redactIsActive = computed(() => {
   return name.value !== userStore.user.name || password.value.length >= 4
 })
 
-// клик по кнопке "Выйти"
 const handleLogout = async () => {
   const confirm = await showConfirm(
       'Выход из профиля',
@@ -44,7 +42,6 @@ const handleLogout = async () => {
   if (confirm) emits('logout')
 }
 
-// клик по кнопке "Редактировать"
 const handleRedact = async () => {
   const confirm = await showConfirm(
       'Редактирование профиля',
