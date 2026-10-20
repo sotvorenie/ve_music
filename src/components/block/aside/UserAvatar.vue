@@ -17,7 +17,6 @@ const isLoading = defineModel<boolean>('isLoading', {required: true})
 const isUserRedact = defineModel<boolean>('isUserRedact', {required: true})
 const isAuth = defineModel<boolean>('isAuth', {required: true})
 
-// title у блока аватарки перед открытием
 const avatarTitle = computed(() => {
   if (!isUserRedact.value && !isAuth.value) {
     return userStore.user.id >= 0 ? 'Редактировать профиль' : 'Войти/Зарегистрироваться'
@@ -25,7 +24,6 @@ const avatarTitle = computed(() => {
   return ''
 })
 
-// клик по аватарке
 const handleAvatar = () => {
   if (isLoading.value) return
 
@@ -87,7 +85,7 @@ const deleteAvatar = async () => {
   >
     <template #activator>
       <div :class="[
-               'aside__avatar aside__btn square-12.5 rounded-full relative cursor-pointer',
+               'aside__avatar square-12.5 rounded-full relative cursor-pointer',
                isUserRedact && 'is-active'
            ]"
       >

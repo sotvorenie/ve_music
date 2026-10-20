@@ -10,14 +10,12 @@ import EditIcon from "@icons/EditIcon.vue";
 import CrossIcon from "@/components/icons/CrossIcon.vue";
 import FoxIcon from "@icons/FoxIcon.vue";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
       imgUrl: string | undefined | null
-      showConfirm?: boolean
       disabled?: boolean
       canDelete?: boolean
     }>(), {
-      showConfirm: true,
       disabled: true,
       canDelete: true,
     }
@@ -29,10 +27,10 @@ const emits = defineEmits<{
 }>()
 
 const handleUpload = async (file: File) => {
-  const confirm = props.showConfirm ? await showConfirm(
+  const confirm = await showConfirm(
       'Загрузка фото',
       'Вы действительно хотите загрузить/изменить фото?'
-  ) : true
+  )
   if (confirm) emits('select', file)
 }
 </script>
@@ -44,10 +42,10 @@ const handleUpload = async (file: File) => {
               disabled && 'pointer-events-none'
           ]"
           :disabled="disabled"
-          @select="(files: File[]) => handleUpload(files[0])"
+          @select="(file: File) => handleUpload(file)"
           accept=".jpg,.jpeg,.png,.webp"
   >
-    <div class="upload-img__content img-container relative rounded-medium h-full"
+    <div class="upload-img__content img-container relative rounded-medium h-full group"
          title="Загрузить фото"
     >
 
@@ -64,11 +62,11 @@ const handleUpload = async (file: File) => {
       <Icon :name="EditIcon"
             :size="12"
             recolor
-            class="abs-center z-1 transition-opacity opacity-0"
+            class="abs-center z-1 transition-opacity opacity-0 group-hover:opacity-100"
       />
 
       <button v-if="imgUrl && canDelete"
-              class="recolor-svg flex-center transition-opacity opacity-0 z-10 absolute rounded-full top-[1px] right-[1px]"
+              class="recolor-svg flex-center transition-opacity opacity-0 z-10 absolute rounded-full top-[1px] right-[1px] group-hover:opacity-100"
               :disabled="disabled"
               @click.stop="emits('delete')"
               type="button"

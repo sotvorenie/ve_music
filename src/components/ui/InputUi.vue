@@ -20,7 +20,7 @@ const value = defineModel<string>()
 <template>
 
   <label class="input relative block">
-    <span class="absolute text-[0.9em] bg-dark-15 leading-none -top-2 left-2.5">
+    <span class="absolute text-[0.9em] bg-dark-15 leading-none -top-2 left-2.5 px-1">
       {{title}}
     </span>
 
