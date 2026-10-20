@@ -26,7 +26,6 @@ const checkWidth = async () => {
     const contentWidth = nameTrackRef.value.scrollWidth
 
     if (timer.value) clearTimeout(timer.value)
-
     if (!containerWidth || !contentWidth) return
 
     if (contentWidth > containerWidth) {
@@ -42,7 +41,7 @@ const checkWidth = async () => {
 watch(
     () => audioStore.activeTrack.id,
     () => checkWidth(),
-    {immediate: true, deep: true}
+    {immediate: true}
 )
 </script>
 
