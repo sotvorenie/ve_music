@@ -10,10 +10,12 @@ import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
 import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
-import useItemsStore from "@store/useItemsStore.ts";
-const itemsStore = useItemsStore();
 import useArtistStore from "@store/useArtistStore.ts";
 const artistStore = useArtistStore();
+import useGenreStore from "@store/useGenreStore.ts";
+const genreStore = useGenreStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 
 
 const allPlaceholders = {
@@ -27,10 +29,10 @@ const allPlaceholders = {
 
 const placeholder = computed(() => {
   if (menuStore.menuMode === 'genres') {
-    if (menuStore.listMode === 'music' && menuStore.activeGenre.id === -1)
+    if (menuStore.listMode === 'music' && genreStore.currentGenre.id === -1)
       return allPlaceholders.all
-    if (menuStore.listMode === 'music' && menuStore.activeGenre.id >= 0)
-      return allPlaceholders.genre + ' ' + menuStore.activeGenre.name
+    if (menuStore.listMode === 'music' && genreStore.currentGenre.id >= 0)
+      return allPlaceholders.genre + ' ' + genreStore.currentGenre.name
     if (menuStore.listMode === 'artists')
       return allPlaceholders.artists
     if (menuStore.listMode === 'artistMusic')
@@ -43,7 +45,7 @@ const placeholder = computed(() => {
 })
 
 const search = () => {
-  menuStore.listMode === 'artists' ? itemsStore.getArtistsList() : itemsStore.getMusicList()
+  menuStore.listMode === 'artists' ? artistStore.getArtists() : musicStore.getMusic()
 }
 
 const handleClear = () => {
@@ -62,7 +64,7 @@ const inputSearchName = debounce(() => {
     <button :key="`${searchStore.isOpen}`"
             class="search__open square-35 3xl:square-40 recolor-svg absolute z-10"
             :title="searchStore.isOpen ? 'Закрыть блок поиска' : 'Открыть блок поиска'"
-            :disabled="!itemsStore.musicList.music?.length"
+            :disabled="!musicStore.music?.length"
             @click="searchStore.isOpen = !searchStore.isOpen"
             type="button"
     >
@@ -76,7 +78,7 @@ const inputSearchName = debounce(() => {
          class="search__content absolute z-10 flex overflow-hidden top-15 w-105 bg-dark-15 rounded-[1rem] border border-light"
     >
       <Transition name="fade" mode="out-in">
-        <input :key="`${menuStore.menuMode}-${menuStore.listMode}-${menuStore.activeGenre?.id}`"
+        <input :key="`${menuStore.menuMode}-${menuStore.listMode}-${genreStore.currentGenre.id}`"
                class="search__input w-full bg-transparent h-full"
                v-model="searchStore.searchName"
                :title="searchStore.searchName"

@@ -1,10 +1,7 @@
 @use '../helpers' as *;
 
 .controllers {
-
-  &__btn-bar {
-    gap: fluid(20, 10);
-  }
+  gap: fluid(20, 10);
 
   &__play-pause {
     @include fluid-square(70, 50);

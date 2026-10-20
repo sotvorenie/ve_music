@@ -15,17 +15,19 @@ import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
 import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
-import useItemsStore from "@store/useItemsStore.ts";
-const itemsStore = useItemsStore();
 import useArtistStore from "@store/useArtistStore.ts";
 const artistStore = useArtistStore();
+import useGenreStore from "@store/useGenreStore.ts";
+const genreStore = useGenreStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 
 
 const musicIndex = defineModel('musicIndex',{type: Number})
 
 const genresList = ref<GenresResponse>()
 
-const menuList =[
+const menuList = [
   {
     name: 'Жанры',
     value: 'genres',
@@ -48,21 +50,19 @@ const activeTabIndex = ref<number>(0)
 const handleGenre = async (id: number, genreName?: string) => {
   musicIndex.value = 0
 
-  menuStore.activeGenre.id = id
-  menuStore.activeGenre.name = genreName || ''
+  genreStore.currentGenre.id = id
+  genreStore.currentGenre.name = genreName || ''
 }
 
 const handleTab = (index: number) => {
   activeTabIndex.value = index
-  menuStore.menuMode = menuList.value[index].value as 'genres' | 'history' | 'favorites'
+  menuStore.menuMode = menuList[index].value as 'genres' | 'history' | 'favorites'
 }
 
 const getGenres = async () => {
   try {
     genresList.value = await apiGetAllGenres()
-  } catch (err) {
-    console.error(err)
-  }
+  } catch {}
 }
 
 await getGenres()
@@ -79,12 +79,12 @@ const handleErrorModal = (type: string, func: Function) => {
 }
 
 watch(
-    () => [menuStore.activeGenre.id, menuStore.menuMode],
+    () => [genreStore.currentGenre.id, menuStore.menuMode],
     () => {
-      if (menuStore.activeGenre.id >= -1) {
+      if (genreStore.currentGenre.id >= -1) {
         menuStore.listMode = 'music'
         artistStore.currentArtist.id = -1
-        itemsStore.getMusicList()
+        musicStore.getMusic()
       }
     }
 )
@@ -141,7 +141,7 @@ watch(
               >
                 <button :class="[
                             'menu__btn font-medium w-full text-left rounded-regular h-15 transition-[backdrop-filter] hover:backdrop-brightness-[.88]',
-                            menuStore.activeGenre.id === -1 && 'pointer-events-none backdrop-brightness-[.8]',
+                            genreStore.currentGenre.id === -1 && 'pointer-events-none backdrop-brightness-[.8]',
                         ]"
                         @click="handleGenre(-1)"
                         type="button"
@@ -156,7 +156,7 @@ watch(
               >
                 <button :class="[
                             'menu__btn font-medium w-full text-left rounded-regular h-15 transition-[backdrop-filter] hover:backdrop-brightness-[.88]',
-                            menuStore.activeGenre.id === genreItem.id && 'pointer-events-none backdrop-brightness-[.8]',
+                            genreStore.currentGenre.id === genreItem.id && 'pointer-events-none backdrop-brightness-[.8]',
                         ]"
                         @click="handleGenre(genreItem.id, genreItem.name)"
                         type="button"

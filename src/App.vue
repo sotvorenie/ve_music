@@ -4,12 +4,14 @@ import {onMounted, onUnmounted, ref} from "vue";
 import {checkMe} from "@utils/auth.ts";
 
 import Menu from "@components/Menu.vue";
-import Info from "@components/Info.vue";
-import Controls from "@components/Controllers.vue";
-import List from "@components/List.vue";
-import Aside from "@components/Aside.vue";
-import Preview from "@components/Preview.vue";
+import Info from "@components/musicCard/Info.vue";
+import Timeline from "@components/musicCard/Timeline.vue";
+import Controllers from "@components/musicCard/Controllers.vue";
+import List from "@components/list/List.vue";
+import Aside from "@components/aside/Aside.vue";
+import Preview from "@components/musicCard/Preview.vue";
 import Search from "@components/Search.vue";
+
 import GenresSkeleton from "@ui/skeletons/GenresSkeleton.vue";
 import MusicListSkeleton from "@ui/skeletons/MusicListSkeleton.vue";
 import Vignette from "@ui/Vignette.vue";
@@ -93,7 +95,9 @@ onUnmounted(() => globalThis.removeEventListener("keydown", handleKey, true))
       <div class="music__card absolute z-10 bottom-15 backdrop-blur-[2px] rounded-big p-6 w-[50vw] 3xl:w-[55vw]">
         <Info v-if="audioStore.activeTrack.id >= 0"/>
 
-        <Controls/>
+        <Timeline/>
+
+        <Controllers/>
       </div>
     </div>
   </Transition>

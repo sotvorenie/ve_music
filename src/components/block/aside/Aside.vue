@@ -3,14 +3,14 @@ import {onBeforeUnmount, onMounted, ref} from "vue";
 
 import {logout} from "@utils/auth.ts";
 
-import UserRedact from "@components/UserRedact.vue";
-import Auth from "@components/Auth.vue";
-import UserAvatar from "@components/UserAvatar.vue";
+import UserRedact from "@components/aside/UserRedact.vue";
+import Auth from "@components/aside/Auth.vue";
+import UserAvatar from "@components/aside/UserAvatar.vue";
 
 import Tooltip from "@ui/Tooltip.vue";
 
-import MenuIcon from "@/components/icons/MenuIcon.vue";
-import CrossIcon from "@/components/icons/CrossIcon.vue";
+import MenuIcon from "@icons/MenuIcon.vue";
+import CrossIcon from "@icons/CrossIcon.vue";
 
 import useMessageStore from "@store/useMessageStore.ts";
 const messageStore = useMessageStore();

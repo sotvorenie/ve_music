@@ -13,12 +13,12 @@ import Icon from "@ui/Icon.vue";
 import ArrowIcon from "@icons/ArrowIcon.vue";
 import MusicRecordIcon from "@icons/MusicRecordIcon.vue";
 
-import useItemsStore from "@store/useItemsStore.ts";
-const itemsStore = useItemsStore();
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 
 const listRef = ref<HTMLUListElement | null>(null)
 
@@ -27,8 +27,8 @@ const activeLiRef = ref<HTMLLIElement | null>(null)
 
 useObserve(
     lastLiRef,
-    () => itemsStore.getMusicList(),
-    itemsStore.musicList?.hasMore
+    () => musicStore.getMusic(),
+    musicStore.hasMore
 )
 
 const arrowVisible = ref<boolean>(false)
@@ -76,11 +76,11 @@ watchEffect((onCleanup) => {
 <template>
   <div class="relative h-full">
     <ul class="list relative grid overflow-y-auto max-h-[80vh] pr-2.5 overflow-x-hidden"
-        v-if="itemsStore.musicList?.music?.length"
+        v-if="musicStore.music.length"
         ref="listRef"
         v-auto-animate
     >
-      <li v-for="item in itemsStore.musicList?.music"
+      <li v-for="item in musicStore.music"
           :key="item.id"
           :class="[
               'list__item flex cursor-pointer items-center relative gap-4 rounded-regular transition-[background-color] w-100 group hover:bg-[color-mix(in srgb, var(--color-dark-15), transparent 50%)]',
@@ -123,7 +123,7 @@ watchEffect((onCleanup) => {
     </ul>
 
     <Transition name="list">
-      <Empty v-if="!itemsStore.musicList?.music?.length"/>
+      <Empty v-if="!musicStore.music.length"/>
     </Transition>
 
     <Transition name="fade-small">

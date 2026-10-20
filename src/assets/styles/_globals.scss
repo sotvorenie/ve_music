@@ -10,8 +10,8 @@ body {
   @include fluid-text(18, 14);
 
   font-family: var(--font-family-base), sans-serif;
-  color: var(--color-light);
-  background-color: var(--color-dark);
+  color: var(--light);
+  background-color: var(--dark);
   overflow: hidden;
 
   & * {
@@ -19,8 +19,9 @@ body {
   }
 }
 
-main {
-  flex-grow: 1;
+#app {
+  width: 100vw;
+  height: 100vh;
 }
 
 h1, .h1 {
@@ -86,6 +87,7 @@ button, input {
 button {
   padding: 0;
   background-color: transparent;
+  cursor: pointer;
 
   @include hover() {
     color: var(--accent);
@@ -97,7 +99,6 @@ button {
   }
 }
 button[disabled] {
-  cursor: default;
   pointer-events: none;
   opacity: .6;
 }

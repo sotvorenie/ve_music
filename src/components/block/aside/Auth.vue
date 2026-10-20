@@ -34,7 +34,6 @@ const message = ref<string>('')
 
 const handleSubmit = async (e: Event) => {
   if (onSubmit(e)) {
-
     try {
       isLoading.value = true
 
@@ -64,13 +63,11 @@ const handleSubmit = async (e: Event) => {
 const checkLike = async () => {
   try {
     const response: IsLiked = await apiCheckLike(audioStore.activeTrack.id)
-    audioStore.activeTrack.isLiked = response?.isLiked ?? false
-  } catch (err) {
-    console.error(err)
-  }
+    audioStore.activeTrack.isLiked = response.isLiked ?? false
+  } catch {}
 }
 
-const handleHeaderBtn = (isLoginValue: boolean) => {
+const handleTab = (isLoginValue: boolean) => {
   isLogin.value = isLoginValue
   clear()
 }
@@ -90,19 +87,19 @@ const clear = () => {
 <template>
 
   <div class="absolute bg-dark-15 left-102.5 top-50 rounded-big p-7.5 w-112.5">
-    <header class="flex justify-center gap-7.5 mb-12.5">
+    <div class="flex justify-center gap-7.5 mb-12.5">
       <ButtonUi :is-active="isLogin"
-                @click="handleHeaderBtn(true)"
+                @click="handleTab(true)"
       >
         Войти
       </ButtonUi>
 
       <ButtonUi :is-active="!isLogin"
-                @click="handleHeaderBtn(false)"
+                @click="handleTab(false)"
       >
         Зарегистрироваться
       </ButtonUi>
-    </header>
+    </div>
 
     <form class="flex flex-col gap-10"
           novalidate

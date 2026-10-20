@@ -4,25 +4,24 @@ import {ref} from "vue";
 import {Artist} from "@/types/artist.ts";
 
 import {BASE_URL} from "@api/url.ts";
-import {apiGetArtists} from "@api/artist/artist.ts";
 
 import {useObserve} from "@composables/useObserve.ts";
 
-import FoxIcon from "@/components/icons/FoxIcon.vue";
+import FoxIcon from "@icons/FoxIcon.vue";
 
-import useItemsStore from "@store/useItemsStore.ts";
-const itemsStore = useItemsStore();
 import useArtistStore from "@store/useArtistStore.ts";
 const artistStore = useArtistStore();
 import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 
-itemsStore.artistsList = await apiGetArtists(1, 21)
+await artistStore.getArtists()
 
 const handleArtist = async (artist: Artist) => {
   artistStore.currentArtist = artist
 
-  await itemsStore.getMusicList()
+  await musicStore.getMusic()
 
   menuStore.listMode = 'artistMusic'
 }
@@ -32,8 +31,8 @@ const lastLiRef = ref<HTMLLIElement | null>(null)
 
 useObserve(
     lastLiRef,
-    () => itemsStore.getArtistsList(),
-    itemsStore.artistsList?.hasMore
+    () => artistStore.getArtists(),
+    artistStore.hasMore
 )
 </script>
 
@@ -43,7 +42,7 @@ useObserve(
       ref="listRef"
       v-auto-animate
   >
-    <li v-for="item in itemsStore.artistsList?.artists"
+    <li v-for="item in artistStore.artists"
         :key="item.id"
         class="list__item flex cursor-pointer items-center relative gap-4 rounded-regular transition-[background-color] w-100 group hover:bg-[color-mix(in srgb, var(--color-dark-15), transparent 50%)]"
         @click="handleArtist(item)"

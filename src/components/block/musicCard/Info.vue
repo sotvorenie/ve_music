@@ -3,7 +3,7 @@ import {nextTick, ref, watch} from "vue";
 
 import {showArtists} from "@composables/useShowArtists.ts";
 
-import Actions from "@components/Actions.vue";
+import Actions from "@components/musicCard/Actions.vue";
 
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();

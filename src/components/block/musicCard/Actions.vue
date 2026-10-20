@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import {apiLike} from "@api/like/like.ts";
 
 import Like from "@ui/Like.vue";
@@ -15,18 +14,15 @@ import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
 
 const handleLike = async () => {
+  const activeTrack = audioStore.activeTrack
+
   try {
     const response = await apiLike(audioStore.activeTrack.id)
 
-    audioStore.activeTrack.isLiked = response.isLiked
-    if (response?.isLiked) {
-      audioStore.activeTrack.likesCount = audioStore.activeTrack.likesCount + 1
-    } else {
-      audioStore.activeTrack.likesCount = Math.max(audioStore.activeTrack.likesCount - 1, 0)
-    }
-  } catch (err) {
-    console.error(err)
-    audioStore.activeTrack.isLiked = false
+    activeTrack.isLiked = response.isLiked
+    activeTrack.likesCount = response.isLiked ? activeTrack.likesCount + 1 : Math.max(activeTrack.likesCount - 1, 0)
+  } catch {
+    activeTrack.isLiked = false
   }
 }
 </script>

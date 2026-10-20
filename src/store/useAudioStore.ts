@@ -7,34 +7,16 @@ import {BASE_URL} from "@api/url.ts";
 import {apiGetMusic} from "@api/music/music.ts";
 
 import useControllersStore from "@store//useControllersStore.ts";
-import useItemsStore from "@store/useItemsStore.ts";
+import useMusicStore from "@store/useMusicStore.ts";
 
 const useAudioStore = defineStore('audioStore', () => {
     const controllersStore = useControllersStore();
-    const itemsStore = useItemsStore();
-
-    const audio = new Audio()
-    audio.onloadedmetadata = () => {
-        activeTrack.value.duration = Math.round(audio.duration)
-    }
-    audio.ontimeupdate = () => {
-        currentTime.value = Math.floor(audio.currentTime)
-    }
-    audio.onended = async () => {
-        if (controllersStore.isRepeat) {
-            audio.currentTime = 0
-            audio.play().then(() => {})
-        } else if ((itemsStore.musicList?.music && itemsStore.musicList.music.length > 1) || controllersStore.isRandom) {
-            await controllersStore.nextItem()
-        } else {
-            isPlaying.value = false
-            currentTime.value = 0
-        }
-    }
+    const musicStore = useMusicStore();
 
     const isPlaying = ref<boolean>(false)
 
     const currentTime = ref<number>(0)
+    const duration = ref<number>(0)
 
     const activeTrack = ref<Track>({
         id: -1,
@@ -53,6 +35,24 @@ const useAudioStore = defineStore('audioStore', () => {
     const volume = ref<number>(1)
     const oldVolume = ref<number>(1)
 
+    const audio = new Audio()
+    audio.onloadedmetadata = () => {
+        duration.value = Math.round(audio.duration)
+    }
+    audio.ontimeupdate = () => {
+        currentTime.value = Math.floor(audio.currentTime)
+    }
+    audio.onended = async () => {
+        if (controllersStore.isRepeat) {
+            audio.currentTime = 0
+            audio.play().then(() => {})
+        } else if ((musicStore?.music && musicStore.music.length > 1) || controllersStore.isRandom) {
+            await controllersStore.nextItem()
+        } else {
+            isPlaying.value = false
+            currentTime.value = 0
+        }
+    }
 
     const loadAndPlay = () => {
         currentTime.value = 0
@@ -89,6 +89,7 @@ const useAudioStore = defineStore('audioStore', () => {
         isPlaying,
 
         currentTime,
+        duration,
 
         activeTrack,
 
