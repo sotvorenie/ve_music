@@ -10,14 +10,15 @@ import {useObserve} from "@composables/useObserve.ts";
 import Empty from "@ui/empty/Empty.vue";
 import Icon from "@ui/Icon.vue";
 
-import ArrowIcon from "@icons/ArrowIcon.vue";
 import MusicRecordIcon from "@icons/MusicRecordIcon.vue";
+import RadioIcon from "@icons/RadioIcon.vue";
 
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
 import useMusicStore from "@store/useMusicStore.ts";
+import Tooltip from "@ui/Tooltip.vue";
 const musicStore = useMusicStore();
 
 const listRef = ref<HTMLUListElement | null>(null)
@@ -31,45 +32,38 @@ useObserve(
     musicStore.hasMore
 )
 
+let observer: IntersectionObserver | null = null
+
 const arrowVisible = ref<boolean>(false)
-const arrowPosition = ref<'top' | 'bottom'>('top')
 
 const scrollToActive = () => {
   activeLiRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
 }
 
-const updateArrow = () => {
-  const list = listRef.value
-  const li = activeLiRef.value
-  if (!list || !li) return
+const initObserver = () => {
+  if (!activeLiRef.value) return
 
-  const itemTop = li.offsetTop
-  const itemBottom = itemTop + li.offsetHeight
-  const viewTop = list.scrollTop
-  const viewBottom = viewTop + list.clientHeight
+  observer?.disconnect()
+  observer = null
 
-  if (itemBottom < viewTop) {
-    arrowVisible.value = true
-    arrowPosition.value = 'top'
-  } else if (itemTop > viewBottom) {
-    arrowVisible.value = true
-    arrowPosition.value = 'bottom'
-  } else {
-    arrowVisible.value = false
-  }
+  observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      arrowVisible.value = !entry.isIntersecting
+    })
+  }, {root: activeLiRef.value?.parentElement})
+
+  observer.observe(activeLiRef.value)
 }
 
 watchEffect((onCleanup) => {
-  const list = listRef.value
-  if (!list || audioStore.activeTrack.id < 0) return
-  if (searchStore.searchName) {
-    arrowVisible.value = false
-    return
-  }
+  if (audioStore.activeTrack.id < 0 || searchStore.searchName) return
 
-  updateArrow()
-  list.addEventListener('scroll', updateArrow, { passive: true })
-  onCleanup(() => list.removeEventListener('scroll', updateArrow))
+  initObserver()
+
+  onCleanup(() => {
+    observer?.disconnect()
+    arrowVisible.value = false
+  })
 })
 </script>
 
@@ -87,6 +81,9 @@ watchEffect((onCleanup) => {
               item.id === audioStore.activeTrack.id && 'is-active pointer-events-none bg-[color-mix(in_srgb,_var(--dark-15),_transparent_25%)] '
           ]"
           @click="audioStore.updateMusic(item.id)"
+          :ref="(el) => {
+            if (audioStore.activeTrack.id === item.id) activeLiRef = el as HTMLLIElement
+          }"
       >
         <div class="square-20 3xl:square-22 shrink-0 rounded-regular img-container z-[100]">
           <img v-if="item?.previewUrl"
@@ -127,16 +124,23 @@ watchEffect((onCleanup) => {
     </Transition>
 
     <Transition name="fade-small">
-      <button v-if="arrowVisible"
-              :class="[
-                  'button square-9.5 rounded-full flex-center absolute left-[calc(100% + 0.625rem)] top-2.5',
-                  arrowPosition === 'top' ? '-rotate-90' : 'rotate-90'
-              ]"
-              @click="scrollToActive"
-              type="button"
+      <Tooltip v-if="arrowVisible"
+               class="absolute left-[calc(100%_+_1rem)] top-4"
+               position="right"
       >
-        <Icon :name="ArrowIcon" :size="20"/>
-      </button>
+        <template #activator>
+          <button class="button !rounded-full flex-center !p-2 recolor-svg"
+                  @click="scrollToActive"
+                  type="button"
+          >
+            <Icon :name="RadioIcon" :size="20"/>
+          </button>
+        </template>
+
+        <template #default>
+          К треку
+        </template>
+      </Tooltip>
     </Transition>
   </div>
 </template>

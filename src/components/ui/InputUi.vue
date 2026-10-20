@@ -36,7 +36,7 @@ const value = defineModel<string>()
       {{value?.length || 0}} / {{maxLength}}
     </span>
 
-    <span class="fields_error absolute text-[0.9em] bg-dark-15 leading-none top-[calc(100% + 0.31rem)] left-1 text-accent"
+    <span class="fields_error absolute text-[0.9em] bg-dark-15 leading-none top-[calc(100%_+_0.31rem)] left-1 text-accent"
           data-js-form-field-errors
     />
   </label>
