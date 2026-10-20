@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, onUnmounted, ref} from "vue";
+import {onBeforeMount, ref} from "vue";
 
 import {checkMe} from "@utils/auth.ts";
 
@@ -24,40 +24,10 @@ const messageStore = useMessageStore();
 
 const visible = ref(false)
 
-const allKeyCodes = {
-  space: 'Space',
-  arrowLeft: 'ArrowLeft',
-  arrowRight: 'ArrowRight',
-}
-
-const handleKey = (e: KeyboardEvent) => {
-  const audio = audioStore.audio
-
-  switch (e.code) {
-    case allKeyCodes.space:
-      e.preventDefault()
-      audioStore.isPlaying = !audioStore.isPlaying
-      break
-    case allKeyCodes.arrowLeft:
-      if (Number.isNaN(audio.duration)) break
-      e.preventDefault()
-      audio.currentTime = Math.max(0, audio.currentTime - 5)
-      break
-    case allKeyCodes.arrowRight:
-      if (Number.isNaN(audio.duration)) break
-      e.preventDefault()
-      audio.currentTime = Math.min(audio.duration, audio.currentTime + 5)
-      break
-  }
-}
-
-onMounted(async () => {
-  globalThis.addEventListener("keydown", handleKey, true)
+onBeforeMount(async () => {
   await checkMe()
   visible.value = true
 })
-
-onUnmounted(() => globalThis.removeEventListener("keydown", handleKey, true))
 </script>
 
 <template>
