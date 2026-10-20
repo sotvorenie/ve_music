@@ -14,9 +14,5 @@
 
   &__input {
     padding-inline: rem(20) rem(55);
-
-    @include laptop {
-      padding-inline: rem(20) rem(100);
-    }
   }
 }

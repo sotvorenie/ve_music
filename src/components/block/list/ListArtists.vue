@@ -23,7 +23,7 @@ await artistStore.getArtists()
 const handleArtist = async (artist: Artist) => {
   artistStore.currentArtist = artist
 
-  await musicStore.getMusic()
+  await musicStore.getMusic(1)
 
   menuStore.listMode = 'artistMusic'
 }
@@ -33,8 +33,8 @@ const lastLiRef = ref<HTMLLIElement | null>(null)
 
 useObserve(
     lastLiRef,
-    () => artistStore.getArtists(),
-    artistStore.hasMore
+    () => artistStore.getArtists(artistStore.page + 1),
+    () => artistStore.hasMore
 )
 </script>
 
@@ -67,9 +67,7 @@ useObserve(
       <li class="h-[1px]" ref="lastLiRef"/>
     </ul>
 
-    <Transition name="list">
-      <Empty v-if="!musicStore.music.length"/>
-    </Transition>
+    <Empty v-if="!musicStore.music.length"/>
   </div>
 
 </template>

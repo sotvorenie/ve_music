@@ -21,7 +21,7 @@ const drawVignette = () => {
   ctx.save()
   ctx.globalCompositeOperation = 'destination-out'
 
-  ctx.translate(w * 0.9, h * 0.12)
+  ctx.translate(w * 0.98, h * 0.15)
 
   ctx.scale(1.2, 1)
 

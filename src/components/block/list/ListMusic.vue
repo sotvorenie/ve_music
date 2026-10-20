@@ -28,8 +28,8 @@ const activeLiRef = ref<HTMLLIElement | null>(null)
 
 useObserve(
     lastLiRef,
-    () => musicStore.getMusic(),
-    musicStore.hasMore
+    () => musicStore.getMusic(musicStore.page + 1),
+    () => musicStore.hasMore
 )
 
 let observer: IntersectionObserver | null = null
@@ -119,9 +119,7 @@ watchEffect((onCleanup) => {
       <li style="height: 1px;" ref="lastLiRef"/>
     </ul>
 
-    <Transition name="list">
-      <Empty v-if="!musicStore.music.length"/>
-    </Transition>
+    <Empty v-if="!musicStore.music.length"/>
 
     <Transition name="fade-small">
       <Tooltip v-if="arrowVisible"

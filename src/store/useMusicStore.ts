@@ -29,7 +29,9 @@ const useMusicStore = defineStore("musicStore", () => {
     const randomSeed = ref<number>((Math.random() * 2) - 1)
     const offset = ref<number>(-1)
 
-    const getMusic = async () => {
+    const getMusic = async (p: number = 1) => {
+        page.value = p
+
         try {
             const allApis = {
                 genres: () => apiGetMusicList(
@@ -57,7 +59,6 @@ const useMusicStore = defineStore("musicStore", () => {
 
             if (response) {
                 music.value = page.value === 1 ? response.music : [...music.value, ...response.music]
-                page.value = response.page
                 limit.value = response.limit
                 hasMore.value = response.hasMore
                 total.value = response.total

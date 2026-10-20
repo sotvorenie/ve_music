@@ -4,6 +4,7 @@ import {computed} from "vue";
 import {debounce} from "@composables/useDebounce.ts";
 
 import Tooltip from "@ui/Tooltip.vue";
+import Icon from "@ui/Icon.vue";
 
 import SearchIcon from "@/components/icons/SearchIcon.vue";
 import CrossIcon from "@/components/icons/CrossIcon.vue";
@@ -69,9 +70,10 @@ const inputSearchName = debounce(() => {
       <template #activator>
         <Transition name="scale" mode="out-in">
           <button :key="`${searchStore.isOpen}`"
-                  class="recolor-svg square-9 3xl:square-10"
+                  class="recolor-svg square-9 3xl:square-10 origin-right"
                   :disabled="!musicStore.music?.length"
                   @click="searchStore.isOpen = !searchStore.isOpen"
+                  title="Очистить поле"
                   type="button"
           >
             <SearchIcon v-if="!searchStore.isOpen"/>
@@ -93,11 +95,10 @@ const inputSearchName = debounce(() => {
       <div v-if="searchStore.isOpen"
            class="search__content absolute z-10 flex overflow-hidden top-15 w-105 bg-dark-15 rounded-[1rem] border border-light"
       >
-        <Transition name="fade" mode="out-in">
+        <Transition :name="searchStore.searchName ? '' : 'fade'" mode="out-in">
           <input :key="`${menuStore.menuMode}-${menuStore.listMode}-${genreStore.currentGenre.id}`"
-                 class="search__input w-full bg-transparent h-full"
+                 class="search__input w-full bg-transparent h-full !pr-25 3xl:!pr-27"
                  v-model="searchStore.searchName"
-                 :title="searchStore.searchName"
                  :placeholder="placeholder"
                  @keydown.enter="search"
                  @input="inputSearchName"
@@ -106,24 +107,24 @@ const inputSearchName = debounce(() => {
 
         <Transition name="scale">
           <button v-if="searchStore.searchName"
-                  class="recolor-svg square-25 3xl:square-30 abs-y right-[14%] 3xl:right-[20%] origin-top-right"
+                  class="recolor-svg square-6 3xl:square-8 abs-y right-[14%] 3xl:right-[17%]"
                   @click="handleClear"
                   title="Очистить поле"
                   type="button"
           >
-            <CrossIcon/>
+            <Icon :name="CrossIcon" :size="30"/>
           </button>
         </Transition>
 
         <button :class="[
-                  'recolor-svg absolute flex-center top-0 right-0 w-[12%] 3xl:w-[15%] h-full p-4 bg-dark-alt transition-[transform,opacity] opacity-0 translate-x-full',
-                  searchStore.searchName && 'translate-x-0 opacity-100'
-              ]"
+                  'recolor-svg absolute flex-center top-0 right-0 w-[12%] 3xl:w-[15%] h-full p-4 bg-dark-alt !transition-[translate,opacity]',
+                  searchStore.searchName ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+                ]"
                 @click="search"
                 title="Поиск"
                 type="button"
         >
-          <SearchIcon class="w-full h-auto"/>
+          <SearchIcon/>
         </button>
       </div>
     </Transition>

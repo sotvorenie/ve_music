@@ -1,11 +1,15 @@
-import {MaybeRef, onBeforeUnmount, unref, watch} from "vue";
+import {MaybeRef, MaybeRefOrGetter, onBeforeUnmount, toValue, watch} from "vue";
 
-export const useObserve = (element: MaybeRef<HTMLElement | null>, func: Function, hasMore: MaybeRef<boolean> = true) => {
+export const useObserve = (
+    element: MaybeRef<HTMLElement | null>,
+    func: Function,
+    hasMore: MaybeRefOrGetter<boolean> = true
+) => {
     let observer: IntersectionObserver | null = null
     let isProcessing: boolean = false
 
     watch(
-        () => [unref(element), unref(hasMore)] as const,
+        () => [toValue(element), toValue(hasMore)] as const,
         ([el, more]) => {
             observer?.disconnect()
             observer = null
@@ -27,6 +31,8 @@ export const useObserve = (element: MaybeRef<HTMLElement | null>, func: Function
                 root: el?.parentElement,
                 rootMargin: '300px',
             })
+
+            observer.observe(el)
         }
     )
 

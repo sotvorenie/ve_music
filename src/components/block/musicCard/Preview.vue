@@ -51,7 +51,7 @@ onUnmounted(() => {
 <template>
   <div :key="audioStore.activeTrack.id"
        :class="[
-            'img-container absolute right-0 w-[65vw] 3xl:w-[70vw] h-screen aspect-square transition-[scale] duration-500',
+            'img-container absolute right-0 h-screen aspect-square transition-[scale] duration-500',
             audioStore.isPlaying && (controllersStore.mode === 'img') && 'will-change-transform scale-105'
         ]"
   >

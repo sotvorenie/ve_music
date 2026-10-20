@@ -23,13 +23,14 @@ const useArtistStore = defineStore("artistStore", () => {
     const total = ref<number>(0)
     const hasMore = ref<boolean>(true)
 
-    const getArtists = async () => {
+    const getArtists = async (p: number = 1) => {
+        page.value = p
+
         try {
             const response: ArtistsResponse = await apiGetArtists(searchStore.searchName, page.value, limit.value)
 
             if (response) {
                 artists.value = page.value === 1 ? response.artists : [...artists.value, ...response.artists]
-                page.value = response.page
                 limit.value = response.limit
                 hasMore.value = response.hasMore
                 total.value = response.total

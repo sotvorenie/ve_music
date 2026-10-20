@@ -36,7 +36,7 @@ watch(
 <template>
 
   <div :class="[
-           'list-wrapper absolute z-10 top-15 w-100',
+           'list-wrapper absolute z-10 top-15 w-100 h-[80vh]',
            searchStore.isOpen && 'is-active'
        ]"
   >
@@ -46,14 +46,12 @@ watch(
           ]"
     >
       <ButtonUi :is-active="menuStore.listMode === 'music'"
-                :is-disabled="!musicStore.music.length"
                 @click="handleMusic"
       >
         Музыка
       </ButtonUi>
 
       <ButtonUi :is-active="menuStore.listMode === 'artists'"
-                :is-disabled="!musicStore.music.length"
                 @click="menuStore.listMode = 'artists'"
       >
         Исполнители
