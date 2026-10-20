@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, onMounted, onUnmounted, ref} from "vue";
+import {computed, nextTick, onMounted, onUnmounted, ref, watch} from "vue";
 
 import {BASE_URL} from "@api/url.ts";
 
@@ -35,6 +35,15 @@ const onSeeked = () => {
   }
 }
 
+watch(visibleVideo, async (visible) => {
+  if (!visible) return
+  await nextTick()
+  if (!videoRef.value) return
+
+  videoRef.value.currentTime = audioStore.audio.currentTime
+  if (audioStore.isPlaying) videoRef.value.play().catch(() => {})
+})
+
 onMounted(() => {
   audioStore.audio?.addEventListener("play", onPlay)
   audioStore.audio?.addEventListener("pause", onPause)
@@ -49,29 +58,52 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div :key="audioStore.activeTrack.id"
-       :class="[
-            'img-container absolute right-0 h-screen aspect-square transition-[scale] duration-500',
-            audioStore.isPlaying && (controllersStore.mode === 'img') && 'will-change-transform scale-105'
-        ]"
+<!--  <div :key="audioStore.activeTrack.id"-->
+<!--       :class="[-->
+<!--            'img-container absolute right-0 h-screen aspect-square transition-[scale,width] duration-1200',-->
+<!--            audioStore.isPlaying && (controllersStore.mode === 'img') && 'will-change-transform scale-105',-->
+<!--            controllersStore.mode === 'video' ? 'w-[75vw]' : 'w-[100vh]',-->
+<!--        ]"-->
+<!--  >-->
+<!--    <img :src="`${BASE_URL}${audioStore.activeTrack.previewUrl}`"-->
+<!--         :alt="audioStore.activeTrack?.name"-->
+<!--         draggable="false"-->
+<!--         :class="[-->
+<!--            'transition-[opacity]',-->
+<!--            visibleImage ? 'opacity-100' : 'opacity-0 hidden'-->
+<!--         ]"-->
+<!--    >-->
+<!--    <video :src="`${BASE_URL}${audioStore.activeTrack?.videoClipUrl}`"-->
+<!--           muted-->
+<!--           ref="videoRef"-->
+<!--           preload="auto"-->
+<!--           :class="[-->
+<!--               'transition-[opacity]',-->
+<!--               visibleVideo ? 'opacity-100' : 'opacity-0 hidden'-->
+<!--           ]"-->
+<!--    />-->
+<!--  </div>-->
+
+  <TransitionGroup name="fade-absolute"
+                   mode="out-in"
+                   tag="div"
+                   :class="[
+                        'img-container absolute right-0 h-screen aspect-square transition-[scale,width] duration-1200',
+                        audioStore.isPlaying && (controllersStore.mode === 'img') && 'will-change-transform scale-105',
+                        controllersStore.mode === 'video' ? 'w-[75vw]' : 'w-[100vh]',
+                    ]"
   >
-    <img :src="`${BASE_URL}${audioStore.activeTrack.previewUrl}`"
+    <img v-if="visibleImage"
+         :src="`${BASE_URL}${audioStore.activeTrack.previewUrl}`"
          :alt="audioStore.activeTrack?.name"
          draggable="false"
-         :class="[
-            'transition-[opacity]',
-            visibleImage ? 'opacity-100' : 'opacity-0 hidden'
-         ]"
     >
-    <video :src="`${BASE_URL}${audioStore.activeTrack?.videoClipUrl}`"
+    <video v-else
+           :src="`${BASE_URL}${audioStore.activeTrack?.videoClipUrl}`"
            muted
            ref="videoRef"
            preload="auto"
-           :class="[
-               'transition-[opacity]',
-               visibleVideo ? 'opacity-100' : 'opacity-0 hidden'
-           ]"
     />
-  </div>
+  </TransitionGroup>
 
 </template>
