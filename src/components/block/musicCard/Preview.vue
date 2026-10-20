@@ -51,7 +51,7 @@ onUnmounted(() => {
 <template>
   <div :key="audioStore.activeTrack.id"
        :class="[
-            'img-container absolute right-0 w-[65vw] 3xl:w-[70vw] h-screen aspect-square transition-[scale]',
+            'img-container absolute right-0 w-[65vw] 3xl:w-[70vw] h-screen aspect-square transition-[scale] duration-500',
             audioStore.isPlaying && (controllersStore.mode === 'img') && 'will-change-transform scale-105'
         ]"
   >
@@ -60,7 +60,7 @@ onUnmounted(() => {
          draggable="false"
          :class="[
             'transition-[opacity]',
-            visibleImage ? 'opacity-0' : 'opacity-100'
+            visibleImage ? 'opacity-100' : 'opacity-0 hidden'
          ]"
     >
     <video :src="`${BASE_URL}${audioStore.activeTrack?.videoClipUrl}`"
@@ -69,7 +69,7 @@ onUnmounted(() => {
            preload="auto"
            :class="[
                'transition-[opacity]',
-               visibleVideo ? 'opacity-0' : 'opacity-100'
+               visibleVideo ? 'opacity-100' : 'opacity-0 hidden'
            ]"
     />
   </div>

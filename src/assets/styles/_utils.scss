@@ -4,6 +4,7 @@
   @include flex-center();
 
   overflow: hidden;
+  background: var(--dark-alt);
 
   img, video {
     width: 100%;

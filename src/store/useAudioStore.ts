@@ -73,7 +73,7 @@ const useAudioStore = defineStore('audioStore', () => {
             if (id) data = await apiGetMusic(id)
 
             if (data) {
-                Object.assign(activeTrack, data)
+                Object.assign(activeTrack.value, data)
                 loadAndPlay()
 
                 if (controllersStore.mode === 'video' && !activeTrack.value.videoClipUrl) controllersStore.mode = 'img'

@@ -36,7 +36,7 @@ watch(
 <template>
 
   <div :class="[
-           'list-wrapper absolute z-10 top-15',
+           'list-wrapper absolute z-10 top-15 w-100',
            searchStore.isOpen && 'is-active'
        ]"
   >
@@ -61,7 +61,7 @@ watch(
     </div>
 
     <span v-if="menuStore.listMode === 'artistMusic'"
-          class="mb-10 text-ellipsis"
+          class="mb-10 truncate"
     >
       Музыка исполнителя {{artistStore.currentArtist.name}}
     </span>

@@ -1,7 +1,7 @@
 @use '../helpers' as *;
 
 .controllers {
-  gap: fluid(20, 10);
+  gap: fluid(50, 20);
 
   &__play-pause {
     @include fluid-square(70, 50);
@@ -24,7 +24,7 @@
     @include fluid-square(50, 30);
 
     padding: fluid(10, 5);
-    color: var(--color-light);
+    color: var(--light);
     border-radius: var(--radius-regular);
 
     svg {
@@ -33,29 +33,14 @@
     }
   }
 
-  &__modes, &__settings {
+  &__modes, &__settings, &__settings-list {
     gap: fluid(0, 10);
   }
 
-  &__modes {
-    right: fluid(130, 50);
-  }
+  &__sound-range {
 
-  &__sound {
-    margin-right: fluid(110, 20);
-
-    &-range {
-      --range-wigth: #{fluid(100, 50)};
-
-      @include abs-y;
-
-      width: var(--range-wigth);
-      height: rem(4) !important;
-      left: calc(100% - #{rem(5)});
-
-      &::-webkit-slider-thumb {
-        @include square(12);
-      }
+    &::-webkit-slider-thumb {
+      @include square(12);
     }
   }
 }

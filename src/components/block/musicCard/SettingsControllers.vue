@@ -18,7 +18,7 @@ const musicStore = useMusicStore();
 const volumeStyle = computed(() => {
   const volume = audioStore.volume * 100
   return {
-    background: `linear-gradient(to right, var(--color-accent) ${volume}%, rgba(255, 255, 255, 0.15) ${volume}%)`
+    background: `linear-gradient(to right, var(--accent) ${volume}%, rgba(255, 255, 255, 0.15) ${volume}%)`
   }
 })
 
@@ -72,9 +72,9 @@ onMounted(() => {
 
 <template>
 
-  <div class="controllers__settings absolute flex items-center left-0 3xl:left-6">
+  <div class="controllers__settings flex items-center justify-between">
     <div class="relative flex items-center group">
-          <span class="tabular-nums opacity-0 transition-opacity group-hover:opacity-0">
+          <span class="tabular-nums opacity-0 transition-opacity group-hover:opacity-100">
             {{Number(audioStore.volume)?.toFixed(1)}}
           </span>
 
@@ -94,7 +94,7 @@ onMounted(() => {
         </template>
       </Tooltip>
 
-      <input class="controllers__sound-range absolute opacity-0 transition-opacity pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto"
+      <input class="controllers__sound-range !h-1 opacity-0 transition-opacity pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto w-25"
              v-model="audioStore.volume"
              :style="volumeStyle"
              :min="0"
@@ -104,41 +104,43 @@ onMounted(() => {
       >
     </div>
 
-    <Tooltip>
-      <template #activator>
-        <button :class="[
+    <div class="flex controllers__settings-list">
+      <Tooltip>
+        <template #activator>
+          <button :class="[
                         'controllers__small-btn recolor-svg flex-center',
                         controllersStore.isRandom && 'bg-dark-15'
                     ]"
-                @click="handleIsRandom"
-                type="button"
-        >
-          <RandomIcon/>
-        </button>
-      </template>
+                  @click="handleIsRandom"
+                  type="button"
+          >
+            <RandomIcon/>
+          </button>
+        </template>
 
-      <template #default>
-        Воспроизведение в случайном порядке
-      </template>
-    </Tooltip>
+        <template #default>
+          Воспроизведение в случайном порядке
+        </template>
+      </Tooltip>
 
-    <Tooltip>
-      <template #activator>
-        <button :class="[
+      <Tooltip>
+        <template #activator>
+          <button :class="[
                         'controllers__small-btn recolor-svg flex-center',
                         controllersStore.isRepeat && 'bg-dark-15'
                     ]"
-                @click="handleIsRepeat"
-                type="button"
-        >
-          <RepeatIcon/>
-        </button>
-      </template>
+                  @click="handleIsRepeat"
+                  type="button"
+          >
+            <RepeatIcon/>
+          </button>
+        </template>
 
-      <template #default>
-        Повтор композиции
-      </template>
-    </Tooltip>
+        <template #default>
+          Повтор композиции
+        </template>
+      </Tooltip>
+    </div>
   </div>
 
 </template>

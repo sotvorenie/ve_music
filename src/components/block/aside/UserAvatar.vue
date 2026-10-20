@@ -45,8 +45,7 @@ const updateAvatar = async (file: File) => {
       userStore.user.avatarUrl = response.url
       messageStore.show('Аватарка обновлена!!')
     }
-  } catch (err) {
-    console.error(err)
+  } catch {
     await showError(
         'Ошибка загрузки фото',
         'Не удалось загрузить аватар..'
@@ -70,8 +69,7 @@ const deleteAvatar = async () => {
 
     await apiDeleteUserAvatar()
     userStore.user.avatarUrl = ''
-  } catch (err) {
-    console.error(err)
+  } catch {
     await showError(
         'Ошибка удаления аватарки',
         'Не удалось удалить аватарку'
@@ -89,7 +87,7 @@ const deleteAvatar = async () => {
   >
     <template #activator>
       <div :class="[
-               'aside__btn square-12.5 rounded-full relative cursor-pointer',
+               'aside__avatar aside__btn square-12.5 rounded-full relative cursor-pointer',
                isUserRedact && 'is-active'
            ]"
       >

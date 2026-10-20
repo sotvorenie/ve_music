@@ -4,11 +4,11 @@
   padding: rem(10) rem(20);
 
   &.light {
-    background: var(--color-light);
-    color: var(--color-dark);
+    background: var(--light);
+    color: var(--dark);
   }
   &.dark {
-    background: var(--color-dark-15);
-    color: var(--color-light);
+    background: var(--dark-15);
+    color: var(--light);
   }
 }

@@ -75,11 +75,11 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
 
     <Transition name="aside">
       <div v-if="isOpen"
-           class="absolute z-[10000] inset-0 bg-dark-alt p-7.5"
+           class="absolute z-[10000] left-0 top-0 h-full bg-dark-alt p-7.5"
            @click.stop
       >
         <ul class="flex flex-col gap-7.5">
-          <li class="square-12.5">
+          <li class="square-12.5 flex-center">
             <Tooltip position="right">
               <template #activator>
                 <button class="aside__btn square-12.5 recolor-svg rounded-full"
@@ -96,6 +96,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
               </template>
             </Tooltip>
           </li>
+
           <li class="square-12.5">
             <UserAvatar v-model:is-loading="isLoading"
                         v-model:is-user-redact="isUserRedact"

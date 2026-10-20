@@ -22,8 +22,8 @@ watch(
 
 <template>
 
-  <div>
-    <button class="prev flex-center bg-transparent rounded-full text-light border-2 border-current rotate-180 p-1"
+  <div class="flex-center gap-4">
+    <button class="prev square-12.5 flex-center bg-transparent rounded-full text-light border-2 border-current rotate-180 p-1"
             :disabled="disabledControlButton"
             @click="controllersStore.prevItem"
             type="button"
@@ -31,9 +31,9 @@ watch(
       <ArrowIcon class="-mr-1"/>
     </button>
 
-    <PlayButton :disabled="audioStore.activeTrack.id < 0"/>
+    <PlayButton :disabled="audioStore.activeTrack.id < 0" class="square-20"/>
 
-    <button class="next flex-center bg-transparent rounded-full text-light border-2 border-current p-1"
+    <button class="next square-12.5 flex-center bg-transparent rounded-full text-light border-2 border-current p-1"
             :disabled="disabledControlButton"
             @click="controllersStore.nextItem"
             type="button"

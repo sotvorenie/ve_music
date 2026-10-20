@@ -38,7 +38,7 @@ const handleLike = async () => {
                     @click="userStore.isLogged ? handleLike() : open()"
                     type="button"
             >
-              <Like class="aspect-square w-4 3xl:w-7.5"
+              <Like class="aspect-square w-4 3xl:w-7.5 h-auto"
                     :is-liked="audioStore.activeTrack?.isLiked && userStore.isLogged"
               />
 

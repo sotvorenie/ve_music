@@ -83,14 +83,14 @@ watchEffect((onCleanup) => {
       <li v-for="item in musicStore.music"
           :key="item.id"
           :class="[
-              'list__item flex cursor-pointer items-center relative gap-4 rounded-regular transition-[background-color] w-100 group hover:bg-[color-mix(in srgb, var(--color-dark-15), transparent 50%)]',
-              item.id === audioStore.activeTrack.id && 'is-active pointer-events-none bg-[color-mix(in srgb, var(--color-dark-15), transparent 25%)] '
+              'list__item flex cursor-pointer items-center relative gap-4 rounded-regular transition-[background-color] duration-300 w-100 group hover:bg-[color-mix(in_srgb,_var(--dark-15),_transparent_50%)]',
+              item.id === audioStore.activeTrack.id && 'is-active pointer-events-none bg-[color-mix(in_srgb,_var(--dark-15),_transparent_25%)] '
           ]"
           @click="audioStore.updateMusic(item.id)"
       >
-        <div class="square-20 3xl:square-25 shrink-0 rounded-regular img-container z-[100]">
+        <div class="square-20 3xl:square-22 shrink-0 rounded-regular img-container z-[100]">
           <img v-if="item?.previewUrl"
-               class="transition-transform group-hover:will-change-transform group-hover:scale-110"
+               class="transition-transform duration-400 group-hover:will-change-transform group-hover:scale-110"
                :src="`${BASE_URL}${item?.previewUrl}`"
                :alt="item?.name"
           >
@@ -99,7 +99,7 @@ watchEffect((onCleanup) => {
         <Transition name="record">
           <Icon v-if="item.id === audioStore.activeTrack.id"
                 :class="[
-                    'list__item-record abs-y z-10 rounded-full ml-12.5 left-0 text-accent bg-[color-mix(in srgb, var(--color-dark-15), transparent 25%)]',
+                    'list__item-record abs-y z-10 rounded-full ml-12.5 left-0 text-accent bg-[color-mix(in srgb, var(--dark-15), transparent 25%)]',
                     !audioStore.isPlaying && 'paused'
                 ]"
                 :name="MusicRecordIcon"
@@ -113,8 +113,8 @@ watchEffect((onCleanup) => {
                   item.id === audioStore.activeTrack.id && 'pl-6'
               ]"
         >
-          <p class="font-medium text-ellipsis">{{item?.name}}</p>
-          <p class="opacity-50 text-[0.9em] text-ellipsis">{{showArtists(item?.artists)}}</p>
+          <p class="font-medium truncate">{{item?.name}}</p>
+          <p class="opacity-50 text-[0.9em] truncate">{{showArtists(item?.artists)}}</p>
           <p class="opacity-50 text-[0.9em]">{{formatTime(item.duration)}}</p>
         </div>
       </li>

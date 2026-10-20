@@ -94,10 +94,10 @@ const formatSize = (bytes: number) => {
            @dragover.prevent
            @drop.prevent="onDrop"
     >
-      <input class="visually-hidden"
-             :multiple="multiple"
+      <input :multiple="multiple"
              :accept="accept"
              :disabled="disabled"
+             hidden
              @change="onChange"
              type="file"
       >

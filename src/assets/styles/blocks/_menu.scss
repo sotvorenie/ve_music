@@ -5,7 +5,7 @@
   width: fluid(280, 100);
 
   &__genres {
-    padding: rem(16) rem(10);
+    padding: rem(10) rem(10);
 
     @include laptop {
       padding: 0;
@@ -33,10 +33,5 @@
     &-inner {
       transition: opacity var(--transition-duration-big);
     }
-  }
-
-  svg {
-    width: rem(50);
-    height: auto;
   }
 }

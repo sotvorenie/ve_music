@@ -55,7 +55,7 @@ watch(
       <Actions/>
 
       <div :class="[
-               'info__title font-bold w-full overflow-hidden relative text-nowrap leading-[1.2]',
+               'info__title font-bold w-full overflow-hidden relative text-nowrap leading-[1.2] transition-[transform] duration-500',
                isNameShadow && 'shadow'
            ]"
       >
@@ -77,7 +77,7 @@ watch(
         </div>
       </div>
 
-      <div class="info__author leading-[1.2] w-full overflow-hidden relative text-nowrap text-ellipsis">
+      <div class="info__author leading-[1.2] w-full overflow-hidden relative text-nowrap truncate">
         {{ showArtists(audioStore.activeTrack?.artists) }}
       </div>
     </div>

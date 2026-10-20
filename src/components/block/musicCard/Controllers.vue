@@ -9,7 +9,7 @@ const audioStore = useAudioStore();
 
 <template>
 
-  <div class="controllers flex-center">
+  <div class="controllers grid grid-cols-[1fr_auto_1fr] items-center">
     <SettingsControllers/>
 
     <TrackControllers/>

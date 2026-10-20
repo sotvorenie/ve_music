@@ -6,9 +6,9 @@
           fill var(--transition-duration),
           transform var(--transition-duration);
 
-  &.is-active {
-    color: var(--color-accent);
-    fill: var(--color-accent);
+  &.is-liked {
+    color: var(--accent);
+    fill: var(--accent);
     animation: likeAnimation var(--transition-duration-big) cubic-bezier(0.68, -0.55, 0.27, 1.55);
 
     @keyframes likeAnimation {

@@ -11,6 +11,10 @@
 
   --font-family-base: 'Montserrat';
 
+  --radius-regular: #{rem(12)};
+  --radius-medium: #{rem(22)};
+  --radius-big: #{rem(32)};
+
   --transition-duration: 0.2s;
   --transition-duration-big: 0.5s;
 }

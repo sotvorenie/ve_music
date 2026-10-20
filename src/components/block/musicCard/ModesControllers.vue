@@ -13,7 +13,7 @@ const controllersStore = useControllersStore();
 <template>
 
   <div v-if="audioStore.activeTrack.id >= 0"
-       class="controllers__modes absolute flex items-center w-1/5"
+       class="controllers__modes flex items-center w-1/5"
   >
     <Tooltip>
       <template #activator>

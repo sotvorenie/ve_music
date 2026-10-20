@@ -74,8 +74,7 @@ const redactUser = async () => {
     const results = await Promise.allSettled(promises)
 
     await showDetails(results, actions)
-  } catch (err) {
-    console.error(err)
+  } catch {
     await showError(
         'Ошибка редактирования профиля',
         'Не удалось редактировать профиль'
@@ -112,19 +111,17 @@ onMounted(() => {
 
 <template>
   <div v-if="isUserRedact"
-       class="user-redact bg-dark-15 left-102.5 top-50 rounded-big flex flex-column flex-between absolute z-[1000] py-5 pr-5 pl-60 w-150 h-60"
+       class="user-redact bg-dark-15 left-102.5 top-50 rounded-big flex flex-col gap-7.5 absolute z-[1000] py-5 pr-5 pl-60 w-150 h-60"
   >
     <InputUi v-model="name"
-             class="w-full mb-7.5"
              title="Имя"
     />
 
     <InputUi v-model="password"
-             class="w-full mb-7.5"
              title="Пароль"
     />
 
-    <div class="flex gap-5">
+    <div class="flex gap-3">
       <ButtonUi class="grow"
                 :is-disabled="!redactIsActive || !name.length"
                 @click="handleRedact"

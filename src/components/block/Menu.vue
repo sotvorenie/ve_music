@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref, watch} from "vue";
 
-import { GenresResponse } from "@/types/genre.ts";
+import {Genre} from "@/types/genre.ts";
 
 import {apiGetAllGenres} from "@api/genre/genre.ts";
 
@@ -25,7 +25,7 @@ const musicStore = useMusicStore();
 
 const musicIndex = defineModel('musicIndex',{type: Number})
 
-const genresList = ref<GenresResponse>()
+const genres = ref<Genre[]>([])
 
 const menuList = [
   {
@@ -47,6 +47,13 @@ const menuList = [
 
 const activeTabIndex = ref<number>(0)
 
+const modalText = ref<string>('')
+const indexErrorText = 'необходимо авторизоваться'
+const allErrorsText: Record<string, string> = {
+  history: `Для доступа к истории прослушиваний ${indexErrorText}`,
+  favorites: `Для доступа к понравившимся трекам ${indexErrorText}`,
+}
+
 const handleGenre = async (id: number, genreName?: string) => {
   musicIndex.value = 0
 
@@ -61,18 +68,13 @@ const handleTab = (index: number) => {
 
 const getGenres = async () => {
   try {
-    genresList.value = await apiGetAllGenres()
+    const response = await apiGetAllGenres()
+    genres.value = [{id: -1, name: 'All'}, ...response.genres]
   } catch {}
 }
 
 await getGenres()
 
-const modalText = ref<string>('')
-const indexErrorText = 'необходимо авторизоваться'
-const allErrorsText: Record<string, string> = {
-  history: `Для доступа к истории прослушиваний ${indexErrorText}`,
-  favorites: `Для доступа к понравившимся трекам ${indexErrorText}`,
-}
 const handleErrorModal = (type: string, func: Function) => {
   modalText.value = allErrorsText[type]
   func()
@@ -98,7 +100,7 @@ watch(
     </template>
   </Modal>
 
-  <div v-if="genresList?.genres?.length"
+  <div v-if="genres.length"
        class="menu abs-y z-10"
   >
     <ul class="flex flex-col">
@@ -109,13 +111,13 @@ watch(
         <Modal close-visible>
           <template #activator="{open}">
             <button :class="[
-                        'menu__item-btn recolor-svg flex items-center w-full rounded-regular gap-2.5',
+                        'menu__item-btn recolor-svg flex items-center w-full rounded-regular gap-2.5 hover:bg-dark-alt/75',
                         activeTabIndex === index && 'pointer-events-none bg-dark-15',
                     ]"
                     @click="userStore.isLogged ? handleTab(index) : handleErrorModal(item.value, open)"
                     type="button"
             >
-              <Component :is="item.icon" class="w-7.5 aspect-square"/>
+              <Component :is="item.icon" class="w-10 h-auto"/>
               <span class="menu__name">{{item.name}}</span>
             </button>
           </template>
@@ -126,31 +128,17 @@ watch(
         </Modal>
 
         <div :class="[
-                 'grid grid-rows-[0] overflow-hidden',
-                 activeTabIndex === 0 && 'is-active grid-rows-1'
+                 'menu__wrapper overflow-hidden grid',
+                 activeTabIndex === 0 ? 'is-active grid-rows-[1fr]' : 'grid-rows-[0fr]'
              ]"
         >
           <div class="menu__wrapper-inner min-h-0 opacity-0">
             <ul :class="[
-                    'flex flex-col relative bg-[color-mix(in srgb, var(--color-dark-15), transparent 25%)] rounded-regular ml-5 mt-2.5 max-h-[50vh] overflow-y-auto',
+                    'flex flex-col relative bg-[color-mix(in_srgb,_var(--dark-15),_transparent_25%)] rounded-regular ml-5 mt-2.5 max-h-[50vh] overflow-y-auto',
                     index > 0 && 'hidden'
                 ]"
             >
-              <li v-if="genresList?.genres"
-                  class="menu__genre w-full z-1"
-              >
-                <button :class="[
-                            'menu__btn font-medium w-full text-left rounded-regular h-15 transition-[backdrop-filter] hover:backdrop-brightness-[.88]',
-                            genreStore.currentGenre.id === -1 && 'pointer-events-none backdrop-brightness-[.8]',
-                        ]"
-                        @click="handleGenre(-1)"
-                        type="button"
-                >
-                  All
-                </button>
-              </li>
-
-              <li v-for="genreItem in genresList?.genres"
+              <li v-for="genreItem in genres"
                   :key="genreItem.id"
                   class="menu__item w-full z-1"
               >
