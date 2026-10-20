@@ -1,0 +1,9 @@
+@use '../helpers' as *;
+
+.range-slider {
+  background: linear-gradient(
+                  to right,
+                  var(--accent) var(--percent, 0%),
+                  rgba(255, 255, 255, 0.15) var(--percent, 0%)
+  ) !important;
+}

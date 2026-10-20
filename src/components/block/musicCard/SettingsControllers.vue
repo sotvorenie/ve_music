@@ -15,12 +15,7 @@ const controllersStore = useControllersStore();
 import useMusicStore from "@store/useMusicStore.ts";
 const musicStore = useMusicStore();
 
-const volumeStyle = computed(() => {
-  const volume = audioStore.volume * 100
-  return {
-    background: `linear-gradient(to right, var(--accent) ${volume}%, rgba(255, 255, 255, 0.15) ${volume}%)`
-  }
-})
+const volumePercent = computed(() => audioStore.volume * 100)
 
 const handleVolume = () => {
   audioStore.volume = audioStore.volume > 0 ? 0 : audioStore.oldVolume || 1
@@ -94,9 +89,9 @@ onMounted(() => {
         </template>
       </Tooltip>
 
-      <input class="controllers__sound-range !h-1 opacity-0 transition-opacity pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto w-25"
+      <input class="controllers__sound-range range-slider !h-1 opacity-0 transition-opacity pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto w-25"
              v-model="audioStore.volume"
-             :style="volumeStyle"
+             :style="{'--percent': `${volumePercent}%`}"
              :min="0"
              :max="1"
              :step="0.1"

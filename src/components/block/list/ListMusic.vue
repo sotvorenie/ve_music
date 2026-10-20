@@ -116,7 +116,7 @@ watchEffect((onCleanup) => {
         </div>
       </li>
 
-      <li style="height: 1px;" ref="lastLiRef"/>
+      <li class="h-[1px]" ref="lastLiRef"/>
     </ul>
 
     <Empty v-if="!musicStore.music.length"/>

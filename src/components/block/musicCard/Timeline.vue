@@ -9,14 +9,7 @@ const audioStore = useAudioStore();
 const cursorTime = ref(0)
 const timelineInfoRef = ref<HTMLDivElement | null>(null)
 
-const progressStyle = computed(() => {
-  if (!audioStore.currentTime) return ``
-
-  const progress = (audioStore.currentTime / audioStore.duration) * 100
-  return {
-    background: `linear-gradient(to right, var(--color-accent) ${progress}%, rgba(255, 255, 255, 0.15) ${progress}%)`
-  }
-})
+const progressPercent = computed(() => (audioStore.currentTime / audioStore.duration) * 100)
 
 const mouseMoveTimeline = (e: MouseEvent) => {
   if (!timelineInfoRef.value || audioStore.activeTrack.id < 0) return
@@ -41,7 +34,7 @@ const handleTimeline = (event: Event) => {
 
 <template>
 
-  <div>
+  <div class="timeline">
     <div :class="[
               'relative group',
               audioStore.activeTrack.id < 0 && 'pointer-events-none'
@@ -54,10 +47,10 @@ const handleTimeline = (event: Event) => {
         {{formatTime(cursorTime)}}
       </span>
 
-      <input class="w-full m-0"
+      <input class="range-slider w-full m-0"
              v-model="audioStore.currentTime"
              :max="audioStore.activeTrack.duration"
-             :style="progressStyle"
+             :style="{'--percent': `${progressPercent || 0}%`}"
              @input="handleTimeline"
              type="range"
       >
