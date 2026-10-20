@@ -33,9 +33,9 @@ watch(
 
 <template>
 
-  <button class="controllers__btn play-pause"
-          type="button"
+  <button class="controllers__play-pause flex-center bg-transparent rounded-full text-light border-2 border-current p-1"
           @click="audioStore.isPlaying = !audioStore.isPlaying"
+          type="button"
   >
     <svg width="100" height="100" viewBox="0 0 24 24">
       <defs>

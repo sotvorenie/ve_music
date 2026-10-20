@@ -74,38 +74,48 @@ watchEffect((onCleanup) => {
 </script>
 
 <template>
-  <div class="music-list position-relative h-100">
-    <ul class="list position-relative"
+  <div class="relative h-full">
+    <ul class="list relative grid overflow-y-auto max-h-[80vh] pr-2.5 overflow-x-hidden"
         v-if="itemsStore.musicList?.music?.length"
         ref="listRef"
         v-auto-animate
     >
       <li v-for="item in itemsStore.musicList?.music"
           :key="item.id"
-          class="list__item flex cursor-pointer flex-align-center position-relative"
-          :class="{'is-active': item.id === audioStore.activeTrack.id}"
+          :class="[
+              'list__item flex cursor-pointer items-center relative gap-4 rounded-regular transition-[background-color] w-100 group hover:bg-[color-mix(in srgb, var(--color-dark-15), transparent 50%)]',
+              item.id === audioStore.activeTrack.id && 'is-active pointer-events-none bg-[color-mix(in srgb, var(--color-dark-15), transparent 25%)] '
+          ]"
           @click="audioStore.updateMusic(item.id)"
       >
-        <div class="list__left img-container z-100">
-          <img v-if="item?.previewUrl" :src="`${BASE_URL}${item?.previewUrl}`" :alt="item?.name">
+        <div class="square-80 3xl:square-100 shrink-0 rounded-regular img-container z-[100]">
+          <img v-if="item?.previewUrl"
+               class="transition-transform group-hover:will-change-transform group-hover:scale-110"
+               :src="`${BASE_URL}${item?.previewUrl}`"
+               :alt="item?.name"
+          >
         </div>
 
         <Transition name="record">
           <Icon v-if="item.id === audioStore.activeTrack.id"
+                :class="[
+                    'list__item-record abs-y z-10 rounded-full ml-12.5 left-0 text-accent bg-[color-mix(in srgb, var(--color-dark-15), transparent 25%)]',
+                    !audioStore.isPlaying && 'paused'
+                ]"
                 :name="MusicRecordIcon"
                 :size="70"
                 recolor
-                class="list__item-record position-absolute z-10"
-                :class="!audioStore.isPlaying && 'paused'"
           />
         </Transition>
 
-        <div class="list__right overflow-hidden"
-             :class="item.id === audioStore.activeTrack.id && 'is-active'"
+        <div :class="[
+                  'overflow-hidden transition-[padding]',
+                  item.id === audioStore.activeTrack.id && 'pl-6'
+              ]"
         >
-          <p class="list__name text-w500 text-ellipsis">{{item?.name}}</p>
-          <p class="list__artist text-ellipsis">{{showArtists(item?.artists)}}</p>
-          <p class="list__duration">{{formatTime(item.duration)}}</p>
+          <p class="font-medium text-ellipsis">{{item?.name}}</p>
+          <p class="opacity-50 text-[0.9em] text-ellipsis">{{showArtists(item?.artists)}}</p>
+          <p class="opacity-50 text-[0.9em]">{{formatTime(item.duration)}}</p>
         </div>
       </li>
 
@@ -118,12 +128,14 @@ watchEffect((onCleanup) => {
 
     <Transition name="fade-small">
       <button v-if="arrowVisible"
-              class="music-list__btn button flex-center position-absolute"
-              :class="arrowPosition === 'top' ? 'is-top' : 'is-bottom'"
+              :class="[
+                  'button square-38 rounded-full flex-center absolute left-[calc(100% + 0.625rem)] top-2.5',
+                  arrowPosition === 'top' ? '-rotate-90' : 'rotate-90'
+              ]"
               @click="scrollToActive"
               type="button"
       >
-        <ArrowIcon/>
+        <Icon :name="ArrowIcon" :size="20"/>
       </button>
     </Transition>
   </div>

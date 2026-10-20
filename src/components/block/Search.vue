@@ -59,12 +59,12 @@ const inputSearchName = debounce(() => {
 <template>
 
   <Transition name="scale">
-    <button class="search__open recolor-svg position-absolute hover-color-accent z-10"
-            type="button"
-            @click="searchStore.isOpen = !searchStore.isOpen"
-            :key="`${searchStore.isOpen}`"
+    <button :key="`${searchStore.isOpen}`"
+            class="search__open square-35 3xl:square-40 recolor-svg absolute z-10"
             :title="searchStore.isOpen ? 'Закрыть блок поиска' : 'Открыть блок поиска'"
             :disabled="!itemsStore.musicList.music?.length"
+            @click="searchStore.isOpen = !searchStore.isOpen"
+            type="button"
     >
       <SearchIcon v-if="!searchStore.isOpen"/>
       <CrossIcon v-else/>
@@ -72,13 +72,12 @@ const inputSearchName = debounce(() => {
   </Transition>
 
   <Transition name="list">
-    <div class="search__content position-absolute z-10 flex overflow-hidden"
-         v-if="searchStore.isOpen"
+    <div v-if="searchStore.isOpen"
+         class="search__content absolute z-10 flex overflow-hidden top-15 w-105 bg-dark-15 rounded-[1rem] border border-light"
     >
       <Transition name="fade" mode="out-in">
-        <input type="text"
-               class="search__input w-100"
-               :key="`${menuStore.menuMode}-${menuStore.listMode}-${menuStore.activeGenre?.id}`"
+        <input :key="`${menuStore.menuMode}-${menuStore.listMode}-${menuStore.activeGenre?.id}`"
+               class="search__input w-full bg-transparent h-full"
                v-model="searchStore.searchName"
                :title="searchStore.searchName"
                :placeholder="placeholder"
@@ -89,22 +88,24 @@ const inputSearchName = debounce(() => {
 
       <Transition name="scale">
         <button v-if="searchStore.searchName"
-                class="search__clear recolor-svg hover-color-accent"
-                type="button"
-                title="Очистить поле"
+                class="recolor-svg square-25 3xl:square-30 abs-y right-[14%] 3xl:right-[20%] origin-top-right"
                 @click="handleClear"
+                title="Очистить поле"
+                type="button"
         >
           <CrossIcon/>
         </button>
       </Transition>
 
-      <button class="search__submit recolor-svg hover-color-accent position-absolute flex-center"
-              :class="{'is-active': searchStore.searchName}"
-              type="button"
-              title="Поиск"
+      <button :class="[
+                  'recolor-svg absolute flex-center top-0 right-0 w-[12%] 3xl:w-[15%] h-full p-4 bg-dark-alt transition-[transform,opacity] opacity-0 translate-x-full',
+                  searchStore.searchName && 'translate-x-0 opacity-100'
+              ]"
               @click="search"
+              title="Поиск"
+              type="button"
       >
-        <SearchIcon/>
+        <SearchIcon class="w-full h-auto"/>
       </button>
     </div>
   </Transition>

@@ -49,24 +49,29 @@ onUnmounted(() => {
 </script>
 
 <template>
-
-  <div class="music__img-container img-container position-absolute"
-       :class="{'is-active': audioStore.isPlaying && (controllersStore.mode !== 'video')}"
-       :key="audioStore.activeTrack.id"
+  <div :key="audioStore.activeTrack.id"
+       :class="[
+            'img-container absolute right-0 w-[65vw] 3xl:w-[70vw] h-screen aspect-square transition-[scale]',
+            audioStore.isPlaying && (controllersStore.mode === 'img') && 'will-change-transform scale-105'
+        ]"
   >
     <img :src="`${BASE_URL}${audioStore.activeTrack.previewUrl}`"
          :alt="audioStore.activeTrack?.name"
          draggable="false"
-         :class="{'is-active': visibleImage}"
+         :class="[
+            'transition-[opacity]',
+            visibleImage ? 'opacity-0' : 'opacity-100'
+         ]"
     >
     <video :src="`${BASE_URL}${audioStore.activeTrack?.videoClipUrl}`"
            muted
            ref="videoRef"
            preload="auto"
-           :class="{'is-active': visibleVideo}"
-    >
-      <track src="" kind="captions" srclang="en" label="No captions">
-    </video>
+           :class="[
+               'transition-[opacity]',
+               visibleVideo ? 'opacity-0' : 'opacity-100'
+           ]"
+    />
   </div>
 
 </template>

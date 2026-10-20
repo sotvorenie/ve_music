@@ -1,4 +1,5 @@
-import {BasePagination} from "./BasePagination.ts";
+import {PaginationMeta} from "@/types/paginationMeta.ts";
+
 
 export interface Artist {
     id: number
@@ -6,6 +7,6 @@ export interface Artist {
     avatarUrl: string | null
 }
 
-export interface ArtistsList extends BasePagination {
+export interface ArtistsResponse extends PaginationMeta {
     artists: Artist[]
 }

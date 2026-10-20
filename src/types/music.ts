@@ -1,8 +1,9 @@
-import {Genre} from "./genre.ts";
-import {Artist} from "./artist.ts";
-import {BasePagination} from "./BasePagination.ts";
+import {Genre} from "@/types/genre.ts";
+import {Artist} from "@/types/artist.ts";
+import {PaginationMeta} from "@/types/paginationMeta.ts";
 
-export interface MusicForList {
+
+export interface TrackPreview {
     id: number
     name: string
     duration: number
@@ -12,7 +13,7 @@ export interface MusicForList {
     artists: Artist[]
 }
 
-export interface Music {
+export interface Track {
     id: number
     name: string
     duration: number
@@ -27,6 +28,6 @@ export interface Music {
     artists: Artist[]
 }
 
-export interface MusicList extends BasePagination{
-    music: MusicForList[]
+export interface TrackResponse extends PaginationMeta {
+    music: TrackPreview[]
 }

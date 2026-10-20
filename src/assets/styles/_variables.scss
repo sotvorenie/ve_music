@@ -1,19 +1,15 @@
 @use 'helpers' as *;
 
 :root {
-  --color-light: #FFFFFF;
+  --light: #FFFFFF;
 
-  --color-dark: #000000;
-  --color-dark-alt: #141414;
-  --color-dark-15: #262626;
+  --dark: #000000;
+  --dark-alt: #141414;
+  --dark-15: #262626;
 
-  --color-accent: #fe7971;
+  --accent: #fe7971;
 
-  --font-family-base: 'Montserrat', sans-serif;
-
-  --radius-regular: #{rem(12)};
-  --radius-medium: #{rem(22)};
-  --radius-big: #{rem(32)};
+  --font-family-base: 'Montserrat';
 
   --transition-duration: 0.2s;
   --transition-duration-big: 0.5s;

@@ -18,14 +18,16 @@ withDefaults(
 
 <template>
 
-  <button class="button recolor-svg position-relative"
-          :class="{'is-active': isActive}"
-          :type="isSubmit ? 'submit' : 'button'"
+  <button :class="[
+              'button recolor-svg relative',
+              isActive && 'is-active',
+          ]"
           :disabled="isLoading || isDisabled"
+          :type="isSubmit ? 'submit' : 'button'"
   >
     <TransitionGroup name="fade-absolute">
-      <span class="button__span"
-            key="label"
+      <span key="label"
+            class="button__span"
             :style="{opacity: isLoading ? 0 : 1}"
       >
         <slot/>
@@ -33,7 +35,7 @@ withDefaults(
 
       <LoadingIcon v-if="isLoading"
                    key="loading"
-                   class="position-absolute"
+                   class="absolute"
       />
     </TransitionGroup>
   </button>

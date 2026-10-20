@@ -39,23 +39,30 @@ useObserve(
 
 <template>
 
-  <ul class="list" ref="listRef" v-auto-animate>
+  <ul class="grid overflow-y-auto max-h-[80vh] pr-2.5 overflow-x-hidden h-full"
+      ref="listRef"
+      v-auto-animate
+  >
     <li v-for="item in itemsStore.artistsList?.artists"
         :key="item.id"
-        class="list__item flex flex-align-center cursor-pointer"
+        class="list__item flex cursor-pointer items-center relative gap-4 rounded-regular transition-[background-color] w-100 group hover:bg-[color-mix(in srgb, var(--color-dark-15), transparent 50%)]"
         @click="handleArtist(item)"
     >
-      <div class="list__artist-img-container img-container">
-        <img v-if="item?.avatarUrl" :src="`${BASE_URL}${item?.avatarUrl}`" :alt="item?.name">
+      <div class="img-container square-80 3xl:square-100 rounded-full bg-dark-15">
+        <img v-if="item?.avatarUrl"
+             :src="`${BASE_URL}${item?.avatarUrl}`"
+             :alt="item?.name"
+        >
+
         <FoxIcon v-else/>
       </div>
 
-      <p class="list__artist-name text-ellipsis">
+      <p class="text-ellipsis">
         {{item?.name}}
       </p>
     </li>
 
-    <li style="height: 1px" ref="lastLiRef"/>
+    <li class="h-[1px]" ref="lastLiRef"/>
   </ul>
 
 </template>

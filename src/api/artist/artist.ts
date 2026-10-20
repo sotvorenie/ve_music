@@ -1,11 +1,13 @@
-import {ArtistsList} from "@/types/artist.ts";
+import {ArtistsResponse} from "@/types/artist.ts";
 
 import {apiGet} from "@api/index.ts";
 
-import useSearchStore from "@store/useSearchStore.ts";
+export const apiGetArtists = (name: string = '', page: number = 1, limit: number = 21): Promise<ArtistsResponse> => {
+    const params = new URLSearchParams({
+        name,
+        page: String(page),
+        limit: String(limit),
+    })
 
-export const apiGetArtists = async(page: number = 1, limit: number = 21): Promise<ArtistsList> => {
-    const searchStore = useSearchStore();
-
-    return apiGet(`/artist/list?name=${searchStore.searchName}&page=${page}&limit=${limit}`)
+    return apiGet(`/artist/list?${params}`)
 }

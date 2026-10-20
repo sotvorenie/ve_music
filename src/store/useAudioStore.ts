@@ -1,8 +1,11 @@
 import {defineStore} from "pinia";
 import {reactive, ref} from "vue";
-import {Music} from "@/types/music.ts";
+
+import {Track} from "@/types/music.ts";
+
 import {BASE_URL} from "@api/url.ts";
 import {apiGetMusic} from "@api/music/music.ts";
+
 import useControllersStore from "@store//useControllersStore.ts";
 import useItemsStore from "@store/useItemsStore.ts";
 
@@ -10,7 +13,6 @@ const useAudioStore = defineStore('audioStore', () => {
     const controllersStore = useControllersStore();
     const itemsStore = useItemsStore();
 
-    // аудио
     const audio = new Audio()
     audio.onloadedmetadata = () => {
         activeTrack.duration = Math.round(audio.duration)
@@ -37,7 +39,7 @@ const useAudioStore = defineStore('audioStore', () => {
     const currentTime = ref<number>(0)
 
     // активный трек
-    const activeTrack = reactive<Music>({
+    const activeTrack = reactive<Track>({
         id: -1,
         name: '',
         duration: 0,
@@ -69,7 +71,7 @@ const useAudioStore = defineStore('audioStore', () => {
     }
 
     // функция для загрузки музыки по id
-    const updateMusic = async (id: number | undefined, music: Music | null = null) => {
+    const updateMusic = async (id: number | undefined, music: Track | null = null) => {
         try {
             controllersStore.isLoading = true
 

@@ -57,61 +57,66 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey))
 
 <template>
 
-  <button class="aside__open recolor-svg position-absolute hover-color-accent z-10"
-          type="button"
-          title="Открыть боковое меню"
-          @click="isOpen = true"
-  >
-    <MenuIcon/>
-  </button>
-
-  <Transition name="fade">
-    <div class="aside__background position-absolute z-1000"
-         v-if="isOpen"
-         @click="closeAside"
-    />
-  </Transition>
-
-  <Transition name="aside">
-    <div class="aside__content position-absolute z-10000"
-         @click.stop
-         v-if="isOpen"
+  <div class="aside">
+    <button class="aside__open square-35 3xl:square-40 recolor-svg absolute z-10 text-light"
+            @click="isOpen = true"
+            title="Открыть боковое меню"
+            type="button"
     >
-      <ul class="aside__list flex flex-column">
-        <li class="aside__item">
-          <Tooltip position="right">
-            <template #activator>
-              <button class="aside__btn recolor-svg hover-color-accent"
-                      type="button"
-                      @click="closeAside"
-                      :disabled="isUserRedact || isAuth"
-              >
-                <CrossIcon/>
-              </button>
-            </template>
-            <template #default>Закрыть меню</template>
-          </Tooltip>
-        </li>
-        <li class="aside__item">
-          <UserAvatar v-model:is-loading="isLoading"
-                      v-model:is-user-redact="isUserRedact"
-                      v-model:is-auth="isAuth"
+      <MenuIcon/>
+    </button>
+
+    <Transition name="fade">
+      <div v-if="isOpen"
+           class="absolute z-[1000] inset-0 backdrop-brightness-[0.2] backdrop-blur-[5px] bg-[rgba(0,0,0,.6)]"
+           @click="closeAside"
+      />
+    </Transition>
+
+    <Transition name="aside">
+      <div v-if="isOpen"
+           class="absolute z-[10000] inset-0 bg-dark-alt p-7.5"
+           @click.stop
+      >
+        <ul class="flex flex-col gap-7.5">
+          <li class="square-50">
+            <Tooltip position="right">
+              <template #activator>
+                <button class="aside__btn square-50 recolor-svg rounded-full"
+                        :disabled="isUserRedact || isAuth"
+                        @click="closeAside"
+                        type="button"
+                >
+                  <CrossIcon/>
+                </button>
+              </template>
+
+              <template #default>
+                Закрыть меню
+              </template>
+            </Tooltip>
+          </li>
+          <li class="square-50">
+            <UserAvatar v-model:is-loading="isLoading"
+                        v-model:is-user-redact="isUserRedact"
+                        v-model:is-auth="isAuth"
+            />
+          </li>
+        </ul>
+
+        <Transition name="list">
+          <UserRedact v-if="isUserRedact"
+                      v-model="isLoading"
+                      :is-user-redact="isUserRedact"
+                      @logout="successLogout"
           />
-        </li>
-      </ul>
+        </Transition>
 
-      <Transition name="list">
-        <UserRedact v-if="isUserRedact"
-                    :is-user-redact="isUserRedact"
-                    v-model="isLoading"
-                    @logout="successLogout"
-        />
-      </Transition>
-
-      <Transition name="list">
-        <Auth v-if="isAuth" @success-auth="successAuth"/>
-      </Transition>
-    </div>
-  </Transition>
+        <Transition name="list">
+          <Auth v-if="isAuth" @success-auth="successAuth"/>
+        </Transition>
+      </div>
+    </Transition>
+  </div>
 
 </template>

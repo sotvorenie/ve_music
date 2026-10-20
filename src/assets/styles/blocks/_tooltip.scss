@@ -19,13 +19,6 @@
   }
 
   &__content {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity var(--transition-duration), transform var(--transition-duration);
-    background: var(--color-dark-15);
-    border-radius: var(--radius-regular);
-    padding: rem(10);
-    width: fit-content;
 
     &.top {
       @include abs-x;

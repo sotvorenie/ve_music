@@ -33,34 +33,48 @@ watch(
 
 <template>
 
-  <div class="list-wrapper position-absolute z-10"
-       :class="{
-         'is-active': searchStore.isOpen
-       }"
+  <div :class="[
+           'list-wrapper absolute z-10 top-15',
+           searchStore.isOpen && 'is-active'
+       ]"
   >
-    <div class="list-tabs flex flex-justify-center"
-         :class="{'is-hidden': menuStore.menuMode !== 'genres'}"
+    <div :class="[
+              'list-tabs flex justify-center gap-5 mb-4 overflow-hidden max-h-50',
+              menuStore.menuMode !== 'genres' && 'max-h-0 opacity-0'
+          ]"
     >
       <ButtonUi :is-active="menuStore.listMode === 'music'"
                 :is-disabled="!itemsStore.musicList.music?.length"
                 @click="handleMusic"
-      >Музыка</ButtonUi>
+      >
+        Музыка
+      </ButtonUi>
+
       <ButtonUi :is-active="menuStore.listMode === 'artists'"
                 :is-disabled="!itemsStore.musicList.music?.length"
                 @click="menuStore.listMode = 'artists'"
-      >Исполнители</ButtonUi>
+      >
+        Исполнители
+      </ButtonUi>
     </div>
 
-    <span v-if="menuStore.listMode === 'artistMusic'" class="mb-10 text-ellipsis">
+    <span v-if="menuStore.listMode === 'artistMusic'"
+          class="mb-10 text-ellipsis"
+    >
       Музыка исполнителя {{artistStore.currentArtist.name}}
     </span>
 
-    <span class="list-number" v-if="menuStore.listMode !== 'artists'">
+    <div v-if="menuStore.listMode !== 'artists'"
+         class="mb-2.5"
+    >
       Треков: {{itemsStore.musicList?.total || 0}}
-    </span>
-    <span class="list-number" v-if="menuStore.listMode === 'artists'">
+    </div>
+
+    <div v-if="menuStore.listMode === 'artists'"
+         class="mb-2.5"
+    >
       Исполнителей: {{itemsStore.artistsList?.total || 0}}
-    </span>
+    </div>
 
     <ListMusic v-if="menuStore.listMode !== 'artists'"/>
 

@@ -127,67 +127,78 @@ onMounted(() => {
 <template>
 
   <div class="controllers">
-    <div class="controllers__timeline-wrapper position-relative"
-         :style="{'pointer-events': audioStore.activeTrack.id >= 0 ? 'auto' : 'none'}"
+    <div :class="[
+              'relative group',
+              audioStore.activeTrack.id < 0 && 'pointer-events-none'
+          ]"
          @mousemove="mouseMoveTimeline"
     >
-      <span class="controllers__timeline-info position-absolute text-numeric" ref="timelineInfoRef">
+      <span class="absolute tabular-nums bottom-[95%] bg-dark-15 rounded-regular p-2.5 transition-[opacity,translate] opacity-0 [translate:-50%_10px] pointer-events-none group-hover:opacity-100 group-hover:[translate:-50%_0]"
+            ref="timelineInfoRef"
+      >
         {{formatTime(cursorTime)}}
       </span>
-      <input class="controllers__timeline w-100"
-             type="range"
+
+      <input class="w-full m-0"
              v-model="audioStore.currentTime"
              :max="audioStore.activeTrack.duration"
              :style="progressStyle"
              @input="handleTimeline"
+             type="range"
       >
     </div>
 
-    <div class="controllers__time flex flex-between">
+    <div class="flex justify-between mb-4">
       <span>{{formatTime(audioStore.currentTime || 0)}}</span>
       <span>{{formatTime(audioStore.activeTrack.duration)}}</span>
     </div>
 
     <div class="controllers__btn-bar flex-center">
-      <div class="controllers__settings position-absolute flex flex-align-center">
-        <div class="controllers__sound position-relative flex flex-align-center">
-          <span class="controllers__sound-number text-numeric">
+      <div class="controllers__settings absolute flex items-center left-0 3xl:left-6">
+        <div class="relative flex items-center group">
+          <span class="tabular-nums opacity-0 transition-opacity group-hover:opacity-0">
             {{Number(audioStore.volume)?.toFixed(1)}}
           </span>
+
           <Tooltip>
             <template #activator>
-              <button class="controllers__settings-btn controllers__small-btn recolor-svg hover-color-accent flex-center"
-                      type="button"
+              <button class="controllers__small-btn recolor-svg flex-center"
                       @click="handleVolume"
+                      type="button"
               >
                 <SoundOnIcon v-if="audioStore.volume > 0"/>
                 <SoundOffIcon v-else/>
               </button>
             </template>
+
             <template #default>
               Вкл/выкл звук
             </template>
           </Tooltip>
-          <input type="range"
-                 class="controllers__sound-range position-absolute"
+
+          <input class="controllers__sound-range absolute opacity-0 transition-opacity pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto"
+                 v-model="audioStore.volume"
                  :style="volumeStyle"
                  :min="0"
                  :max="1"
                  :step="0.1"
-                 v-model="audioStore.volume"
+                 type="range"
           >
         </div>
 
         <Tooltip>
           <template #activator>
-            <button class="controllers__settings-btn controllers__small-btn recolor-svg hover-color-accent flex-center"
-                    :class="{'is-active': controllersStore.isRandom}"
-                    type="button"
+            <button :class="[
+                        'controllers__small-btn recolor-svg flex-center',
+                        controllersStore.isRandom && 'bg-dark-15'
+                    ]"
                     @click="handleIsRandom"
+                    type="button"
             >
               <RandomIcon/>
             </button>
           </template>
+
           <template #default>
             Воспроизведение в случайном порядке
           </template>
@@ -195,66 +206,78 @@ onMounted(() => {
 
         <Tooltip>
           <template #activator>
-            <button class="controllers__settings-btn controllers__small-btn recolor-svg hover-color-accent flex-center"
-                    :class="{'is-active': controllersStore.isRepeat}"
-                    type="button"
+            <button :class="[
+                        'controllers__small-btn recolor-svg flex-center',
+                        controllersStore.isRepeat && 'bg-dark-15'
+                    ]"
                     @click="handleIsRepeat"
+                    type="button"
             >
               <RepeatIcon/>
             </button>
           </template>
+
           <template #default>
             Повтор композиции
           </template>
         </Tooltip>
       </div>
 
-      <button class="controllers__btn prev"
-              type="button"
+      <button class="prev flex-center bg-transparent rounded-full text-light border-2 border-current rotate-180 p-1"
               :disabled="disabledControlButton"
               @click="controllersStore.prevItem"
+              type="button"
       >
-        <ArrowIcon/>
+        <ArrowIcon class="-mr-1"/>
       </button>
 
       <PlayButton :disabled="audioStore.activeTrack.id < 0"/>
 
-      <button class="controllers__btn next"
-              type="button"
+      <button class="next flex-center bg-transparent rounded-full text-light border-2 border-current p-1"
               :disabled="disabledControlButton"
               @click="controllersStore.nextItem"
+              type="button"
       >
-        <ArrowIcon/>
+        <ArrowIcon class="-mr-1"/>
       </button>
 
-      <div class="controllers__modes position-absolute flex flex-align-center" v-if="audioStore.activeTrack.id >= 0">
+      <div v-if="audioStore.activeTrack.id >= 0"
+           class="controllers__modes absolute flex items-center w-1/5"
+      >
         <Tooltip>
           <template #activator>
-            <button class="controllers__mode-btn controllers__small-btn recolor-svg hover-color-accent flex-center"
-                    :class="{'is-active': controllersStore.mode === 'img'}"
-                    type="button"
+            <button :class="[
+                        'controllers__small-btn recolor-svg flex-center',
+                        controllersStore.mode === 'img' && 'bg-dark-15'
+                    ]"
                     @click="controllersStore.mode = 'img'"
+                    type="button"
             >
               <ImgIcon/>
             </button>
           </template>
+
           <template #default>
             Постер
           </template>
         </Tooltip>
+
         <Tooltip>
           <template #activator>
             <Transition name="scale">
-              <button class="controllers__mode-btn controllers__small-btn recolor-svg hover-color-accent flex-center"
-                      v-if="audioStore.activeTrack.videoClipUrl"
-                      :class="{'is-active': controllersStore.mode === 'video'}"
-                      type="button"
+              <button v-if="audioStore.activeTrack.videoClipUrl"
+                      :class="[
+                          'controllers__small-btn recolor-svg flex-center',
+                          controllersStore.mode === 'video' && 'bg-dark-15'
+                      ]"
                       @click="controllersStore.mode = 'video'"
+                      type="button"
               >
                 <VideoIcon/>
               </button>
             </Transition>
           </template>
+
           <template #default>
             Клип
           </template>

@@ -84,39 +84,39 @@ const formatSize = (bytes: number) => {
 
 <template>
 
-  <div class="upload flex flex-column">
-    <label @dragenter.prevent="isDragging = true"
+  <div class="flex flex-col gap-2.5">
+    <label :class="[
+               'cursor-pointer h-full',
+               isDragging && 'bg-accent'
+           ]"
+           @dragenter.prevent="isDragging = true"
            @dragleave.prevent="isDragging = false"
            @dragover.prevent
            @drop.prevent="onDrop"
-           class="upload__label cursor-pointer"
-           :class="[
-               isDragging && 'is-accent',
-           ]"
     >
-      <input type="file"
-             class="visually-hidden"
+      <input class="visually-hidden"
              :multiple="multiple"
              :accept="accept"
              :disabled="disabled"
              @change="onChange"
+             type="file"
       >
       <slot/>
     </label>
 
-    <ul v-if="showFiles" class="upload__list flex">
+    <ul v-if="showFiles" class="flex gap-1">
       <li v-for="(file, index) in files"
           :key="index"
-          class="upload__item border rounded-8 flex flex-align-center"
+          class="border border-light rounded-[.5rem] flex items-center justify-between gap-2.5"
       >
-        <div class="upload__info flex flex-column">
-          <span class="upload__name text-w500">{{file.name}}</span>
-          <span class="upload__size">{{formatSize(file.size)}}</span>
+        <div class="flex flex-col gap-1">
+          <span class="font-medium text-sm">{{file.name}}</span>
+          <span class="text-xs">{{formatSize(file.size)}}</span>
         </div>
 
-        <button class="upload__btn"
-                type="button"
+        <button class="square-30 rounded-full absolute"
                 @click="handleDelete(index)"
+                type="button"
         >
           Удалить
         </button>

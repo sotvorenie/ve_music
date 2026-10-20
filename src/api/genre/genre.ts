@@ -1,7 +1,7 @@
-import {GenresList} from "@/types/genre.ts";
+import {GenresResponse} from "@/types/genre.ts";
 
 import {apiGet} from "@api/index.ts";
 
-export const apiGetAllGenres = async (): Promise<GenresList> => {
+export const apiGetAllGenres = (): Promise<GenresResponse> => {
     return apiGet(`/genre/all`)
 }

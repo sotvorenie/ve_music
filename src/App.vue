@@ -61,7 +61,7 @@ onUnmounted(() => globalThis.removeEventListener("keydown", handleKey, true))
 <template>
 
   <Transition name="fade">
-    <div class="music" v-if="visible">
+    <div class="music fixed inset-0" v-if="visible">
       <TopMessage v-model="messageStore.isVisible"/>
 
       <Vignette/>
@@ -90,7 +90,7 @@ onUnmounted(() => globalThis.removeEventListener("keydown", handleKey, true))
 
       <Preview/>
 
-      <div class="music__card position-absolute z-10">
+      <div class="music__card absolute z-10 bottom-15 backdrop-blur-[2px] rounded-big p-6 w-[50vw] 3xl:w-[55vw]">
         <Info v-if="audioStore.activeTrack.id >= 0"/>
 
         <Controls/>

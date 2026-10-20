@@ -10,11 +10,11 @@ const visible = defineModel<boolean>({default: false})
   <Teleport to="body">
     <Transition name="from-top">
       <div v-if="visible"
-           class="top-message position-fixed z-1000 text-w500"
-           :class="{
-              'light': messageStore.type === 'light',
-              'dark': messageStore.type === 'dark',
-           }"
+           :class="[
+               'top-message abs-x top-5 rounded-medium fixed z-[1000] font-medium',
+               messageStore.type === 'light' && 'light',
+               messageStore.type === 'dark' && 'dark'
+           ]"
       >
         {{messageStore.messageText}}
       </div>

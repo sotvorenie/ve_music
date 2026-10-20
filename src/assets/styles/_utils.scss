@@ -1,9 +1,5 @@
 @use 'helpers' as *;
 
-.visually-hidden {
-  @include visually-hidden;
-}
-
 .img-container {
   @include flex-center();
 
@@ -43,20 +39,4 @@
       }
     }
   }
-}
-
-.hover-color-accent {
-
-  @include hover() {
-    color: var(--color-accent) !important;
-  }
-}
-
-.mb-10 {
-  display: block;
-  margin-bottom: rem(10);
-}
-
-.color-accent {
-  color: var(--color-accent);
 }

@@ -2,93 +2,25 @@
 
 .controllers {
 
-  &__timeline-wrapper {
-
-    @include hover {
-      .controllers__timeline-info {
-        opacity: 1;
-        transform: translate(-50%, 0);
-      }
-    }
-  }
-
-  &__timeline-info {
-    bottom: 95%;
-    background: var(--color-dark-15);
-    border-radius: var(--radius-regular);
-    padding: rem(10);
-    transition: opacity var(--transition-duration), transform var(--transition-duration);
-    opacity: 0;
-    transform: translate(-50%, 10px);
-    pointer-events: none;
-  }
-
-  &__timeline {
-    margin: 0;
-  }
-
   &__btn-bar {
     gap: fluid(20, 10);
   }
-  &__btn {
-    @include flex-center();
 
-    background: transparent;
-    border-radius: 50%;
-    color: var(--color-light);
-    border: 2px solid currentColor;
-
-    &:not(:disabled) {
-
-      @include hover() {
-        color: var(--color-accent);
-      }
-    }
-
-    &:disabled {
-      cursor: default !important;
-      opacity: .6;
-    }
-
-    &.play-pause, &.prev, &.next {
-      padding: rem(5);
-    }
-
-    &.play-pause {
-      @include fluid-square(70, 50);
-    }
-
-    &.prev, &.next {
-      @include fluid-square(50, 35);
-
-      svg {
-        width: 100%;
-        height: auto;
-
-        @include laptop {
-          width: 80%;
-        }
-      }
-    }
-
-    &.prev {
-      rotate: 180deg;
-
-      svg {
-        margin-right: rem(-5);
-      }
-    }
-
-    &.next {
-
-      svg {
-        margin-right: rem(-5);
-      }
-    }
+  &__play-pause {
+    @include fluid-square(70, 50);
   }
 
-  &__time {
-    margin-bottom: rem(15);
+  .prev, .next {
+    @include fluid-square(50, 35);
+
+    svg {
+      width: 100%;
+      height: auto;
+
+      @include laptop {
+        width: 80%;
+      }
+    }
   }
 
   &__small-btn {
@@ -98,10 +30,6 @@
     color: var(--color-light);
     border-radius: var(--radius-regular);
 
-    &.is-active {
-      background-color: var(--color-dark-15);
-    }
-
     svg {
       height: 100%;
       width: auto;
@@ -109,48 +37,15 @@
   }
 
   &__modes, &__settings {
-    position: absolute;
     gap: fluid(0, 10);
   }
 
   &__modes {
     right: fluid(130, 50);
-    width: 20%;
-  }
-
-  &__mode-btn {
-
-    &.is-active {
-      pointer-events: none;
-    }
-  }
-
-  &__settings {
-    left: rem(25);
-
-    @include laptop {
-      left: 0;
-    }
   }
 
   &__sound {
     margin-right: fluid(110, 20);
-
-    @include hover {
-      .controllers__sound-number, .controllers__sound-range {
-        opacity: 1;
-      }
-      .controllers__sound-range {
-        display: block !important;
-        opacity: 1;
-        pointer-events: auto;
-      }
-    }
-
-    &-range, &-number {
-      opacity: 0;
-      transition: opacity var(--transition-duration);
-    }
 
     &-range {
       --range-wigth: #{fluid(100, 50)};

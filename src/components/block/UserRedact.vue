@@ -111,24 +111,29 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="user-redact aside__block flex flex-column flex-between position-absolute z-1000" v-if="isUserRedact">
+  <div v-if="isUserRedact"
+       class="user-redact bg-dark-15 left-102.5 top-50 rounded-big flex flex-column flex-between absolute z-[1000] py-5 pr-5 pl-60 w-150 h-60"
+  >
     <InputUi v-model="name"
-             class="user-redact__name w-100"
+             class="w-full mb-7.5"
              title="Имя"
     />
 
     <InputUi v-model="password"
-             class="user-redact__password w-100"
+             class="w-full mb-7.5"
              title="Пароль"
     />
 
-    <div class="user-redact__btn-bar flex">
-      <ButtonUi :is-disabled="!redactIsActive || !name.length"
+    <div class="flex gap-5">
+      <ButtonUi class="grow"
+                :is-disabled="!redactIsActive || !name.length"
                 @click="handleRedact"
       >
         Редактировать
       </ButtonUi>
-      <ButtonUi @click="handleLogout"
+
+      <ButtonUi class="grow"
+                @click="handleLogout"
                 :is-disabled="isLoading"
       >
         Выйти
