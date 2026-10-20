@@ -84,7 +84,6 @@ button, input {
   color: inherit;
 }
 button {
-  padding: 0;
   cursor: pointer;
 
   @include hover() {
