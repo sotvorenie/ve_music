@@ -129,7 +129,7 @@ watchEffect((onCleanup) => {
                position="right"
       >
         <template #activator>
-          <button class="button !rounded-full flex-center !p-2 recolor-svg"
+          <button class="button !rounded-full flex-center !p-2 !bg-dark-15 recolor-svg hover:!text-accent"
                   @click="scrollToActive"
                   type="button"
           >
