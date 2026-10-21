@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import {onMounted, onUnmounted, ref} from "vue";
+import {onBeforeMount, ref} from "vue";
 
 import {checkMe} from "@utils/auth.ts";
 
 import Menu from "@components/Menu.vue";
-import Info from "@components/Info.vue";
-import Controls from "@components/Controllers.vue";
-import List from "@components/List.vue";
-import Aside from "@components/Aside.vue";
-import Preview from "@components/Preview.vue";
+import Info from "@components/musicCard/Info.vue";
+import Timeline from "@components/musicCard/Timeline.vue";
+import Controllers from "@components/musicCard/Controllers.vue";
+import List from "@components/list/List.vue";
+import Aside from "@components/aside/Aside.vue";
+import Preview from "@components/musicCard/Preview.vue";
 import Search from "@components/Search.vue";
+
 import GenresSkeleton from "@ui/skeletons/GenresSkeleton.vue";
 import MusicListSkeleton from "@ui/skeletons/MusicListSkeleton.vue";
 import Vignette from "@ui/Vignette.vue";
@@ -22,46 +24,16 @@ const messageStore = useMessageStore();
 
 const visible = ref(false)
 
-const allKeyCodes = {
-  space: 'Space',
-  arrowLeft: 'ArrowLeft',
-  arrowRight: 'ArrowRight',
-}
-
-const handleKey = (e: KeyboardEvent) => {
-  const audio = audioStore.audio
-
-  switch (e.code) {
-    case allKeyCodes.space:
-      e.preventDefault()
-      audioStore.isPlaying = !audioStore.isPlaying
-      break
-    case allKeyCodes.arrowLeft:
-      if (Number.isNaN(audio.duration)) break
-      e.preventDefault()
-      audio.currentTime = Math.max(0, audio.currentTime - 5)
-      break
-    case allKeyCodes.arrowRight:
-      if (Number.isNaN(audio.duration)) break
-      e.preventDefault()
-      audio.currentTime = Math.min(audio.duration, audio.currentTime + 5)
-      break
-  }
-}
-
-onMounted(async () => {
-  globalThis.addEventListener("keydown", handleKey, true)
+onBeforeMount(async () => {
   await checkMe()
   visible.value = true
 })
-
-onUnmounted(() => globalThis.removeEventListener("keydown", handleKey, true))
 </script>
 
 <template>
 
   <Transition name="fade">
-    <div class="music" v-if="visible">
+    <div class="music fixed inset-0" v-if="visible">
       <TopMessage v-model="messageStore.isVisible"/>
 
       <Vignette/>
@@ -90,10 +62,12 @@ onUnmounted(() => globalThis.removeEventListener("keydown", handleKey, true))
 
       <Preview/>
 
-      <div class="music__card position-absolute z-10">
+      <div class="music__card absolute z-10 bottom-15 right-0 backdrop-blur-[2px] rounded-big p-6 w-[50vw] 3xl:w-[55vw]">
         <Info v-if="audioStore.activeTrack.id >= 0"/>
 
-        <Controls/>
+        <Timeline/>
+
+        <Controllers/>
       </div>
     </div>
   </Transition>

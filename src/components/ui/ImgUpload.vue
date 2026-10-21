@@ -10,14 +10,12 @@ import EditIcon from "@icons/EditIcon.vue";
 import CrossIcon from "@/components/icons/CrossIcon.vue";
 import FoxIcon from "@icons/FoxIcon.vue";
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
       imgUrl: string | undefined | null
-      showConfirm?: boolean
       disabled?: boolean
       canDelete?: boolean
     }>(), {
-      showConfirm: true,
       disabled: true,
       canDelete: true,
     }
@@ -29,23 +27,25 @@ const emits = defineEmits<{
 }>()
 
 const handleUpload = async (file: File) => {
-  const confirm = props.showConfirm ? await showConfirm(
+  const confirm = await showConfirm(
       'Загрузка фото',
       'Вы действительно хотите загрузить/изменить фото?'
-  ) : true
+  )
   if (confirm) emits('select', file)
 }
 </script>
 
 <template>
 
-  <Upload accept=".jpg,.jpeg,.png,.webp"
+  <Upload :class="[
+              'upload-img h-full',
+              disabled && 'pointer-events-none'
+          ]"
           :disabled="disabled"
-          @select="(files: File[]) => handleUpload(files[0])"
-          class="upload-img"
-          :class="disabled && 'is-disabled'"
+          @select="(file: File) => handleUpload(file)"
+          accept=".jpg,.jpeg,.png,.webp"
   >
-    <div class="upload-img__content img-container position-relative"
+    <div class="upload-img__content img-container relative rounded-medium h-full group"
          title="Загрузить фото"
     >
 
@@ -62,15 +62,15 @@ const handleUpload = async (file: File) => {
       <Icon :name="EditIcon"
             :size="12"
             recolor
-            class="upload-img__icon z-1"
+            class="abs-center z-1 transition-opacity opacity-0 group-hover:opacity-100"
       />
 
       <button v-if="imgUrl && canDelete"
-              class="upload-img__delete flex-center z-10 position-absolute hover-color-accent recolor-svg"
+              class="recolor-svg flex-center transition-opacity opacity-0 z-10 absolute rounded-full top-[1px] right-[1px] group-hover:opacity-100"
               :disabled="disabled"
+              @click.stop="emits('delete')"
               type="button"
               title="Удалить"
-              @click.stop="emits('delete')"
       >
         <Icon :name="CrossIcon" :size="6"/>
       </button>

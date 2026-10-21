@@ -1,106 +1,31 @@
 @use '../helpers' as *;
 
 .controllers {
+  gap: fluid(50, 20);
 
-  &__timeline-wrapper {
-
-    @include hover {
-      .controllers__timeline-info {
-        opacity: 1;
-        transform: translate(-50%, 0);
-      }
-    }
+  &__play-pause {
+    @include fluid-square(70, 50);
   }
 
-  &__timeline-info {
-    bottom: 95%;
-    background: var(--color-dark-15);
-    border-radius: var(--radius-regular);
-    padding: rem(10);
-    transition: opacity var(--transition-duration), transform var(--transition-duration);
-    opacity: 0;
-    transform: translate(-50%, 10px);
-    pointer-events: none;
-  }
+  .prev, .next {
+    @include fluid-square(50, 35);
 
-  &__timeline {
-    margin: 0;
-  }
+    svg {
+      width: 100%;
+      height: auto;
 
-  &__btn-bar {
-    gap: fluid(20, 10);
-  }
-  &__btn {
-    @include flex-center();
-
-    background: transparent;
-    border-radius: 50%;
-    color: var(--color-light);
-    border: 2px solid currentColor;
-
-    &:not(:disabled) {
-
-      @include hover() {
-        color: var(--color-accent);
+      @include laptop {
+        width: 80%;
       }
     }
-
-    &:disabled {
-      cursor: default !important;
-      opacity: .6;
-    }
-
-    &.play-pause, &.prev, &.next {
-      padding: rem(5);
-    }
-
-    &.play-pause {
-      @include fluid-square(70, 50);
-    }
-
-    &.prev, &.next {
-      @include fluid-square(50, 35);
-
-      svg {
-        width: 100%;
-        height: auto;
-
-        @include laptop {
-          width: 80%;
-        }
-      }
-    }
-
-    &.prev {
-      rotate: 180deg;
-
-      svg {
-        margin-right: rem(-5);
-      }
-    }
-
-    &.next {
-
-      svg {
-        margin-right: rem(-5);
-      }
-    }
-  }
-
-  &__time {
-    margin-bottom: rem(15);
   }
 
   &__small-btn {
     @include fluid-square(50, 30);
 
     padding: fluid(10, 5);
-    color: var(--color-light);
+    color: var(--light);
     border-radius: var(--radius-regular);
-
-    &.is-active {
-      background-color: var(--color-dark-15);
-    }
 
     svg {
       height: 100%;
@@ -108,62 +33,14 @@
     }
   }
 
-  &__modes, &__settings {
-    position: absolute;
+  &__modes, &__settings, &__settings-list {
     gap: fluid(0, 10);
   }
 
-  &__modes {
-    right: fluid(130, 50);
-    width: 20%;
-  }
+  &__sound-range {
 
-  &__mode-btn {
-
-    &.is-active {
-      pointer-events: none;
-    }
-  }
-
-  &__settings {
-    left: rem(25);
-
-    @include laptop {
-      left: 0;
-    }
-  }
-
-  &__sound {
-    margin-right: fluid(110, 20);
-
-    @include hover {
-      .controllers__sound-number, .controllers__sound-range {
-        opacity: 1;
-      }
-      .controllers__sound-range {
-        display: block !important;
-        opacity: 1;
-        pointer-events: auto;
-      }
-    }
-
-    &-range, &-number {
-      opacity: 0;
-      transition: opacity var(--transition-duration);
-    }
-
-    &-range {
-      --range-wigth: #{fluid(100, 50)};
-
-      @include abs-y;
-
-      width: var(--range-wigth);
-      height: rem(4) !important;
-      left: calc(100% - #{rem(5)});
-
-      &::-webkit-slider-thumb {
-        @include square(12);
-      }
+    &::-webkit-slider-thumb {
+      @include square(12);
     }
   }
 }

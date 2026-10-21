@@ -19,20 +19,26 @@ const value = defineModel<string>()
 
 <template>
 
-  <label class="input position-relative">
-    <span class="input__name text position-absolute">{{title}}</span>
-    <input class="input__inp w-100"
-           type="text"
+  <label class="input relative block">
+    <span class="absolute text-[0.9em] bg-dark-15 leading-none -top-2 left-2.5 px-1">
+      {{title}}
+    </span>
+
+    <input class="w-full bg-dark-15 rounded-regular border border-current p-2.5 focus:border-accent hover:border-accent"
            v-model="value"
            v-bind="$attrs"
            :maxlength="maxLength"
     >
 
-    <span v-if="visibleCounter" class="input__counter text position-absolute">
+    <span v-if="visibleCounter"
+          class="absolute text-[0.9em] bg-dark-15 leading-none -bottom-2 right-2.5 px-1.5"
+    >
       {{value?.length || 0}} / {{maxLength}}
     </span>
 
-    <span class="input__error text fields_error position-absolute" data-js-form-field-errors/>
+    <span class="fields_error absolute text-[0.9em] bg-dark-15 leading-none top-[calc(100%_+_0.31rem)] left-1 text-accent"
+          data-js-form-field-errors
+    />
   </label>
 
 </template>

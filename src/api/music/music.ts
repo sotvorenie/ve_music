@@ -1,32 +1,41 @@
-import {MusicList, Music} from "@/types/music.ts";
+import {Track, TrackResponse} from "@/types/music.ts";
 
 import {apiGet} from "@api/index.ts";
 
-import useSearchStore from "@store/useSearchStore.ts";
-import useArtistStore from "@store/useArtistStore.ts";
-import useMenuStore from "@store/useMenuStore.ts";
-import useItemsStore from "@store/useItemsStore.ts";
-
-export const apiGetMusicList = async (
+export const apiGetMusicList = (
+    name: string = '',
+    artistId: number = -1,
+    genreId: number = -1,
     page: number = 1,
     limit: number = 21
-): Promise<MusicList> => {
-    const searchStore = useSearchStore();
-    const artistStore = useArtistStore();
-    const menuStore = useMenuStore();
+): Promise<TrackResponse> => {
+    const params = new URLSearchParams({
+        name,
+        artist_id: String(artistId),
+        genre_id: String(genreId),
+        page: String(page),
+        limit: String(limit),
+    })
 
-    return apiGet(`/music/list?name=${searchStore.searchName}&genre_id=${menuStore.activeGenre.id}&artist_id=${artistStore.currentArtist.id}&page=${page}&limit=${limit}`);
+    return apiGet(`/music/list?${params}`);
 }
 
-export const apiGetMusic = async (musicId: number): Promise<Music> => {
+export const apiGetMusic = (musicId: number): Promise<Track> => {
     return apiGet(`/music/${musicId}`);
 }
 
-export const apiGetRandomMusic = async (): Promise<Music> => {
-    const searchStore = useSearchStore();
-    const artistStore = useArtistStore();
-    const menuStore = useMenuStore();
-    const itemsStore = useItemsStore();
+export const apiGetRandomMusic = (
+    excludeId: number,
+    name: string = '',
+    artistId: number = -1,
+    genreId: number = -1,
+): Promise<Track> => {
+    const params = new URLSearchParams({
+        exclude_id: String(excludeId),
+        name,
+        artist_id: String(artistId),
+        genre_id: String(genreId),
+    })
 
-    return apiGet(`/music/random?seed=${itemsStore.randomSeed}&offset=${itemsStore.offset}&exclude_id=${itemsStore.randomMusicIds[-1]}&name=${searchStore.searchName}&genre_id=${menuStore.activeGenre.id}&artist_id=${artistStore.currentArtist.id}`)
+    return apiGet(`/music/random?${params}`)
 }

@@ -1,11 +1,14 @@
-import {MusicList} from "@/types/music.ts";
+import {TrackResponse} from "@/types/music.ts";
 
 import {apiGet} from "@api/index.ts";
 
-import useSearchStore from "@store/useSearchStore.ts";
 
-export const apiGetHistory = async (page: number = 1, limit: number = 21): Promise<MusicList> => {
-    const searchStore = useSearchStore();
+export const apiGetHistory = (name: string = '', page: number = 1, limit: number = 21): Promise<TrackResponse> => {
+    const params = new URLSearchParams({
+        name,
+        page: String(page),
+        limit: String(limit),
+    })
 
-    return apiGet(`/history/list?name=${searchStore.searchName}&page=${page}&limit=${limit}`)
+    return apiGet(`/history/list?${params}`)
 }

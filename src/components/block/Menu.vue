@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref, watch} from "vue";
 
-import { GenresList } from "@/types/genre.ts";
+import {Genre} from "@/types/genre.ts";
 
 import {apiGetAllGenres} from "@api/genre/genre.ts";
 
@@ -15,19 +15,19 @@ import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
 import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
-import useItemsStore from "@store/useItemsStore.ts";
-const itemsStore = useItemsStore();
 import useArtistStore from "@store/useArtistStore.ts";
 const artistStore = useArtistStore();
+import useGenreStore from "@store/useGenreStore.ts";
+const genreStore = useGenreStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 
 
 const musicIndex = defineModel('musicIndex',{type: Number})
 
-const menuActive = ref<HTMLLIElement[]>([])
+const genres = ref<Genre[]>([])
 
-const genresList = ref<GenresList>()
-
-const menuList = ref([
+const menuList = [
   {
     name: 'Жанры',
     value: 'genres',
@@ -43,31 +43,9 @@ const menuList = ref([
     value: 'favorites',
     icon: LikeIcon,
   },
-])
+]
 
 const activeTabIndex = ref<number>(0)
-
-const handleGenre = async (id: number, genreName?: string) => {
-  musicIndex.value = 0
-
-  menuStore.activeGenre.id = id
-  menuStore.activeGenre.name = genreName || ''
-}
-
-const handleTab = (index: number) => {
-  activeTabIndex.value = index
-  menuStore.menuMode = menuList.value[index].value as 'genres' | 'history' | 'favorites'
-}
-
-const getGenres = async () => {
-  try {
-    genresList.value = await apiGetAllGenres()
-  } catch (err) {
-    console.error(err)
-  }
-}
-
-await getGenres()
 
 const modalText = ref<string>('')
 const indexErrorText = 'необходимо авторизоваться'
@@ -75,18 +53,40 @@ const allErrorsText: Record<string, string> = {
   history: `Для доступа к истории прослушиваний ${indexErrorText}`,
   favorites: `Для доступа к понравившимся трекам ${indexErrorText}`,
 }
+
+const handleGenre = async (id: number, genreName?: string) => {
+  musicIndex.value = 0
+
+  genreStore.currentGenre.id = id
+  genreStore.currentGenre.name = genreName || ''
+}
+
+const handleTab = (index: number) => {
+  activeTabIndex.value = index
+  menuStore.menuMode = menuList[index].value as 'genres' | 'history' | 'favorites'
+}
+
+const getGenres = async () => {
+  try {
+    const response = await apiGetAllGenres()
+    genres.value = [{id: -1, name: 'All'}, ...response.genres]
+  } catch {}
+}
+
+await getGenres()
+
 const handleErrorModal = (type: string, func: Function) => {
   modalText.value = allErrorsText[type]
   func()
 }
 
 watch(
-    () => [menuStore.activeGenre.id, menuStore.menuMode],
+    () => [genreStore.currentGenre.id, menuStore.menuMode],
     () => {
-      if (menuStore.activeGenre.id >= -1) {
+      if (genreStore.currentGenre.id >= -1) {
         menuStore.listMode = 'music'
         artistStore.currentArtist.id = -1
-        itemsStore.getMusicList()
+        musicStore.getMusic()
       }
     }
 )
@@ -95,31 +95,29 @@ watch(
 <template>
 
   <Modal close-visible>
-    <template #activator>
-
-    </template>
-
     <template #default>
       {{modalText}}
     </template>
   </Modal>
 
-  <div v-if="genresList?.genres?.length"
-       class="menu position-absolute z-10"
+  <div v-if="genres.length"
+       class="menu abs-y z-10"
   >
-    <ul class="menu__list flex flex-column">
+    <ul class="flex flex-col">
       <li v-for="(item, index) in menuList"
           :key="item.name"
           class="menu__item"
       >
         <Modal close-visible>
           <template #activator="{open}">
-            <button class="menu__item-btn recolor-svg hover-color-accent flex flex-align-center w-100"
-                    :class="{'is-active': activeTabIndex === index}"
+            <button :class="[
+                        'menu__item-btn recolor-svg flex items-center w-full rounded-regular gap-2.5 hover:bg-dark-alt/75',
+                        activeTabIndex === index && 'pointer-events-none bg-dark-15',
+                    ]"
+                    @click="userStore.isLogged ? handleTab(index) : handleErrorModal(item.value, open)"
                     type="button"
-                    @click="userStore.user.id >= 0 ? handleTab(index) : handleErrorModal(item.value, open)"
             >
-              <Component :is="item.icon"/>
+              <Component :is="item.icon" class="w-10 h-auto"/>
               <span class="menu__name">{{item.name}}</span>
             </button>
           </template>
@@ -129,35 +127,31 @@ watch(
           </template>
         </Modal>
 
-        <div class="menu__wrapper overflow-hidden"
-             :class="{'is-active': activeTabIndex === 0}"
+        <div :class="[
+                 'menu__wrapper overflow-hidden grid',
+                 activeTabIndex === 0 ? 'is-active grid-rows-[1fr]' : 'grid-rows-[0fr]'
+             ]"
         >
-          <div class="menu__wrapper-inner">
-            <ul class="menu__genres flex flex-column position-relative"
-                :class="{'visually-hidden': index > 0}"
+          <div class="menu__wrapper-inner min-h-0 opacity-0">
+            <ul :class="[
+                    'flex flex-col relative bg-[color-mix(in_srgb,_var(--dark-15),_transparent_25%)] rounded-regular ml-5 mt-2.5 max-h-[50vh] overflow-y-auto',
+                    index > 0 && 'hidden'
+                ]"
             >
-              <li class="menu__genre w-100 z-1" v-if="genresList?.genres">
-                <button class="menu__btn text-w500 w-100 text-left"
-                        type="button"
-                        :class="{'is-active': menuStore.activeGenre.id === -1}"
-                        @click="handleGenre(-1)"
-                >
-                  All
-                </button>
-              </li>
-              <li v-for="genreItem in genresList?.genres"
+              <li v-for="genreItem in genres"
                   :key="genreItem.id"
-                  class="menu__item w-100 z-1"
+                  class="menu__item w-full z-1"
               >
-                <button class="menu__btn text-w500 w-100 text-left"
-                        type="button"
-                        :class="{'is-active': menuStore.activeGenre.id === genreItem.id}"
+                <button :class="[
+                            'menu__btn font-medium w-full text-left rounded-regular h-15 transition-[backdrop-filter] hover:backdrop-brightness-[.88]',
+                            genreStore.currentGenre.id === genreItem.id && 'pointer-events-none backdrop-brightness-[.8]',
+                        ]"
                         @click="handleGenre(genreItem.id, genreItem.name)"
+                        type="button"
                 >
                   {{genreItem?.name}}
                 </button>
               </li>
-              <li class="menu__active active-index position-absolute z-0" ref="menuActive"/>
             </ul>
           </div>
         </div>

@@ -30,12 +30,10 @@ const emits = defineEmits<{
 const name = ref<string>('')
 const password = ref<string>('')
 
-// активность кнопки "Редактировать"
 const redactIsActive = computed(() => {
   return name.value !== userStore.user.name || password.value.length >= 4
 })
 
-// клик по кнопке "Выйти"
 const handleLogout = async () => {
   const confirm = await showConfirm(
       'Выход из профиля',
@@ -44,7 +42,6 @@ const handleLogout = async () => {
   if (confirm) emits('logout')
 }
 
-// клик по кнопке "Редактировать"
 const handleRedact = async () => {
   const confirm = await showConfirm(
       'Редактирование профиля',
@@ -74,8 +71,7 @@ const redactUser = async () => {
     const results = await Promise.allSettled(promises)
 
     await showDetails(results, actions)
-  } catch (err) {
-    console.error(err)
+  } catch {
     await showError(
         'Ошибка редактирования профиля',
         'Не удалось редактировать профиль'
@@ -111,24 +107,27 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="user-redact aside__block flex flex-column flex-between position-absolute z-1000" v-if="isUserRedact">
+  <div v-if="isUserRedact"
+       class="user-redact bg-dark-15 left-102.5 top-50 rounded-big flex flex-col gap-7.5 absolute z-[1000] py-5 pr-5 pl-60 w-150 h-60"
+  >
     <InputUi v-model="name"
-             class="user-redact__name w-100"
              title="Имя"
     />
 
     <InputUi v-model="password"
-             class="user-redact__password w-100"
              title="Пароль"
     />
 
-    <div class="user-redact__btn-bar flex">
-      <ButtonUi :is-disabled="!redactIsActive || !name.length"
+    <div class="flex gap-3">
+      <ButtonUi class="grow"
+                :is-disabled="!redactIsActive || !name.length"
                 @click="handleRedact"
       >
         Редактировать
       </ButtonUi>
-      <ButtonUi @click="handleLogout"
+
+      <ButtonUi class="grow"
+                @click="handleLogout"
                 :is-disabled="isLoading"
       >
         Выйти

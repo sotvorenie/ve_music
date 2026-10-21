@@ -17,7 +17,6 @@ const isLoading = defineModel<boolean>('isLoading', {required: true})
 const isUserRedact = defineModel<boolean>('isUserRedact', {required: true})
 const isAuth = defineModel<boolean>('isAuth', {required: true})
 
-// title у блока аватарки перед открытием
 const avatarTitle = computed(() => {
   if (!isUserRedact.value && !isAuth.value) {
     return userStore.user.id >= 0 ? 'Редактировать профиль' : 'Войти/Зарегистрироваться'
@@ -25,7 +24,6 @@ const avatarTitle = computed(() => {
   return ''
 })
 
-// клик по аватарке
 const handleAvatar = () => {
   if (isLoading.value) return
 
@@ -45,8 +43,7 @@ const updateAvatar = async (file: File) => {
       userStore.user.avatarUrl = response.url
       messageStore.show('Аватарка обновлена!!')
     }
-  } catch (err) {
-    console.error(err)
+  } catch {
     await showError(
         'Ошибка загрузки фото',
         'Не удалось загрузить аватар..'
@@ -70,8 +67,7 @@ const deleteAvatar = async () => {
 
     await apiDeleteUserAvatar()
     userStore.user.avatarUrl = ''
-  } catch (err) {
-    console.error(err)
+  } catch {
     await showError(
         'Ошибка удаления аватарки',
         'Не удалось удалить аватарку'
@@ -88,26 +84,35 @@ const deleteAvatar = async () => {
            :hidden="isUserRedact || isAuth"
   >
     <template #activator>
-      <div class="aside__avatar aside__btn position-relative cursor-pointer"
-           :class="{'is-active': isUserRedact}"
+      <div :class="[
+               'aside__avatar square-12.5 rounded-full relative cursor-pointer',
+               isUserRedact && 'is-active'
+           ]"
       >
-        <div class="border position-absolute"
-             :class="isUserRedact && 'is-active'"
+        <div :class="[
+                  'absolute rounded-full border border-dashed border-light scale-[1.02]',
+                  isUserRedact && 'z-[10001]'
+              ]"
              @click="handleAvatar"
         />
 
-        <ImgUpload :img-url="userStore.user.avatarUrl"
+        <ImgUpload :class="[
+                       'absolute z-[10000] rounded-full',
+                       isUserRedact && 'is-active'
+                   ]"
+                   :img-url="userStore.user.avatarUrl"
                    :disabled="isLoading || !isUserRedact"
                    :can-delete="isUserRedact"
+                   @click.stop
                    @select="(file: File) => updateAvatar(file)"
                    @delete="handleDeleteAvatar"
-                   class="aside__upload position-absolute z-10000"
-                   :class="isUserRedact && 'is-active'"
-                   @click.stop
         />
       </div>
     </template>
-    <template #default>{{avatarTitle}}</template>
+
+    <template #default>
+      {{avatarTitle}}
+    </template>
   </Tooltip>
 
 </template>

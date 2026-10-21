@@ -4,17 +4,21 @@ import type {Component} from "vue";
 defineProps<{
   name: Component
   size: number
-  tabletSize?: number
+  laptopSize?: number
   recolor?: boolean
 }>()
 </script>
 
 <template>
 
-  <i class="flex-center icon-box" :class="recolor && 'recolor-svg'">
+  <i :class="[
+        'flex-center icon-box',
+        recolor && 'recolor-svg'
+     ]"
+  >
     <Component :is="name" :style="{
       '--desk-sz': `${size / 16}rem`,
-      '--tab-sz': `${(tabletSize || size) / 16}rem`,
+      '--lap-sz': `${(laptopSize || size) / 16}rem`,
     }"/>
   </i>
 
@@ -22,13 +26,13 @@ defineProps<{
 
 <style scoped>
 .icon-box svg {
-  --tab-sz: 20px;
+  --lap-sz: 20px;
   --desk-sz: 20px;
 
-  width: var(--tab-sz) !important;
-  min-width: var(--tab-sz) !important;
-  height: var(--tab-sz) !important;
-  min-height: var(--tab-sz) !important;
+  width: var(--lap-sz) !important;
+  min-width: var(--lap-sz) !important;
+  height: var(--lap-sz) !important;
+  min-height: var(--lap-sz) !important;
 }
 
 @media (min-width: 1920px) {

@@ -1,9 +1,10 @@
-import './assets/styles/main.scss'
+import '@/assets/styles/globals.css'
+import '@/assets/styles/main.scss'
 
 import { createApp } from 'vue'
 import {createPinia} from "pinia";
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
-import App from './App.vue'
+import App from '@/App.vue'
 
 const app = createApp(App);
 app.use(createPinia());

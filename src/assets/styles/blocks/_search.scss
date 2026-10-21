@@ -3,73 +3,16 @@
 .search {
 
   &__open {
-    @include square(40);
-
     top: fluid(30, 15);
     left: fluid(100, 60);
-
-    @include laptop {
-      @include square(35);
-    }
   }
 
   &__content {
-    top: rem(60);
     left: fluid(400, 100);
     height: fluid(60, 35);
-    width: rem(420);
-    background: var(--color-dark-15);
-    border-radius: rem(16);
-    border: 1px solid var(--color-light);
   }
 
   &__input {
-    background: transparent;
-    height: 100%;
     padding-inline: rem(20) rem(55);
-
-    @include laptop {
-      padding-inline: rem(20) rem(100);
-    }
-  }
-
-  &__clear {
-    @include square(30);
-    @include abs-y;
-
-    right: 20%;
-    transform-origin: top right;
-
-    @include laptop {
-      @include square(25);
-
-      right: 14%;
-    }
-  }
-
-  &__submit {
-    top: 0;
-    right: 0;
-    width: 15%;
-    height: 100%;
-    padding: rem(15);
-    background: var(--color-dark-alt);
-    transform: translateX(100%);
-    transition: transform var(--transition-duration), opacity var(--transition-duration);
-    opacity: 0;
-
-    @include laptop {
-      width: 12%;
-    }
-
-    svg {
-      width: 100%;
-      height: auto;
-    }
-
-    &.is-active {
-      transform: translateX(0);
-      opacity: 1;
-    }
   }
 }

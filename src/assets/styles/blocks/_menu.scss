@@ -1,13 +1,11 @@
 @use '../helpers' as *;
 
 .menu {
-  @include abs-y;
-
   left: fluid(30, 15);
   width: fluid(280, 100);
 
   &__genres {
-    padding: rem(16) rem(10);
+    padding: rem(10) rem(10);
 
     @include laptop {
       padding: 0;
@@ -15,40 +13,17 @@
   }
 
   &__item-btn, &__btn {
-    color: currentColor;
-    background: transparent;
-    border-radius: rem(12);
     padding-inline: fluid(20, 10);
-
-    &.is-active {
-      cursor: default;
-      pointer-events: none;
-    }
   }
 
-  &__item {
-
-    &-btn {
-      padding: fluid(20, 10);
-      gap: rem(10);
-
-      &.is-active {
-        background: var(--color-dark-15);
-      }
-
-      svg {
-        @include square(30);
-      }
-    }
+  &__item-btn {
+    padding: fluid(20, 10);
   }
 
   &__wrapper {
-    display: grid;
-    grid-template-rows: 0fr;
     transition: grid-template-rows var(--transition-duration-big);
 
     &.is-active {
-      grid-template-rows: 1fr;
 
       .menu__wrapper-inner {
         opacity: 1;
@@ -56,42 +31,7 @@
     }
 
     &-inner {
-      min-height: 0;
-      opacity: 0;
       transition: opacity var(--transition-duration-big);
     }
-  }
-
-  &__genres {
-    background: color-mix(in srgb, var(--color-dark-15), transparent 25%);
-    border-radius: rem(12);
-    margin-left: rem(20);
-    margin-top: rem(10);
-    box-shadow: inset 0 0 rem(3) rem(1) var(--color-dark);
-    max-height: 50vh;
-    overflow-y: auto;
-  }
-
-  &__btn {
-    height: rem(60);
-    transition: backdrop-filter var(--transition-duration);
-
-    @include hover {
-      backdrop-filter: brightness(.88);
-    }
-
-    &.is-active {
-      backdrop-filter: brightness(.8);
-    }
-  }
-
-  svg {
-    width: rem(50);
-    height: auto;
-  }
-
-  &__active {
-    height: rem(60);
-    width: calc(100% - #{rem(10)} * 2);
   }
 }

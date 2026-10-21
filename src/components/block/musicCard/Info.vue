@@ -3,7 +3,7 @@ import {nextTick, ref, watch} from "vue";
 
 import {showArtists} from "@composables/useShowArtists.ts";
 
-import Actions from "@components/Actions.vue";
+import Actions from "@components/musicCard/Actions.vue";
 
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
@@ -26,7 +26,6 @@ const checkWidth = async () => {
     const contentWidth = nameTrackRef.value.scrollWidth
 
     if (timer.value) clearTimeout(timer.value)
-
     if (!containerWidth || !contentWidth) return
 
     if (contentWidth > containerWidth) {
@@ -42,26 +41,42 @@ const checkWidth = async () => {
 watch(
     () => audioStore.activeTrack.id,
     () => checkWidth(),
-    {immediate: true, deep: true}
+    {immediate: true}
 )
 </script>
 
 <template>
 
   <Transition name="list">
-    <div class="info" :key="audioStore.activeTrack?.name">
+    <div :key="audioStore.activeTrack?.name"
+         class="info mb-4"
+    >
       <Actions/>
 
-      <div class="info__title text-w700 w-100 overflow-hidden position-relative text-nowrap"
-           :class="{'shadow': isNameShadow}"
+      <div :class="[
+               'info__title font-bold w-full overflow-hidden relative text-nowrap leading-[1.2] transition-[transform] duration-500',
+               isNameShadow && 'shadow'
+           ]"
       >
-        <div class="info__track" :class="{ 'animate': isNameOverflow }" ref="nameTrackRef">
-          <span>{{ audioStore.activeTrack?.name }}</span>
-          <span v-if="isNameOverflow" class="info__spacer">{{ audioStore.activeTrack?.name }}</span>
+        <div :class="[
+                 'info__track inline-flex',
+                 isNameOverflow && 'animate'
+             ]"
+             ref="nameTrackRef"
+        >
+          <span>
+            {{ audioStore.activeTrack?.name }}
+          </span>
+
+          <span v-if="isNameOverflow"
+                class="ml-37.5"
+          >
+            {{ audioStore.activeTrack?.name }}
+          </span>
         </div>
       </div>
 
-      <div class="info__author w-100 overflow-hidden position-relative text-nowrap">
+      <div class="info__author leading-[1.2] w-full overflow-hidden relative text-nowrap truncate">
         {{ showArtists(audioStore.activeTrack?.artists) }}
       </div>
     </div>

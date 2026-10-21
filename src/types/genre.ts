@@ -3,15 +3,6 @@ export interface Genre {
     name: string
 }
 
-export interface GenresList {
-    genres: Genre[]
-}
-
-export interface Genre {
-    id: number
-    name: string
-}
-
-export interface GenresList {
+export interface GenresResponse {
     genres: Genre[]
 }

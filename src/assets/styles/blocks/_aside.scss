@@ -3,51 +3,19 @@
 .aside {
 
   &__open {
-    @include square(40);
-
-    color: var(--color-light);
     top: fluid(30, 15);
     left: fluid(30, 15);
-
-    @include laptop {
-      @include square(35);
-    }
-  }
-
-  &__background {
-    inset: 0;
-    backdrop-filter: brightness(0.2) blur(5px);
-    background: rgba(0,0,0,.6);
-  }
-
-  &__content {
-    top: 0;
-    left: 0;
-    height: 100vh;
-    background: var(--color-dark-alt);
-    padding: rem(30);
-  }
-
-  &__list {
-    gap: rem(30);
-  }
-
-  &__item, &__btn {
-    @include square(50);
   }
 
   &__btn {
-    border-radius: 50%;
 
     svg {
       width: 80%;
+      height: auto;
     }
   }
 
   &__avatar {
-    @include square(50);
-
-    border-radius: 50%;
 
     &.is-active {
 
@@ -59,17 +27,8 @@
 
     & div {
       @include square(50);
+
       inset: 0;
-    }
-
-    .border {
-      border-radius: 50%;
-      border: 1px dashed var(--color-light);
-      scale: 1.02;
-
-      &.is-active {
-        z-index: 10001;
-      }
     }
 
     .img-container {
@@ -79,18 +38,6 @@
               border-radius var(--transition-duration-big) ease;
       transform: translate(0, 0) scale(1);
       transform-origin: center center;
-      will-change: transform;
     }
-  }
-
-  &__block {
-    background: var(--color-dark-15);
-    left: rem(410);
-    top: rem(200);
-    border-radius: var(--radius-big);
-  }
-
-  &__upload {
-    border-radius: 50%;
   }
 }

@@ -1,11 +1,5 @@
 @use 'helpers' as *;
 
-html {
-  &.is-lock {
-    overflow: hidden;
-  }
-}
-
 @media (min-width: 1920px) {
   html {
     font-size: calc(16px + (100vw - 1920px) * 0.003);
@@ -13,22 +7,21 @@ html {
 }
 
 body {
-  @include fluid-text(18, 14);
+  @include fluid-text(17, 14);
 
-  display: flex;
-  flex-direction: column;
-  font-family: var(--font-family-base);
-  color: var(--color-light);
-  background-color: var(--color-dark);
+  font-family: var(--font-family-base), sans-serif;
+  color: var(--light);
+  background-color: var(--dark);
   overflow: hidden;
+
+  & * {
+    user-select: none;
+  }
 }
 
-body * {
-  user-select: none;
-}
-
-main {
-  flex-grow: 1;
+#app {
+  width: 100vw;
+  height: 100vh;
 }
 
 h1, .h1 {
@@ -78,7 +71,7 @@ a {
   color: inherit;
 
   @include hover {
-    color: var(--color-accent);
+    color: var(--accent);
   }
 
   &[class] {
@@ -87,13 +80,15 @@ a {
 }
 
 button, input {
-  border: none;
   outline: none;
   color: inherit;
 }
 button {
-  padding: 0;
-  background-color: transparent;
+  cursor: pointer;
+
+  @include hover() {
+    color: var(--accent);
+  }
 
   svg {
     max-width: 100%;
@@ -101,7 +96,6 @@ button {
   }
 }
 button[disabled] {
-  cursor: default;
   pointer-events: none;
   opacity: .6;
 }
@@ -111,15 +105,15 @@ button[disabled] {
   width: rem(5);
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-dark-15);
-  border-radius: var(--radius-regular);
+  background: var(--dark-15);
+  border-radius: rem(8);
 }
 ::-webkit-scrollbar-thumb {
-  background: var(--color-accent);
-  border-radius: 8px;
+  background: var(--accent);
+  border-radius: rem(8);
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--color-accent);
+  background: var(--accent);
 }
 
 // input-range
@@ -130,13 +124,13 @@ input[type=range] {
   border-radius: var(--radius-regular);
   outline: none;
   cursor: pointer;
-  background: var(--color-dark-15);
+  background: var(--dark-15);
 
   &::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 14px;
     height: 14px;
-    background: var(--color-light);
+    background: var(--light);
     border-radius: 50%;
   }
   &::-moz-focus-outer {

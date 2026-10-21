@@ -12,6 +12,6 @@ withDefaults(
 
 <template>
 
-  <LikeIcon class="like" :class="{'is-active': isLiked}"/>
+  <LikeIcon :class="['like', isLiked && 'is-liked']"/>
 
 </template>

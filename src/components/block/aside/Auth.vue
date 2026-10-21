@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref} from "vue";
 
-import {Auth} from "@/types/auth.ts";
+import {AuthPayload} from "@/types/auth.ts";
 import {UserWithToken} from "@/types/user.ts";
 import {IsLiked} from "@/types/like.ts";
 
@@ -24,34 +24,31 @@ const isLogin = ref<boolean>(true)
 
 const isLoading = ref<boolean>(false)
 
-const form = ref<Auth>({
+const form = ref<AuthPayload>({
   login: '',
   password: '',
   name: '',
 })
 
-const message = ref<string>('приветик')
+const message = ref<string>('')
 
 const handleSubmit = async (e: Event) => {
   if (onSubmit(e)) {
-
-    let response: UserWithToken
-
     try {
       isLoading.value = true
 
-      if (isLogin.value) {
-        response = await apiAuth(form.value.login, form.value.password)
-        message.value = `Добро пожаловать, ${response.user.name}!!)`
-      } else {
-        response = await apiRegister(form.value.login, form.value.password, form.value.name)
-        message.value = 'Пользователь успешно зарегистрирован!!'
-      }
+      const response: UserWithToken = isLogin.value
+          ? await apiAuth(form.value.login, form.value.password)
+          : await apiRegister(form.value.login, form.value.password, form.value.name)
+
+      message.value = isLogin.value
+          ? `Добро пожаловать, ${response.user.name}!!)`
+          : 'Пользователь успешно зарегистрирован!!'
 
       login(response)
       emits('successAuth', message.value)
 
-      if (audioStore.activeTrack.id >= 0) await checkLike()
+      if (audioStore.activeTrack.id >= 0) void checkLike()
     } catch (err: any) {
       await showError(
           'Ошибка авторизации',
@@ -66,13 +63,11 @@ const handleSubmit = async (e: Event) => {
 const checkLike = async () => {
   try {
     const response: IsLiked = await apiCheckLike(audioStore.activeTrack.id)
-    audioStore.activeTrack.isLiked = response?.isLiked ?? false
-  } catch (err) {
-    console.error(err)
-  }
+    audioStore.activeTrack.isLiked = response.isLiked ?? false
+  } catch {}
 }
 
-const handleHeaderBtn = (isLoginValue: boolean) => {
+const handleTab = (isLoginValue: boolean) => {
   isLogin.value = isLoginValue
   clear()
 }
@@ -91,56 +86,62 @@ const clear = () => {
 
 <template>
 
-  <div class="auth aside__block position-absolute">
-    <header class="auth__header flex flex-justify-center">
+  <div class="absolute bg-dark-15 left-102.5 top-50 rounded-big p-7.5 w-112.5">
+    <div class="flex justify-center gap-7.5 mb-12.5">
       <ButtonUi :is-active="isLogin"
-                @click="handleHeaderBtn(true)"
-      >Войти</ButtonUi>
-      <ButtonUi :is-active="!isLogin"
-                @click="handleHeaderBtn(false)"
-      >Зарегистрироваться</ButtonUi>
-    </header>
+                @click="handleTab(true)"
+      >
+        Войти
+      </ButtonUi>
 
-    <form class="auth__form flex flex-column position-relative"
+      <ButtonUi :is-active="!isLogin"
+                @click="handleTab(false)"
+      >
+        Зарегистрироваться
+      </ButtonUi>
+    </div>
+
+    <form class="flex flex-col gap-10"
           novalidate
           method="post"
           data-js-form
           @submit.prevent="handleSubmit"
     >
       <TransitionGroup name="list-fade">
-        <InputUi class="auth__input"
+        <InputUi key="login"
+                 v-model="form.login"
+                 :readonly="isLoading"
+                 @blur="onBlur"
+                 @input="onInput"
                  title="Логин"
                  required
-                 v-model="form.login"
+                 minlength="4"
+        />
+        <InputUi key="password"
+                 v-model="form.password"
+                 :readonly="isLoading"
                  @blur="onBlur"
                  @input="onInput"
-                 minlength="4"
-                 :readonly="isLoading"
-        />
-        <InputUi class="auth__input"
                  title="Пароль"
                  required
-                 v-model="form.password"
-                 @blur="onBlur"
-                 @input="onInput"
                  minlength="4"
-                 :readonly="isLoading"
         />
 
-        <InputUi class="auth__input"
-                 v-if="!isLogin"
+        <InputUi v-if="!isLogin"
+                 key="name"
+                 v-model="form.name"
+                 :readonly="isLoading"
+                 @blur="onBlur"
+                 @input="onInput"
                  title="Имя пользователя"
                  required
-                 v-model="form.name"
-                 @blur="onBlur"
-                 @input="onInput"
                  minlength="4"
-                 :readonly="isLoading"
         />
 
-        <ButtonUi class="auth__submit"
-                  is-submit
+        <ButtonUi key="submit"
+                  class="mt-5"
                   :is-loading="isLoading"
+                  is-submit
         >
           <Transition name="fade-absolute">
             <span :key="String(isLogin)">

@@ -1,26 +1,34 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
-import useItemsStore from "@store/useItemsStore.ts";
-import useAudioStore from "@store/useAudioStore.ts";
+
+import {TrackPreview} from "@/types/music.ts";
+
 import {apiGetRandomMusic} from "@api/music/music.ts";
 
+import useAudioStore from "@store/useAudioStore.ts";
+import useSearchStore from "@store/useSearchStore.ts";
+import useArtistStore from "@store/useArtistStore.ts";
+import useGenreStore from "@store/useGenreStore.ts";
+import useMusicStore from "@store/useMusicStore.ts";
+
 const useControllersStore = defineStore("controllersStore", () => {
-    const itemsStore = useItemsStore();
     const audioStore = useAudioStore();
+    const searchStore = useSearchStore();
+    const artistStore = useArtistStore();
+    const genreStore = useGenreStore();
+    const musicStore = useMusicStore();
 
     const isLoading = ref<boolean>(false)
 
-    // активный мод
     const mode = ref<'img' | 'video'>('img')
 
-    // активен ли "Рандом"
     const isRandom = ref(false)
-    // активен ли "Повтор композиции"
     const isRepeat = ref(false)
 
-    const getCurrentIndex = (): any => {
-        return itemsStore.musicList?.music.findIndex(m => m.id === audioStore.activeTrack.id)
+    const getCurrentIndex = (): number => {
+        return musicStore.music.findIndex((m: TrackPreview) => m.id === audioStore.activeTrack.id)
     }
+
     const prevItem = async () => {
         if (audioStore.currentTime > 20) {
             audioStore.audio.currentTime = 0
@@ -31,17 +39,16 @@ const useControllersStore = defineStore("controllersStore", () => {
             isLoading.value = true
 
             if (isRandom.value) {
-                itemsStore.offset = Math.max(-1, itemsStore?.offset - 1)
-                const id = itemsStore.randomMusicIds[itemsStore.offset]
+                musicStore.offset = Math.max(-1, musicStore?.offset - 1)
+                const id = musicStore.randomIds[musicStore.offset]
                 if (id && id !== audioStore.activeTrack.id) await audioStore.updateMusic(id)
                 return
             }
 
             const currentIndex = getCurrentIndex()
-            const musicList = itemsStore.musicList?.music
 
-            const prevIndexInCurrentList = (currentIndex - 1 + musicList?.length) % musicList?.length
-            await audioStore.updateMusic(musicList?.[prevIndexInCurrentList].id)
+            const prevIndexInCurrentList = (currentIndex - 1 + musicStore.music.length) % musicStore.music.length
+            await audioStore.updateMusic(musicStore.music[prevIndexInCurrentList].id)
         } finally {
             isLoading.value = false
         }
@@ -49,23 +56,28 @@ const useControllersStore = defineStore("controllersStore", () => {
     const nextItem = async () => {
         if (isRandom.value) {
             try {
-                itemsStore.offset += 1
-                if (itemsStore.offset === 0) itemsStore.randomMusicIds[-1] = audioStore.activeTrack.id
+                musicStore.offset += 1
+                if (musicStore.offset === 0) musicStore.randomIds[-1] = audioStore.activeTrack.id
 
-                const id = itemsStore.randomMusicIds[itemsStore.offset]
+                const id = musicStore.randomIds[musicStore.offset]
 
                 if (id === audioStore.activeTrack.id) return
                 if (id) {
                     await audioStore.updateMusic(id)
                 } else {
-                    const music = await apiGetRandomMusic()
+                    const music = await apiGetRandomMusic(
+                        musicStore.randomIds[-1],
+                        searchStore.searchName,
+                        artistStore.currentArtist?.id,
+                        genreStore.currentGenre?.id
+                    )
                     if (music) {
-                        itemsStore.randomMusicIds[itemsStore.offset] = music.id
+                        musicStore.randomIds[musicStore.offset] = music.id
                         await audioStore.updateMusic(undefined, music)
                     }
                 }
             } catch {
-                itemsStore.offset -= 1
+                musicStore.offset -= 1
             } finally {
                 isLoading.value = false
             }
@@ -74,10 +86,9 @@ const useControllersStore = defineStore("controllersStore", () => {
                 isLoading.value = true
 
                 const currentIndex = getCurrentIndex()
-                const musicList = itemsStore.musicList?.music
 
-                const nextIndexInCurrentList = (currentIndex + 1) % musicList?.length
-                await audioStore.updateMusic(musicList?.[nextIndexInCurrentList].id)
+                const nextIndexInCurrentList = (currentIndex + 1) % musicStore.music.length
+                await audioStore.updateMusic(musicStore.music[nextIndexInCurrentList].id)
             } finally {
                 isLoading.value = false
             }
