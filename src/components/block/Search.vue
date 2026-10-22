@@ -107,12 +107,12 @@ const inputSearchName = debounce(() => {
 
         <Transition name="scale">
           <button v-if="searchStore.searchName"
-                  class="recolor-svg square-6 3xl:square-8 abs-y right-[14%] 3xl:right-[17%]"
+                  class="recolor-svg square-6 3xl:square-8 abs-y right-[14%] 3xl:right-[17%] flex-center"
                   @click="handleClear"
                   title="Очистить поле"
                   type="button"
           >
-            <Icon :name="CrossIcon" :size="30"/>
+            <Icon :name="CrossIcon" :size="30" :laptop-size="24"/>
           </button>
         </Transition>
 
@@ -124,7 +124,7 @@ const inputSearchName = debounce(() => {
                 title="Поиск"
                 type="button"
         >
-          <SearchIcon/>
+          <Icon :name="SearchIcon" :size="20"/>
         </button>
       </div>
     </Transition>
