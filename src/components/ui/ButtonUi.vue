@@ -35,7 +35,7 @@ withDefaults(
 
       <LoadingIcon v-if="isLoading"
                    key="loading"
-                   class="absolute w-7.5 h-auto"
+                   class="abs-center w-6 3xl:w-7.5 h-auto"
       />
     </TransitionGroup>
   </button>
