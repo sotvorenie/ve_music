@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import {ref, watch} from "vue";
 
-import {Genre} from "@/types/genre.ts";
-
 import {apiGetAllGenres} from "@api/genre/genre.ts";
 
 import Modal from "@ui/Modal.vue";
@@ -24,8 +22,6 @@ const musicStore = useMusicStore();
 
 
 const musicIndex = defineModel('musicIndex',{type: Number})
-
-const genres = ref<Genre[]>([])
 
 const menuList = [
   {
@@ -69,7 +65,7 @@ const handleTab = (index: number) => {
 const getGenres = async () => {
   try {
     const response = await apiGetAllGenres()
-    genres.value = [{id: -1, name: 'All'}, ...response.genres]
+    genreStore.genres = [{id: -1, name: 'All'}, ...response.genres]
   } catch {}
 }
 
@@ -100,7 +96,7 @@ watch(
     </template>
   </Modal>
 
-  <div v-if="genres.length"
+  <div v-if="genreStore.genres.length"
        class="menu abs-y z-10"
   >
     <ul class="flex flex-col">
@@ -138,7 +134,7 @@ watch(
                     index > 0 && 'hidden'
                 ]"
             >
-              <li v-for="genreItem in genres"
+              <li v-for="genreItem in genreStore.genres"
                   :key="genreItem.id"
                   class="menu__item w-full z-1"
               >

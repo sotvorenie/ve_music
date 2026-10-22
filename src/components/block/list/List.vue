@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import {watch} from "vue";
-
 import ListMusic from "@components/list/ListMusic.vue";
 import ListArtists from "@components/list/ListArtists.vue";
 
@@ -15,22 +13,16 @@ const artistStore = useArtistStore();
 import useMusicStore from "@store/useMusicStore.ts";
 const musicStore = useMusicStore();
 import useGenreStore from "@store/useGenreStore.ts";
-const genreStore = useGenreStore();
+const genresStore = useGenreStore();
 
 await musicStore.getMusic()
 
-const handleMusic = async () => {
+const handleMusicTab = async () => {
   artistStore.currentArtist.id = -1
+  genresStore.currentGenre = genresStore.genres[0]
   await musicStore.getMusic()
   menuStore.listMode = 'music';
 }
-
-watch(
-    () => menuStore.listMode,
-    () => {
-      if (menuStore.listMode === 'artistMusic') genreStore.clearGenre()
-    }
-)
 </script>
 
 <template>
@@ -46,7 +38,7 @@ watch(
           ]"
     >
       <ButtonUi :is-active="menuStore.listMode === 'music'"
-                @click="handleMusic"
+                @click="handleMusicTab"
       >
         Музыка
       </ButtonUi>
@@ -58,11 +50,11 @@ watch(
       </ButtonUi>
     </div>
 
-    <span v-if="menuStore.listMode === 'artistMusic'"
-          class="mb-10 truncate"
+    <div v-if="menuStore.listMode === 'artistMusic'"
+         class="mb-2.5 truncate"
     >
       Музыка исполнителя {{artistStore.currentArtist.name}}
-    </span>
+    </div>
 
     <div v-if="menuStore.listMode !== 'artists'"
          class="mb-2.5"

@@ -17,11 +17,14 @@ import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
 import useMusicStore from "@store/useMusicStore.ts";
 const musicStore = useMusicStore();
+import useGenreStore from "@store/useGenreStore.ts";
+const genresStore = useGenreStore();
 
 await artistStore.getArtists()
 
 const handleArtist = async (artist: Artist) => {
   artistStore.currentArtist = artist
+  genresStore.clearGenre()
 
   await musicStore.getMusic(1)
 

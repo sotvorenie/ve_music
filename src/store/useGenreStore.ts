@@ -4,6 +4,8 @@ import {ref} from "vue";
 import {Genre} from "@/types/genre.ts";
 
 const useGenreStore = defineStore("genreStore", () => {
+    const genres = ref<Genre[]>([])
+
     const currentGenre = ref<Genre>({
         id: -1,
         name: ''
@@ -17,6 +19,7 @@ const useGenreStore = defineStore("genreStore", () => {
     }
 
     return {
+        genres,
         currentGenre,
 
         clearGenre,
