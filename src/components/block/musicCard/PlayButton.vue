@@ -37,7 +37,7 @@ watch(
           @click="audioStore.isPlaying = !audioStore.isPlaying"
           type="button"
   >
-    <svg width="100" height="100" viewBox="0 0 24 24">
+    <svg width="90%" height="90%" viewBox="0 0 24 24">
       <defs>
         <filter id="gooey-tight">
           <feGaussianBlur in="SourceGraphic" stdDeviation="0.8" result="blur" />
