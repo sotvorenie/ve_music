@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watchEffect} from "vue";
+import {ref, watch, watchEffect} from "vue";
 
 import {BASE_URL} from "@api/url.ts";
 
@@ -20,6 +20,8 @@ import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
 import useMusicStore from "@store/useMusicStore.ts";
 const musicStore = useMusicStore();
+import useMenuStore from "@store/useMenuStore.ts";
+const menuStore = useMenuStore();
 
 const listRef = ref<HTMLUListElement | null>(null)
 
@@ -65,6 +67,11 @@ watchEffect((onCleanup) => {
     arrowVisible.value = false
   })
 })
+
+watch(
+    () => menuStore.menuMode,
+    () => listRef.value?.scroll(0, 0)
+)
 </script>
 
 <template>
