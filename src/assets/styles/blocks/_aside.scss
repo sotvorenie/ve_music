@@ -2,19 +2,6 @@
 
 .aside {
 
-  &__open {
-    top: fluid(30, 15);
-    left: fluid(30, 15);
-  }
-
-  &__btn {
-
-    svg {
-      width: 80%;
-      height: auto;
-    }
-  }
-
   &__avatar {
 
     &.is-active {
@@ -27,8 +14,6 @@
 
     & div {
       @include square(50);
-
-      inset: 0;
     }
 
     .img-container {
@@ -37,7 +22,6 @@
               transform var(--transition-duration-big) ease,
               border-radius var(--transition-duration-big) ease;
       transform: translate(0, 0) scale(1);
-      transform-origin: center center;
     }
   }
 }

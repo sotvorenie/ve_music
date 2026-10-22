@@ -8,6 +8,7 @@ import Auth from "@components/aside/Auth.vue";
 import UserAvatar from "@components/aside/UserAvatar.vue";
 
 import Tooltip from "@ui/Tooltip.vue";
+import Icon from "@ui/Icon.vue";
 
 import MenuIcon from "@icons/MenuIcon.vue";
 import CrossIcon from "@icons/CrossIcon.vue";
@@ -58,7 +59,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey, true))
 <template>
 
   <div class="aside">
-    <Tooltip class="aside__open !absolute z-10"
+    <Tooltip class="aside__open !absolute z-10 top-6 3xl:top-7.5 left-6 3xl:left-7.5"
              position="bottom-right"
              has-delay
     >
@@ -97,7 +98,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey, true))
                         @click="closeAside"
                         type="button"
                 >
-                  <CrossIcon/>
+                  <Icon :name="CrossIcon" :size="40"/>
                 </button>
               </template>
 
