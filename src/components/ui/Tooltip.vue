@@ -3,6 +3,7 @@ withDefaults(
     defineProps<{
       hidden?: boolean
       position?: 'top' | 'right' | 'bottom-right'
+      hasDelay?: boolean
     }>(), {
       position: 'top',
       hidden: false,
@@ -12,13 +13,17 @@ withDefaults(
 
 <template>
 
-  <div class="tooltip relative z-[100]">
+  <div :class="[
+            'tooltip relative z-[100]',
+            hasDelay && 'has-delay'
+        ]"
+  >
     <slot name="activator"/>
 
     <div v-if="!hidden"
          :class="[
              'tooltip__content opacity-0 z-[10000] text-nowrap pointer-events-none transition-[opacity,transform] duration-250 bg-dark-15 rounded-regular p-2.5 w-fit-content',
-             position
+             position,
          ]"
     >
       <slot/>

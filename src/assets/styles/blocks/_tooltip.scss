@@ -18,6 +18,15 @@
     }
   }
 
+  &.has-delay {
+
+    @include hover() {
+      .tooltip__content {
+        transition-delay: var(--transition-duration-big);
+      }
+    }
+  }
+
   &__content {
 
     &.top {

@@ -66,6 +66,7 @@ const inputSearchName = debounce(() => {
   <div class="search">
     <Tooltip class="search__open !absolute z-10"
              position="bottom-right"
+             has-delay
     >
       <template #activator>
         <Transition name="scale" mode="out-in">

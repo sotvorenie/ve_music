@@ -60,6 +60,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey, true))
   <div class="aside">
     <Tooltip class="aside__open !absolute z-10"
              position="bottom-right"
+             has-delay
     >
       <template #activator>
         <button class="square-9 3xl:square-10 recolor-svg"
