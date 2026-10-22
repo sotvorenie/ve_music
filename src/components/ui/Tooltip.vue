@@ -20,10 +20,10 @@ withDefaults(
   >
     <slot name="activator"/>
 
-    <div v-if="!hidden"
-         :class="[
+    <div :class="[
              'tooltip__content opacity-0 z-[10000] text-nowrap pointer-events-none transition-[opacity,transform] duration-250 bg-dark-15 rounded-regular p-2.5 w-fit-content',
              position,
+             hidden && '!opacity-0'
          ]"
     >
       <slot/>

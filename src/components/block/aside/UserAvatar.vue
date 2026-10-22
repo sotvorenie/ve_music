@@ -18,10 +18,7 @@ const isUserRedact = defineModel<boolean>('isUserRedact', {required: true})
 const isAuth = defineModel<boolean>('isAuth', {required: true})
 
 const avatarTitle = computed(() => {
-  if (!isUserRedact.value && !isAuth.value) {
-    return userStore.user.id >= 0 ? 'Редактировать профиль' : 'Войти/Зарегистрироваться'
-  }
-  return ''
+  return userStore.user.id >= 0 ? 'Редактировать профиль' : 'Войти/Зарегистрироваться'
 })
 
 const handleAvatar = () => {
