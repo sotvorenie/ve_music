@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, ref} from "vue";
+import {computed, ref, watch} from "vue";
 
 import {formatTime} from "@composables/useFormatTime.ts";
 
@@ -34,9 +34,12 @@ const mouseMoveTimeline = (e: MouseEvent) => {
   cursorPosition.value = getPercent(percent)
 }
 
-const handleTimeline = (event: Event) => {
-  audioStore.audio.currentTime = +(event.target as HTMLInputElement).value
-}
+watch(
+    () => audioStore.isMoving,
+    (val) => {
+      if (!val) audioStore.audio.currentTime = audioStore.currentTime
+    }
+)
 </script>
 
 <template>
@@ -46,26 +49,30 @@ const handleTimeline = (event: Event) => {
               'relative group',
               audioStore.activeTrack.id < 0 && 'pointer-events-none'
           ]"
+         @pointerdown="audioStore.isMoving = true"
+         @pointerup="audioStore.isMoving = false"
          @mousemove="mouseMoveTimeline"
     >
-      <span class="absolute tabular-nums bottom-[95%] bg-dark-15 rounded-regular p-2.5 transition-[opacity,translate] opacity-0 [translate:-50%_10px] pointer-events-none group-hover:opacity-100 group-hover:[translate:-50%_0]"
-            :style="{left: `${cursorPosition}%`}"
-      >
-        {{formatTime(cursorTimePercent * audioStore.duration)}}
-      </span>
+      <Transition name="fade-small">
+        <div v-if="cursorTimePercent >= 0"
+              class="absolute tabular-nums bottom-[95%] bg-dark-15 rounded-regular p-2.5 transition-[opacity,translate] opacity-0 [translate:-50%_10px] pointer-events-none group-hover:opacity-100 group-hover:[translate:-50%_0]"
+              :style="{left: `${cursorPosition}%`}"
+        >
+          {{formatTime(cursorTimePercent * audioStore.duration)}}
+        </div>
+      </Transition>
 
       <input class="range-slider w-full m-0"
              v-model="audioStore.currentTime"
              :max="audioStore.activeTrack.duration"
              :style="{'--percent': `${progressPercent || 0}%`}"
-             @input="handleTimeline"
              type="range"
              ref="inputRef"
       >
     </div>
 
     <div class="flex justify-between mb-4">
-      <span>{{formatTime(audioStore.currentTime || 0)}}</span>
+      <span>{{formatTime(audioStore.audio.currentTime || 0)}}</span>
       <span>{{formatTime(audioStore.activeTrack.duration)}}</span>
     </div>
   </div>

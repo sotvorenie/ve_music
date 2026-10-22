@@ -14,6 +14,7 @@ const useAudioStore = defineStore('audioStore', () => {
     const musicStore = useMusicStore();
 
     const isPlaying = ref<boolean>(false)
+    const isMoving = ref<boolean>(false)
 
     const currentTime = ref<number>(0)
     const duration = ref<number>(0)
@@ -40,7 +41,7 @@ const useAudioStore = defineStore('audioStore', () => {
         duration.value = Math.round(audio.duration)
     }
     audio.ontimeupdate = () => {
-        currentTime.value = Math.floor(audio.currentTime)
+        if (!isMoving.value) currentTime.value = Math.floor(audio.currentTime)
     }
     audio.onended = async () => {
         if (controllersStore.isRepeat) {
@@ -87,6 +88,7 @@ const useAudioStore = defineStore('audioStore', () => {
         audio,
 
         isPlaying,
+        isMoving,
 
         currentTime,
         duration,
