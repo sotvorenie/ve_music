@@ -88,7 +88,7 @@ watch(
   </Modal>
 
   <div v-if="genreStore.genres.length"
-       class="menu abs-y z-10"
+       class="menu abs-y z-10 left-5 3xl:left-7.5 w-52 3xl:w-70"
   >
     <ul class="flex flex-col">
       <li v-for="(item, index) in menuList"
@@ -98,7 +98,7 @@ watch(
         <Modal close-visible>
           <template #activator="{open}">
             <button :class="[
-                        'menu__item-btn recolor-svg flex items-center w-full rounded-regular gap-2.5 hover:bg-dark-alt/75 hover:text-accent',
+                        'p-4 3xl:p-5 recolor-svg flex items-center w-full rounded-regular gap-2.5 hover:bg-dark-alt/75 hover:text-accent',
                         activeTabIndex === index && 'pointer-events-none bg-dark-15',
                     ]"
                     @click="userStore.isLogged ? handleTab(index) : handleErrorModal(item.value, open)"
@@ -115,22 +115,24 @@ watch(
         </Modal>
 
         <div :class="[
-                 'menu__wrapper overflow-hidden grid',
-                 activeTabIndex === 0 ? 'is-active grid-rows-[1fr]' : 'grid-rows-[0fr]'
+                 'menu__wrapper overflow-hidden grid transition-[grid-template-rows] duration-500',
+                 activeTabIndex === 0 ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'
              ]"
         >
-          <div class="menu__wrapper-inner min-h-0 opacity-0">
-            <ul :class="[
-                    'flex flex-col relative bg-[color-mix(in_srgb,_var(--dark-15),_transparent_25%)] rounded-regular ml-5 mt-2.5 max-h-[50vh] overflow-y-auto',
-                    index > 0 && 'hidden'
-                ]"
+          <div :class="[
+                    'menu__wrapper-inner min-h-0 transition-opacity duration-800',
+                    activeTabIndex !== 0 && 'opacity-0'
+               ]"
+          >
+            <ul v-if="index === 0"
+                class="flex flex-col relative bg-[color-mix(in_srgb,_var(--dark-15),_transparent_25%)] rounded-regular ml-5 mt-2.5 max-h-[50vh] overflow-y-auto"
             >
               <li v-for="genre in genreStore.genres"
                   :key="genre.id"
                   class="menu__item w-full z-1"
               >
                 <button :class="[
-                            'menu__btn font-medium w-full text-left rounded-regular transition-[backdrop-filter] hover:backdrop-brightness-[.88] hover:text-accent',
+                            'p-3.5 3xl:p-5 font-medium w-full text-left rounded-regular transition-[backdrop-filter] hover:backdrop-brightness-[.88] hover:text-accent',
                             genreStore.currentGenre.id === genre.id && 'pointer-events-none backdrop-brightness-[.8]',
                         ]"
                         @click="genreStore.currentGenre = genre"
