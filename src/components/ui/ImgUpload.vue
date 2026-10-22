@@ -38,7 +38,7 @@ const handleUpload = async (file: File) => {
 <template>
 
   <Upload :class="[
-              'upload-img h-full',
+              'h-full',
               disabled && 'pointer-events-none'
           ]"
           :disabled="disabled"
@@ -46,11 +46,12 @@ const handleUpload = async (file: File) => {
           accept=".jpg,.jpeg,.png,.webp"
   >
     <div :class="[
-              'upload-img__content img-container relative rounded-medium h-full group',
+              'img-container relative rounded-medium h-full group',
               !imgUrl && '!bg-transparent'
           ]"
          title="Загрузить фото"
     >
+      <div class="absolute inset-0 bg-[rgba(0,0,0,.4)] transition-opacity opacity-0 hover:opacity-100 duration-300"/>
 
       <img v-if="imgUrl"
            :src="`${BASE_URL}${imgUrl}?t=${Date.now()}`"
