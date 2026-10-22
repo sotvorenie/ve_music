@@ -9,7 +9,9 @@ const visible = defineModel<boolean>({default: false})
 
   <Teleport to="body">
     <Transition name="from-top">
-      <div v-if="visible" class="flex-center fixed top-5 z-[1000] left-0 right-0">
+      <div v-if="visible"
+           class="flex-center fixed top-5 z-[1000] left-0 right-0 pointer-events-none"
+      >
         <div :class="[
                'py-2.5 px-5 rounded-medium font-medium',
                messageStore.type === 'light' && 'bg-light text-dark',
