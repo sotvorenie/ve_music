@@ -38,7 +38,7 @@ const handleLike = async () => {
                     @click="userStore.isLogged ? handleLike() : open()"
                     type="button"
             >
-              <Like class="aspect-square w-4 3xl:w-7.5 h-auto"
+              <Like class="aspect-square w-6 3xl:w-7.5 h-auto"
                     :is-liked="audioStore.activeTrack?.isLiked && userStore.isLogged"
               />
 
@@ -60,7 +60,7 @@ const handleLike = async () => {
     <Tooltip>
       <template #activator>
         <div class="recolor-svg h-full flex-center gap-2.5 bg-[#26262650] py-1 px-2.5 rounded-regular tabular-nums">
-          <Icon :name="ViewIcon" :size="25"/>
+          <Icon :name="ViewIcon" :size="25" :laptop-size="23"/>
 
           {{(audioStore.activeTrack?.auditionsCount || 0).toLocaleString()}}
         </div>
