@@ -3,6 +3,8 @@ import {computed, watch} from "vue";
 
 import PlayButton from "@components/musicCard/PlayButton.vue";
 
+import Icon from "@ui/Icon.vue";
+
 import ArrowIcon from "@icons/ArrowIcon.vue";
 
 import useControllersStore from "@store/useControllersStore.ts";
@@ -23,22 +25,22 @@ watch(
 <template>
 
   <div class="flex-center gap-4">
-    <button class="prev square-10.5 3xl:square-12.5 flex-center bg-transparent rounded-full border-2 border-current rotate-180 p-1"
+    <button class="square-12 3xl:square-12.5 flex-center bg-transparent rounded-full border-2 border-current rotate-180 p-1 hover:text-accent"
             :disabled="disabledControlButton"
             @click="controllersStore.prevItem"
             type="button"
     >
-      <ArrowIcon class="-mr-1"/>
+      <Icon class="-mr-1" :name="ArrowIcon" :size="30"/>
     </button>
 
     <PlayButton :disabled="audioStore.activeTrack.id < 0" class="square-15 3xl:square-20"/>
 
-    <button class="next square-10.5 3xl:square-12.5 flex-center bg-transparent rounded-full border-2 border-current p-1"
+    <button class="square-12 3xl:square-12.5 flex-center bg-transparent rounded-full border-2 border-current p-1 hover:text-accent"
             :disabled="disabledControlButton"
             @click="controllersStore.nextItem"
             type="button"
     >
-      <ArrowIcon class="-mr-1"/>
+      <Icon class="-mr-1" :name="ArrowIcon" :size="30"/>
     </button>
   </div>
 

@@ -98,7 +98,7 @@ watch(
         <Modal close-visible>
           <template #activator="{open}">
             <button :class="[
-                        'menu__item-btn recolor-svg flex items-center w-full rounded-regular gap-2.5 hover:bg-dark-alt/75',
+                        'menu__item-btn recolor-svg flex items-center w-full rounded-regular gap-2.5 hover:bg-dark-alt/75 hover:text-accent',
                         activeTabIndex === index && 'pointer-events-none bg-dark-15',
                     ]"
                     @click="userStore.isLogged ? handleTab(index) : handleErrorModal(item.value, open)"
@@ -130,7 +130,7 @@ watch(
                   class="menu__item w-full z-1"
               >
                 <button :class="[
-                            'menu__btn font-medium w-full text-left rounded-regular transition-[backdrop-filter] hover:backdrop-brightness-[.88]',
+                            'menu__btn font-medium w-full text-left rounded-regular transition-[backdrop-filter] hover:backdrop-brightness-[.88] hover:text-accent',
                             genreStore.currentGenre.id === genre.id && 'pointer-events-none backdrop-brightness-[.8]',
                         ]"
                         @click="genreStore.currentGenre = genre"

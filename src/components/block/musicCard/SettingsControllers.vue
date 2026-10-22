@@ -2,6 +2,7 @@
 import {computed, onMounted, watch} from "vue";
 
 import Tooltip from "@ui/Tooltip.vue";
+import Icon from "@ui/Icon.vue";
 
 import SoundOffIcon from "@icons/SoundOffIcon.vue";
 import RandomIcon from "@icons/RandomIcon.vue";
@@ -67,7 +68,7 @@ onMounted(() => {
 
 <template>
 
-  <div class="controllers__settings flex items-center justify-between">
+  <div class="flex items-center justify-between gap-2.5">
     <div class="relative flex items-center group">
           <span class="tabular-nums opacity-0 transition-opacity group-hover:opacity-100">
             {{Number(audioStore.volume)?.toFixed(1)}}
@@ -79,8 +80,11 @@ onMounted(() => {
                   @click="handleVolume"
                   type="button"
           >
-            <SoundOnIcon v-if="audioStore.volume > 0"/>
-            <SoundOffIcon v-else/>
+            <Icon v-if="audioStore.volume > 0"
+                  :name="SoundOnIcon"
+                  :size="30"
+            />
+            <Icon v-else :name="SoundOffIcon" :size="30"/>
           </button>
         </template>
 
@@ -99,7 +103,7 @@ onMounted(() => {
       >
     </div>
 
-    <div class="flex controllers__settings-list">
+    <div class="flex gap-2.5">
       <Tooltip>
         <template #activator>
           <button :class="[
@@ -109,7 +113,7 @@ onMounted(() => {
                   @click="handleIsRandom"
                   type="button"
           >
-            <RandomIcon/>
+            <Icon :name="RandomIcon" :size="27"/>
           </button>
         </template>
 
@@ -127,7 +131,7 @@ onMounted(() => {
                   @click="handleIsRepeat"
                   type="button"
           >
-            <RepeatIcon/>
+            <Icon :name="RepeatIcon" :size="27"/>
           </button>
         </template>
 

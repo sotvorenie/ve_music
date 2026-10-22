@@ -71,7 +71,7 @@ const inputSearchName = debounce(() => {
       <template #activator>
         <Transition name="scale" mode="out-in">
           <button :key="`${searchStore.isOpen}`"
-                  class="recolor-svg square-9 3xl:square-10 origin-right"
+                  class="recolor-svg square-9 3xl:square-10 origin-right hover:text-accent"
                   :disabled="!searchStore.isOpen && !searchStore.searchName && !musicStore.music?.length"
                   @click="searchStore.isOpen = !searchStore.isOpen"
                   type="button"
@@ -113,7 +113,7 @@ const inputSearchName = debounce(() => {
 
         <Transition name="scale">
           <button v-if="searchStore.searchName"
-                  class="recolor-svg square-6 3xl:square-8 abs-y right-[14%] 3xl:right-[17%] flex-center"
+                  class="recolor-svg square-6 3xl:square-8 abs-y right-[14%] 3xl:right-[17%] flex-center hover:text-accent"
                   @click="handleClear"
                   title="Очистить поле"
                   type="button"
@@ -123,7 +123,7 @@ const inputSearchName = debounce(() => {
         </Transition>
 
         <button :class="[
-                  'recolor-svg absolute flex-center top-0 right-0 w-[12%] 3xl:w-[15%] h-full p-4 bg-dark-alt !transition-[translate,opacity]',
+                  'recolor-svg absolute flex-center top-0 right-0 w-[12%] 3xl:w-[15%] h-full p-4 bg-dark-alt !transition-[translate,opacity] hover:text-accent',
                   searchStore.searchName ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
                 ]"
                 @click="search"

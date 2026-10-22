@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Tooltip from "@ui/Tooltip.vue";
+import Icon from "@ui/Icon.vue";
 
 import ImgIcon from "@icons/ImgIcon.vue";
 import VideoIcon from "@icons/VideoIcon.vue";
@@ -13,18 +14,18 @@ const controllersStore = useControllersStore();
 <template>
 
   <div v-if="audioStore.activeTrack.id >= 0"
-       class="controllers__modes flex items-center w-1/5"
+       class="flex items-center gap-2.5 w-1/5"
   >
     <Tooltip>
       <template #activator>
         <button :class="[
                         'controllers__small-btn recolor-svg flex-center',
-                        controllersStore.mode === 'img' && 'bg-dark-15'
+                        controllersStore.mode === 'img' && 'bg-dark-15 pointer-events-none'
                     ]"
                 @click="controllersStore.mode = 'img'"
                 type="button"
         >
-          <ImgIcon/>
+          <Icon :name="ImgIcon" :size="27"/>
         </button>
       </template>
 
@@ -39,12 +40,12 @@ const controllersStore = useControllersStore();
           <button v-if="audioStore.activeTrack.videoClipUrl"
                   :class="[
                           'controllers__small-btn recolor-svg flex-center',
-                          controllersStore.mode === 'video' && 'bg-dark-15'
+                          controllersStore.mode === 'video' && 'bg-dark-15 pointer-events-none'
                       ]"
                   @click="controllersStore.mode = 'video'"
                   type="button"
           >
-            <VideoIcon/>
+            <Icon :name="VideoIcon" :size="27"/>
           </button>
         </Transition>
       </template>

@@ -64,7 +64,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey, true))
              has-delay
     >
       <template #activator>
-        <button class="square-9 3xl:square-10 recolor-svg"
+        <button class="square-9 3xl:square-10 recolor-svg hover:text-accent"
                 @click="isOpen = true"
                 type="button"
         >
@@ -93,7 +93,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey, true))
           <li class="square-12.5 flex-center">
             <Tooltip position="right">
               <template #activator>
-                <button class="aside__btn square-12.5 recolor-svg rounded-full"
+                <button class="aside__btn square-12.5 recolor-svg rounded-full hover:text-accent"
                         :disabled="isUserRedact || isAuth"
                         @click="closeAside"
                         type="button"

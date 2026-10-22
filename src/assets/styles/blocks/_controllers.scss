@@ -1,24 +1,6 @@
 @use '../helpers' as *;
 
 .controllers {
-  gap: fluid(50, 20);
-
-  &__play-pause {
-    @include fluid-square(70, 50);
-  }
-
-  .prev, .next {
-    @include fluid-square(50, 35);
-
-    svg {
-      width: 100%;
-      height: auto;
-
-      @include laptop {
-        width: 80%;
-      }
-    }
-  }
 
   &__small-btn {
     @include fluid-square(50, 30);
@@ -27,14 +9,9 @@
     color: var(--light);
     border-radius: var(--radius-regular);
 
-    svg {
-      height: 100%;
-      width: auto;
+    @include hover() {
+      color: var(--accent);
     }
-  }
-
-  &__modes, &__settings, &__settings-list {
-    gap: fluid(0, 10);
   }
 
   &__sound-range {

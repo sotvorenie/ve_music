@@ -41,7 +41,7 @@ onUnmounted(() => globalThis.removeEventListener("keydown", handleKey, true))
 
 <template>
 
-  <div class="controllers grid grid-cols-[1fr_auto_1fr] items-center">
+  <div class="controllers grid grid-cols-[1fr_auto_1fr] gap-8 3xl:gap-12.5 items-center">
     <SettingsControllers/>
 
     <TrackControllers/>

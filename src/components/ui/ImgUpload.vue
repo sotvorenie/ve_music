@@ -69,7 +69,7 @@ const handleUpload = async (file: File) => {
       />
 
       <button v-if="imgUrl && canDelete"
-              class="recolor-svg flex-center transition-opacity opacity-0 z-10 absolute rounded-full top-[1px] right-[1px] group-hover:opacity-100"
+              class="recolor-svg flex-center transition-opacity opacity-0 z-10 absolute rounded-full top-[1px] right-[1px] group-hover:opacity-100 hover:text-accent"
               :disabled="disabled"
               @click.stop="emits('delete')"
               type="button"

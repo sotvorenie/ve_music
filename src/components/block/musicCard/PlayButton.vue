@@ -33,7 +33,7 @@ watch(
 
 <template>
 
-  <button class="controllers__play-pause flex-center bg-transparent rounded-full border-2 border-current p-1"
+  <button class="square-16 3xl:square-17.5 flex-center bg-transparent rounded-full border-2 border-current p-1 hover:text-accent"
           @click="audioStore.isPlaying = !audioStore.isPlaying"
           type="button"
   >
