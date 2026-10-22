@@ -120,18 +120,26 @@ button[disabled] {
 input[type=range] {
   -webkit-appearance: none;
   appearance: none;
-  height: 6px;
+  height: rem(6);
   border-radius: var(--radius-regular);
   outline: none;
   cursor: pointer;
   background: var(--dark-15);
 
+  @include laptop {
+    height: rem(4);
+  }
+
   &::-webkit-slider-thumb {
+    @include square(14);
+
     -webkit-appearance: none;
-    width: 14px;
-    height: 14px;
     background: var(--light);
     border-radius: 50%;
+
+    @include laptop {
+      @include square(12);
+    }
   }
   &::-moz-focus-outer {
     border: 0;
