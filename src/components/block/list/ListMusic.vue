@@ -69,7 +69,7 @@ watchEffect((onCleanup) => {
 
 <template>
   <div class="relative h-full">
-    <ul class="list relative grid overflow-y-auto max-h-[80vh] pr-2.5 overflow-x-hidden"
+    <ul class="list relative flex flex-col overflow-y-auto max-h-[80vh] pr-2.5 overflow-x-hidden"
         v-if="musicStore.music.length"
         ref="listRef"
         v-auto-animate
@@ -77,7 +77,7 @@ watchEffect((onCleanup) => {
       <li v-for="item in musicStore.music"
           :key="item.id"
           :class="[
-              'list__item flex cursor-pointer items-center relative gap-4 rounded-regular transition-[background-color] duration-300 w-100 group hover:bg-[color-mix(in_srgb,_var(--dark-15),_transparent_50%)]',
+              'list__item flex cursor-pointer items-center relative gap-4 rounded-regular transition-[background-color] duration-300 group hover:bg-[color-mix(in_srgb,_var(--dark-15),_transparent_50%)]',
               item.id === audioStore.activeTrack.id && 'is-active pointer-events-none bg-[color-mix(in_srgb,_var(--dark-15),_transparent_25%)] '
           ]"
           @click="audioStore.updateMusic(item.id)"

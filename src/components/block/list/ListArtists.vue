@@ -41,13 +41,13 @@ useObserve(
 <template>
 
   <div class="relative h-full">
-    <ul class="grid overflow-y-auto max-h-[80vh] pr-2.5 overflow-x-hidden h-full"
+    <ul class="flex flex-col overflow-y-auto max-h-[80vh] pr-2.5 overflow-x-hidden h-full"
         ref="listRef"
         v-auto-animate
     >
       <li v-for="item in artistStore.artists"
           :key="item.id"
-          class="list__item flex cursor-pointer items-center relative gap-4 rounded-regular transition-[background-color] w-100 group hover:bg-[color-mix(in_srgb,_var(--dark-15),_transparent_50%)]"
+          class="list__item flex cursor-pointer items-center relative gap-4 rounded-regular transition-[background-color] group hover:bg-[color-mix(in_srgb,_var(--dark-15),_transparent_50%)]"
           @click="handleArtist(item)"
       >
         <div class="img-container square-17 3xl:square-22 rounded-full bg-dark-15">
