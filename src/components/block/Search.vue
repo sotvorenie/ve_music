@@ -74,7 +74,6 @@ const inputSearchName = debounce(() => {
                   class="recolor-svg square-9 3xl:square-10 origin-right"
                   :disabled="!searchStore.isOpen && !searchStore.searchName && !musicStore.music?.length"
                   @click="searchStore.isOpen = !searchStore.isOpen"
-                  title="Очистить поле"
                   type="button"
           >
             <SearchIcon v-if="!searchStore.isOpen"/>
