@@ -12,7 +12,11 @@ withDefaults(
 
 <template>
 
-  <LikeIcon :class="['like transition-[stroke,fill,transform]', isLiked && 'is-liked']"/>
+  <LikeIcon :class="[
+              'like transition-[stroke,fill,transform]',
+              isLiked && 'is-liked text-accent fill-accent'
+            ]"
+  />
 
 </template>
 
@@ -20,8 +24,6 @@ withDefaults(
 .like {
 
   &.is-liked {
-    color: var(--accent);
-    fill: var(--accent);
     animation: likeAnimation var(--transition-duration-big) cubic-bezier(0.68, -0.55, 0.27, 1.55);
 
     @keyframes likeAnimation {
