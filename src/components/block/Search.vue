@@ -71,7 +71,7 @@ const inputSearchName = debounce(() => {
         <Transition name="scale" mode="out-in">
           <button :key="`${searchStore.isOpen}`"
                   class="recolor-svg square-9 3xl:square-10 origin-right"
-                  :disabled="!musicStore.music?.length"
+                  :disabled="!searchStore.isOpen && !searchStore.searchName && !musicStore.music?.length"
                   @click="searchStore.isOpen = !searchStore.isOpen"
                   title="Очистить поле"
                   type="button"
@@ -84,9 +84,9 @@ const inputSearchName = debounce(() => {
 
       <template #default>
         <Transition name="fade-fast" mode="out-in">
-        <span :key="`${searchStore.isOpen}`">
-          {{searchStore.isOpen ? 'Закрыть блок поиска' : 'Открыть блок поиска'}}
-        </span>
+          <span :key="`${searchStore.isOpen}`">
+            {{searchStore.isOpen ? 'Закрыть блок поиска' : 'Открыть блок поиска'}}
+          </span>
         </Transition>
       </template>
     </Tooltip>
