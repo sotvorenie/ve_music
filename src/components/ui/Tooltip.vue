@@ -12,7 +12,7 @@ withDefaults(
 
 <template>
 
-  <div class="tooltip relative">
+  <div class="tooltip relative z-[100]">
     <slot name="activator"/>
 
     <div v-if="!hidden"
