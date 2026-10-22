@@ -12,8 +12,6 @@ const useUserStore = defineStore('userStore', () => {
 
     const isLogged = ref<boolean>(false)
 
-    const token = ref<string>('')
-
     const clear = () => {
         user.value = {
             id: -1,
@@ -21,13 +19,11 @@ const useUserStore = defineStore('userStore', () => {
             avatarUrl: ''
         }
         isLogged.value = false
-        token.value = ''
     }
 
     return {
         user,
         isLogged,
-        token,
 
         clear,
     }

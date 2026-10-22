@@ -9,7 +9,6 @@ export const login = (data: UserWithToken): void => {
 
     localStorage.setItem("token", data.token)
     userStore.user = data.user
-    userStore.token = data.token
     userStore.isLogged = true
 }
 
