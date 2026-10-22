@@ -82,6 +82,7 @@ const deleteAvatar = async () => {
 
   <Tooltip position="right"
            :hidden="isUserRedact || isAuth"
+           class="z-[10000]"
   >
     <template #activator>
       <div :class="[
