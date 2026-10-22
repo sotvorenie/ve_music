@@ -21,8 +21,6 @@ import useMusicStore from "@store/useMusicStore.ts";
 const musicStore = useMusicStore();
 
 
-const musicIndex = defineModel('musicIndex',{type: Number})
-
 const menuList = [
   {
     name: 'Жанры',
@@ -48,13 +46,6 @@ const indexErrorText = 'необходимо авторизоваться'
 const allErrorsText: Record<string, string> = {
   history: `Для доступа к истории прослушиваний ${indexErrorText}`,
   favorites: `Для доступа к понравившимся трекам ${indexErrorText}`,
-}
-
-const handleGenre = async (id: number, genreName?: string) => {
-  musicIndex.value = 0
-
-  genreStore.currentGenre.id = id
-  genreStore.currentGenre.name = genreName || ''
 }
 
 const handleTab = (index: number) => {
@@ -134,18 +125,18 @@ watch(
                     index > 0 && 'hidden'
                 ]"
             >
-              <li v-for="genreItem in genreStore.genres"
-                  :key="genreItem.id"
+              <li v-for="genre in genreStore.genres"
+                  :key="genre.id"
                   class="menu__item w-full z-1"
               >
                 <button :class="[
                             'menu__btn font-medium w-full text-left rounded-regular transition-[backdrop-filter] hover:backdrop-brightness-[.88]',
-                            genreStore.currentGenre.id === genreItem.id && 'pointer-events-none backdrop-brightness-[.8]',
+                            genreStore.currentGenre.id === genre.id && 'pointer-events-none backdrop-brightness-[.8]',
                         ]"
-                        @click="handleGenre(genreItem.id, genreItem.name)"
+                        @click="genreStore.currentGenre = genre"
                         type="button"
                 >
-                  {{genreItem?.name}}
+                  {{genre?.name}}
                 </button>
               </li>
             </ul>
