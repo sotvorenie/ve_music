@@ -96,7 +96,7 @@
 }
 .from-top-enter-from, .from-top-leave-to {
   opacity: 0;
-  transform: translate(-50%, -100%) !important;
+  transform: translateY(-100%) !important;
 }
 
 .record-enter-active, .record-leave-active {
