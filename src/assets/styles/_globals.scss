@@ -118,6 +118,9 @@ button[disabled] {
 
 // input-range
 input[type=range] {
+  --thumb-size: #{rem(14)};
+  @include laptop { --thumb-size: #{rem(12)}; }
+
   -webkit-appearance: none;
   appearance: none;
   height: rem(6);
@@ -131,17 +134,10 @@ input[type=range] {
   }
 
   &::-webkit-slider-thumb {
-    @include square(14);
-
+    width: var(--thumb-size);
+    height: var(--thumb-size);
     -webkit-appearance: none;
     background: var(--light);
     border-radius: 50%;
-
-    @include laptop {
-      @include square(12);
-    }
-  }
-  &::-moz-focus-outer {
-    border: 0;
   }
 }

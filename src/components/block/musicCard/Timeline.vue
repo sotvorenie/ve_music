@@ -6,25 +6,32 @@ import {formatTime} from "@composables/useFormatTime.ts";
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 
-const cursorTime = ref(0)
-const timelineInfoRef = ref<HTMLDivElement | null>(null)
+const inputRef = ref<HTMLInputElement | null>(null)
 
-const progressPercent = computed(() => (audioStore.currentTime / audioStore.duration) * 100)
+const cursorPosition = ref<number>(0)
+const cursorTimePercent = ref<number>(0)
+
+const getPercent = (progress: number): number => {
+  if (!inputRef.value) return 0
+
+  const inputRect = inputRef.value.getBoundingClientRect()
+
+  const thumbWidth = parseFloat(getComputedStyle(inputRef.value).getPropertyValue('--thumb-size')) * 16
+  const width = inputRect.width
+  return (progress * (width - thumbWidth)/width + (thumbWidth / 2)/width) * 100
+}
+
+const progressPercent = computed(() => getPercent(audioStore.currentTime / audioStore.duration))
 
 const mouseMoveTimeline = (e: MouseEvent) => {
-  if (!timelineInfoRef.value || audioStore.activeTrack.id < 0) return
+  if (!inputRef.value || audioStore.activeTrack.id < 0) return
 
-  const input = e.currentTarget as HTMLInputElement
-  const rect = input.getBoundingClientRect()
+  const inputRect = inputRef.value.getBoundingClientRect()
 
-  const thumbWidth = 16
-  const trackWidth = rect.width - thumbWidth
-  let x = e.clientX - rect.left - (thumbWidth / 2)
-  let percent = x / trackWidth
-  percent = Math.min(Math.max(percent, 0), 1)
-  cursorTime.value = audioStore.audio.duration * percent
-  const visualPercent = (e.clientX - rect.left) / rect.width
-  timelineInfoRef.value.style.left = `${visualPercent * 100}%`
+  const percent = (e.clientX - inputRect.left) / inputRect.width
+
+  cursorTimePercent.value = percent
+  cursorPosition.value = getPercent(percent)
 }
 
 const handleTimeline = (event: Event) => {
@@ -42,9 +49,9 @@ const handleTimeline = (event: Event) => {
          @mousemove="mouseMoveTimeline"
     >
       <span class="absolute tabular-nums bottom-[95%] bg-dark-15 rounded-regular p-2.5 transition-[opacity,translate] opacity-0 [translate:-50%_10px] pointer-events-none group-hover:opacity-100 group-hover:[translate:-50%_0]"
-            ref="timelineInfoRef"
+            :style="{left: `${cursorPosition}%`}"
       >
-        {{formatTime(cursorTime)}}
+        {{formatTime(cursorTimePercent * audioStore.duration)}}
       </span>
 
       <input class="range-slider w-full m-0"
@@ -53,6 +60,7 @@ const handleTimeline = (event: Event) => {
              :style="{'--percent': `${progressPercent || 0}%`}"
              @input="handleTimeline"
              type="range"
+             ref="inputRef"
       >
     </div>
 
