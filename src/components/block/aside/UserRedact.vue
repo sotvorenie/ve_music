@@ -96,9 +96,9 @@ const showDetails = async (results:  PromiseSettledResult<void>[], actions: stri
     }
   })
 
-  if (hasError) await showError('Ошибка редактирования профиля', errorMessage)
-
-  messageStore.show('Данные пользователя изменены!!')
+  hasError
+      ? await showError('Ошибка редактирования профиля', errorMessage)
+      : messageStore.show('Данные пользователя изменены!!')
 }
 
 onMounted(() => {

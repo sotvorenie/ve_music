@@ -25,7 +25,7 @@ withDefaults(
           :disabled="isLoading || isDisabled"
           :type="isSubmit ? 'submit' : 'button'"
   >
-    <TransitionGroup name="fade-absolute">
+    <TransitionGroup name="fade" mode="out-in">
       <span key="label"
             class="transition-opacity"
             :style="{opacity: isLoading ? 0 : 1}"

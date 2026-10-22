@@ -42,7 +42,7 @@ const handleSubmit = async (e: Event) => {
           : await apiRegister(form.value.login, form.value.password, form.value.name)
 
       message.value = isLogin.value
-          ? `Добро пожаловать, ${response.user.name}!!)`
+          ? `Добро пожаловать, ${response.user.name} :)`
           : 'Пользователь успешно зарегистрирован!!'
 
       login(response)
