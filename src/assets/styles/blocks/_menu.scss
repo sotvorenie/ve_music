@@ -12,12 +12,12 @@
     }
   }
 
-  &__item-btn, &__btn {
-    padding-inline: fluid(20, 10);
-  }
-
   &__item-btn {
     padding: fluid(20, 10);
+  }
+
+  &__btn {
+    padding: fluid(20, 5);
   }
 
   &__wrapper {

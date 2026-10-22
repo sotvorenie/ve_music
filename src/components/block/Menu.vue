@@ -143,7 +143,7 @@ watch(
                   class="menu__item w-full z-1"
               >
                 <button :class="[
-                            'menu__btn font-medium w-full text-left rounded-regular h-15 transition-[backdrop-filter] hover:backdrop-brightness-[.88]',
+                            'menu__btn font-medium w-full text-left rounded-regular transition-[backdrop-filter] hover:backdrop-brightness-[.88]',
                             genreStore.currentGenre.id === genreItem.id && 'pointer-events-none backdrop-brightness-[.8]',
                         ]"
                         @click="handleGenre(genreItem.id, genreItem.name)"
