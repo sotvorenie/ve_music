@@ -62,7 +62,7 @@ onBeforeMount(async () => {
 
       <Preview/>
 
-      <div class="music__card absolute z-10 bottom-15 right-0 backdrop-blur-[2px] rounded-big p-6 w-[50vw] 3xl:w-[55vw]">
+      <div class="music__card absolute z-10 bottom-15 right-0 backdrop-blur-[2px] rounded-big p-6 w-[55vw]">
         <Info v-if="audioStore.activeTrack.id >= 0"/>
 
         <Timeline/>
