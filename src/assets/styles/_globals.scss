@@ -12,39 +12,10 @@ body {
   font-family: var(--font-family-base), sans-serif;
   color: var(--light);
   background-color: var(--dark);
-  overflow: hidden;
 
   & * {
     user-select: none;
   }
-}
-
-h1, .h1 {
-  @include fluid-text(70, 30);
-
-  line-height: 1.2;
-}
-
-h2, .h2 {
-  @include fluid-text(58, 28);
-
-  line-height: 1.3;
-}
-
-h3, .h3 {
-  @include fluid-text(40, 24);
-}
-
-h4, .h4 {
-  @include fluid-text(26, 18);
-}
-
-h5, .h5 {
-  @include fluid-text(24, 18);
-}
-
-h6, .h6 {
-  @include fluid-text(20, 16);
 }
 
 a,
@@ -60,14 +31,6 @@ svg * {
           border-color var(--transition-duration),
           opacity var(--transition-duration),
           transform var(--transition-duration);
-}
-
-a {
-  color: inherit;
-
-  @include hover {
-    color: var(--accent);
-  }
 }
 
 button {
