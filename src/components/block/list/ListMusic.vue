@@ -77,7 +77,7 @@ watch(
 
 <template>
   <div class="relative h-full">
-    <ul class="list relative flex flex-col overflow-y-auto max-h-[80vh] pr-2.5 overflow-x-hidden"
+    <ul class="list relative flex flex-col overflow-y-auto max-h-[80vh] pr-2.5 overflow-x-hidden transition-[max-height] duration-500"
         v-if="musicStore.music.length"
         ref="listRef"
         v-auto-animate

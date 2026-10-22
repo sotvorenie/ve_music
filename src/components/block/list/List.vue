@@ -28,13 +28,13 @@ const handleMusicTab = async () => {
 <template>
 
   <div :class="[
-           'list-wrapper absolute z-10 top-15 w-100 h-[80vh]',
-           searchStore.isOpen && 'is-active'
+           'list-wrapper absolute z-10 top-15 left-66 3xl:left-100 w-100 h-[80vh] transition-transform duration-500',
+           searchStore.isOpen && 'is-active translate-y-20'
        ]"
   >
     <div :class="[
-              'list-tabs flex justify-center gap-5 mb-4 overflow-hidden max-h-50',
-              menuStore.menuMode !== 'genres' && 'max-h-0 opacity-0'
+              'flex justify-center gap-5 mb-4 overflow-hidden transition-[max-height,opacity] duration-600',
+              menuStore.menuMode !== 'genres' ? 'max-h-0 opacity-0' : 'max-h-50',
           ]"
     >
       <ButtonUi :is-active="menuStore.listMode === 'music'"

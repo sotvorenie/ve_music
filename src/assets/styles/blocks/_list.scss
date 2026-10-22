@@ -1,23 +1,15 @@
 @use '../helpers' as *;
 
 .list {
-  transition: max-height var(--transition-duration-big);
 
   &-wrapper {
-    left: fluid(400, 70);
-    transition: transform var(--transition-duration-big);
 
     &.is-active {
-      transform: translateY(#{rem(80)});
 
       .list {
         max-height: 70vh;
       }
     }
-  }
-
-  &-tabs {
-    transition: max-height var(--transition-duration-big), opacity var(--transition-duration-big);
   }
 
   &__item {
