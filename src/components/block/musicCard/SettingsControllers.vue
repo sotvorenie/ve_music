@@ -89,7 +89,7 @@ onMounted(() => {
         </template>
       </Tooltip>
 
-      <input class="controllers__sound-range range-slider !h-1 opacity-0 transition-opacity pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto w-25"
+      <input class="controllers__sound-range range-slider !h-1 opacity-0 transition-opacity pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto w-18 3xl:w-25"
              v-model="audioStore.volume"
              :style="{'--percent': `${volumePercent}%`}"
              :min="0"
