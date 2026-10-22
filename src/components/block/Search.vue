@@ -64,7 +64,7 @@ const inputSearchName = debounce(() => {
 <template>
 
   <div class="search">
-    <Tooltip class="search__open !absolute z-10"
+    <Tooltip class="!absolute z-10 top-5.5 3xl:top-7.5 left-20 3xl:left-25"
              position="bottom-right"
              has-delay
     >
@@ -98,11 +98,11 @@ const inputSearchName = debounce(() => {
 
     <Transition name="list">
       <div v-if="searchStore.isOpen"
-           class="search__content absolute z-10 flex overflow-hidden top-15 w-105 bg-dark-15 rounded-[1rem] border border-light"
+           class="absolute left-64 3xl:left-100 z-10 h-13 3xl:h-15 flex overflow-hidden top-15 w-105 bg-dark-15 rounded-[1rem] border border-light"
       >
         <Transition :name="searchStore.searchName ? '' : 'fade'" mode="out-in">
           <input :key="`${menuStore.menuMode}-${menuStore.listMode}-${genreStore.currentGenre.id}`"
-                 class="search__input w-full bg-transparent h-full !pr-25 3xl:!pr-27"
+                 class="w-full bg-transparent h-full pl-5 pr-25 3xl:pr-27"
                  v-model="searchStore.searchName"
                  :placeholder="placeholder"
                  @keydown.enter="search"
