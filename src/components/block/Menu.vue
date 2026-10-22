@@ -117,7 +117,7 @@ watch(
                     @click="userStore.isLogged ? handleTab(index) : handleErrorModal(item.value, open)"
                     type="button"
             >
-              <Component :is="item.icon" class="w-10 h-auto"/>
+              <Component :is="item.icon" class="w-7 3xl:w-10 h-auto"/>
               <span class="menu__name">{{item.name}}</span>
             </button>
           </template>
