@@ -68,7 +68,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey, true))
                 @click="isOpen = true"
                 type="button"
         >
-          <MenuIcon/>
+          <Icon :name="MenuIcon" :size="35"/>
         </button>
       </template>
 

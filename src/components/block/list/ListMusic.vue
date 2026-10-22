@@ -10,6 +10,7 @@ import {useObserve} from "@composables/useObserve.ts";
 import Empty from "@ui/empty/Empty.vue";
 import Icon from "@ui/Icon.vue";
 import Tooltip from "@ui/Tooltip.vue";
+import ButtonUi from "@ui/ButtonUi.vue";
 
 import MusicRecordIcon from "@icons/MusicRecordIcon.vue";
 import RadioIcon from "@icons/RadioIcon.vue";
@@ -134,12 +135,12 @@ watch(
                position="right"
       >
         <template #activator>
-          <button class="button !rounded-full flex-center !p-2 !bg-dark-15 recolor-svg hover:!text-accent"
+          <ButtonUi class="button !rounded-full flex-center !p-0 !bg-dark-15 recolor-svg hover:!text-accent"
                   @click="scrollToActive"
                   type="button"
           >
             <Icon :name="RadioIcon" :size="20"/>
-          </button>
+          </ButtonUi>
         </template>
 
         <template #default>

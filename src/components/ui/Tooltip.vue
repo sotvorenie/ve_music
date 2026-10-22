@@ -14,7 +14,7 @@ withDefaults(
 <template>
 
   <div :class="[
-            'tooltip relative z-[100]',
+            'tooltip relative z-[100] leading-none',
             hasDelay && 'has-delay'
         ]"
   >

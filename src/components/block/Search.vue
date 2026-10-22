@@ -76,8 +76,14 @@ const inputSearchName = debounce(() => {
                   @click="searchStore.isOpen = !searchStore.isOpen"
                   type="button"
           >
-            <SearchIcon v-if="!searchStore.isOpen"/>
-            <CrossIcon v-else/>
+            <Icon v-if="!searchStore.isOpen"
+                  :name="SearchIcon"
+                  :size="35"
+            />
+            <Icon v-else
+                  :name="CrossIcon"
+                  :size="35"
+            />
           </button>
         </Transition>
       </template>
