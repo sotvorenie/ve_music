@@ -47,7 +47,7 @@ onBeforeUnmount(() => document.removeEventListener('keydown', handleEsc))
           <slot name="default" :close="close"/>
 
           <ButtonUi v-if="closeVisible"
-                    class="uppercase mt-7.5 mx-auto w-[min(100%, 25rem)]"
+                    class="uppercase mt-7.5 mx-auto w-[min(100%,_25rem)]"
                     @click="close"
           >
             {{closeText}}
