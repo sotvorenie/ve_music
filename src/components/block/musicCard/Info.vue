@@ -54,13 +54,13 @@ watch(
       <Actions/>
 
       <div :class="[
-               'info__title font-bold w-full overflow-hidden relative text-nowrap leading-[1.2] transition-[transform] duration-500',
-               isNameShadow && 'shadow'
+               'text-[4rem] 3xl:text-[6.25rem] font-bold w-full overflow-hidden relative text-nowrap leading-[1.2] transition-[transform] duration-500',
+               isNameShadow && 'mask-[linear-gradient(90deg,transparent,var(--dark)_5%,#000_90%,transparent)]'
            ]"
       >
         <div :class="[
                  'info__track inline-flex',
-                 isNameOverflow && 'animate'
+                 isNameOverflow && 'animate-[music-animate_linear_infinite]'
              ]"
              ref="nameTrackRef"
         >
@@ -76,7 +76,7 @@ watch(
         </div>
       </div>
 
-      <div class="info__author leading-[1.2] w-full overflow-hidden relative text-nowrap truncate">
+      <div class="text-[1.8rem] 3xl:text-[2.625rem] leading-[1.2] w-full overflow-hidden relative text-nowrap truncate">
         {{ showArtists(audioStore.activeTrack?.artists) }}
       </div>
     </div>
