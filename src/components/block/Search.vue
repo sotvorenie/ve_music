@@ -72,7 +72,6 @@ const inputSearchName = debounce(() => {
         <Transition name="scale" mode="out-in">
           <button :key="`${searchStore.isOpen}`"
                   class="recolor-svg square-9 3xl:square-10 origin-right hover:text-accent"
-                  :disabled="!searchStore.isOpen && !searchStore.searchName && !musicStore.music?.length"
                   @click="searchStore.isOpen = !searchStore.isOpen"
                   type="button"
           >
