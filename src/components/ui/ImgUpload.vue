@@ -45,7 +45,10 @@ const handleUpload = async (file: File) => {
           @select="(file: File) => handleUpload(file)"
           accept=".jpg,.jpeg,.png,.webp"
   >
-    <div class="upload-img__content img-container relative rounded-medium h-full group"
+    <div :class="[
+              'upload-img__content img-container relative rounded-medium h-full group',
+              !imgUrl && '!bg-transparent'
+          ]"
          title="Загрузить фото"
     >
 
