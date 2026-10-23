@@ -40,6 +40,10 @@ button {
     pointer-events: none;
     opacity: .6;
   }
+
+  &:focus {
+    outline: none;
+  }
 }
 
 // scrollbar
