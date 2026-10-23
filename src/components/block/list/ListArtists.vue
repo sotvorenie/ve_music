@@ -44,7 +44,7 @@ useObserve(
 <template>
 
   <div class="relative h-full">
-    <ul class="flex flex-col overflow-y-auto max-h-[80vh] pr-2.5 overflow-x-hidden h-full"
+    <ul class="flex flex-col overflow-y-auto max-h-[80vh] pr-2.5 h-full"
         ref="listRef"
         v-auto-animate
     >
