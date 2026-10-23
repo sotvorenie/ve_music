@@ -90,7 +90,7 @@ const showDetails = async (results:  PromiseSettledResult<void>[], actions: stri
 
     if (result.status === 'fulfilled') {
       if (actionType === 'name') userStore.user.name = name.value
-      password.value = ''
+      if (actionType === 'password') password.value = ''
     } else {
       hasError = true
       errorMessage = actionType === 'password' ? result.reason?.detail : 'Не удалось обновить имя'
