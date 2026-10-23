@@ -26,7 +26,7 @@ const animateMorph = () => {
 
 watch(
     () => audioStore.isPlaying,
-    () => animateMorph()
+    animateMorph
 )
 
 </script>

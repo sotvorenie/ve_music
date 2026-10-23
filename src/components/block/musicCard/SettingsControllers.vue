@@ -54,7 +54,7 @@ watch(
     () => controllersStore.isRandom,
     () => {
       musicStore.randomIds = []
-      musicStore.offset = -1
+      musicStore.randomIndex = 0
       musicStore.randomSeed = (Math.random() * 2) - 1
     }
 )
