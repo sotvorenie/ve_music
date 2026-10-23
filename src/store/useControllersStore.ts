@@ -39,8 +39,8 @@ const useControllersStore = defineStore("controllersStore", () => {
             isLoading.value = true
 
             if (isRandom.value) {
-                musicStore.offset = Math.max(-1, musicStore?.offset - 1)
-                const id = musicStore.randomIds[musicStore.offset]
+                musicStore.randomIndex = Math.max(0, musicStore.randomIndex - 1)
+                const id = musicStore.randomIds[musicStore.randomIndex]
                 if (id && id !== audioStore.activeTrack.id) await audioStore.updateMusic(id)
                 return
             }
@@ -56,28 +56,30 @@ const useControllersStore = defineStore("controllersStore", () => {
     const nextItem = async () => {
         if (isRandom.value) {
             try {
-                musicStore.offset += 1
-                if (musicStore.offset === 0) musicStore.randomIds[-1] = audioStore.activeTrack.id
+                musicStore.randomIndex += 1
+                if (musicStore.randomIndex === 1) musicStore.randomIds[0] = audioStore.activeTrack.id
 
-                const id = musicStore.randomIds[musicStore.offset]
+                const id = musicStore.randomIds[musicStore.randomIndex]
 
                 if (id === audioStore.activeTrack.id) return
                 if (id) {
                     await audioStore.updateMusic(id)
                 } else {
                     const music = await apiGetRandomMusic(
-                        musicStore.randomIds[-1],
+                        musicStore.randomIds[0],
+                        musicStore.randomSeed,
+                        musicStore.randomIndex - 1,
                         searchStore.searchName,
                         artistStore.currentArtist?.id,
                         genreStore.currentGenre?.id
                     )
                     if (music) {
-                        musicStore.randomIds[musicStore.offset] = music.id
+                        musicStore.randomIds[musicStore.randomIndex] = music.id
                         await audioStore.updateMusic(undefined, music)
                     }
                 }
             } catch {
-                musicStore.offset -= 1
+                musicStore.randomIndex -= 1
             } finally {
                 isLoading.value = false
             }

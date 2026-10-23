@@ -27,7 +27,7 @@ const useMusicStore = defineStore("musicStore", () => {
 
     const randomIds = ref<number[]>([])
     const randomSeed = ref<number>((Math.random() * 2) - 1)
-    const offset = ref<number>(-1)
+    const randomIndex = ref<number>(0)
 
     const getMusic = async (p: number = 1) => {
         page.value = p
@@ -78,7 +78,7 @@ const useMusicStore = defineStore("musicStore", () => {
 
         randomIds,
         randomSeed,
-        offset,
+        randomIndex,
 
         getMusic,
     }

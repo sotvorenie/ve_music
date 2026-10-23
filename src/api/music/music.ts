@@ -26,12 +26,16 @@ export const apiGetMusic = (musicId: number): Promise<Track> => {
 
 export const apiGetRandomMusic = (
     excludeId: number,
+    seed: number,
+    offset: number = 0,
     name: string = '',
     artistId: number = -1,
     genreId: number = -1,
 ): Promise<Track> => {
     const params = new URLSearchParams({
         exclude_id: String(excludeId),
+        seed: String(seed),
+        offset: String(offset),
         name,
         artist_id: String(artistId),
         genre_id: String(genreId),
