@@ -37,6 +37,7 @@ const useAudioStore = defineStore('audioStore', () => {
     const oldVolume = ref<number>(1)
 
     const audio = new Audio()
+    audio.preload = 'auto'
     audio.onloadedmetadata = () => {
         duration.value = Math.round(audio.duration)
     }
