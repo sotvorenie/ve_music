@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import {onBeforeMount, ref} from "vue";
 
+import {UserRoles} from "@/types/user.ts";
+
 import {checkMe} from "@utils/auth.ts";
 
 import Menu from "@components/Menu.vue";
@@ -21,8 +23,14 @@ import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 import useMessageStore from "@store/useMessageStore.ts";
 const messageStore = useMessageStore();
+import useUserStore from "@store/useUserStore.ts";
+const userStore = useUserStore();
 
 const visible = ref(false)
+
+const handleContextMenu = (e: MouseEvent) => {
+  if (userStore.user.role !== UserRoles.ADMIN) e.preventDefault()
+}
 
 onBeforeMount(async () => {
   await checkMe()
@@ -33,7 +41,10 @@ onBeforeMount(async () => {
 <template>
 
   <Transition name="fade">
-    <div class="music fixed inset-0" v-if="visible">
+    <div v-if="visible"
+         class="music fixed inset-0"
+         @contextmenu="handleContextMenu"
+    >
       <TopMessage v-model="messageStore.isVisible"/>
 
       <Vignette/>

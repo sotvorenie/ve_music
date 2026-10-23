@@ -1,13 +1,14 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
 
-import {User} from "@/types/user.ts";
+import {User, UserRoles} from "@/types/user.ts";
 
 const useUserStore = defineStore('userStore', () => {
     const user = ref<User>({
         id: -1,
         name: '',
-        avatarUrl: ''
+        avatarUrl: '',
+        role: UserRoles.USER,
     })
 
     const isLogged = ref<boolean>(false)
@@ -16,7 +17,8 @@ const useUserStore = defineStore('userStore', () => {
         user.value = {
             id: -1,
             name: '',
-            avatarUrl: ''
+            avatarUrl: '',
+            role: UserRoles.USER,
         }
         isLogged.value = false
     }
