@@ -3,13 +3,13 @@ import {Url} from "@/types/url.ts";
 import {apiPatch, apiPost} from "@api/index.ts";
 
 export const apiRedactUserName = (name: string): Promise<void> => {
-    return apiPatch(`/user/redact_name`, {
+    return apiPatch(`/user/update_name`, {
         name,
     })
 }
 
 export const apiRedactUserPassword = (password: string): Promise<void> => {
-    return apiPatch(`/user/redact_password`, {
+    return apiPatch(`/user/update_password`, {
         password,
     })
 }
