@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, nextTick, onMounted, onUnmounted, ref, watch} from "vue";
+import {computed, ref, watchEffect} from "vue";
 
 import {BASE_URL} from "@api/url.ts";
 
@@ -9,83 +9,55 @@ import useControllersStore from "@store/useControllersStore.ts";
 const controllersStore = useControllersStore();
 
 const visibleImage = computed(() => {
-  return controllersStore.mode === 'img' && audioStore.activeTrack.previewUrl
+  return controllersStore.mode === 'img' && !!audioStore.activeTrack.previewUrl
 })
 
 const videoRef = ref<HTMLVideoElement | null>(null)
 
 const visibleVideo = computed(() => {
-  return controllersStore.mode === 'video' && audioStore.activeTrack.videoClipUrl
+  return controllersStore.mode === 'video' && !!audioStore.activeTrack.videoClipUrl
 })
 
 const onPlay = () => {
-  if (!videoRef.value || !audioStore.activeTrack.videoClipUrl) return
-  videoRef.value?.play()
+  videoRef.value?.play().catch(() => {})
 }
 
 const onPause = () => {
-  if (!videoRef.value) return
   videoRef.value?.pause()
 }
 
-const onSeeked = () => {
-  if (audioStore.audio && videoRef.value) {
-    videoRef.value.currentTime = audioStore.audio.currentTime
-    if (audioStore.isPlaying && videoRef.value) videoRef.value?.play()
-  }
+const syncVideoTime = () => {
+  const audio = audioStore.audio
+  const video = videoRef.value
+  if (!audio || !video) return
+
+  video.currentTime = audio.currentTime
+  if (audioStore.isPlaying) video.play().catch(() => {})
 }
 
-watch(visibleVideo, async (visible) => {
-  if (!visible) return
-  await nextTick()
-  if (!videoRef.value) return
+const onCanPlay = () => {
+  if (audioStore.isPlaying) videoRef.value?.play().catch(() => {})
+}
 
-  videoRef.value.currentTime = audioStore.audio.currentTime
-  if (audioStore.isPlaying) videoRef.value.play().catch(() => {})
-})
+watchEffect((onCleanup) => {
+  const audio = audioStore.audio
+  if (!audio) return
 
-onMounted(() => {
-  audioStore.audio?.addEventListener("play", onPlay)
-  audioStore.audio?.addEventListener("pause", onPause)
-  audioStore.audio?.addEventListener("seeked", onSeeked)
-})
+  audio.addEventListener("play", onPlay)
+  audio.addEventListener("pause", onPause)
+  audio.addEventListener("seeked", syncVideoTime)
 
-onUnmounted(() => {
-  audioStore.audio?.removeEventListener("play", onPlay)
-  audioStore.audio?.removeEventListener("pause", onPause)
-  audioStore.audio?.removeEventListener("seeked", onSeeked)
+  onCleanup(() => {
+    audio.removeEventListener("play", onPlay)
+    audio.removeEventListener("pause", onPause)
+    audio.removeEventListener("seeked", syncVideoTime)
+  })
 })
 </script>
 
 <template>
-<!--  <div :key="audioStore.activeTrack.id"-->
-<!--       :class="[-->
-<!--            'img-container absolute right-0 h-screen aspect-square transition-[scale,width] duration-1200',-->
-<!--            audioStore.isPlaying && (controllersStore.mode === 'img') && 'will-change-transform scale-105',-->
-<!--            controllersStore.mode === 'video' ? 'w-[75vw]' : 'w-[100vh]',-->
-<!--        ]"-->
-<!--  >-->
-<!--    <img :src="`${BASE_URL}${audioStore.activeTrack.previewUrl}`"-->
-<!--         :alt="audioStore.activeTrack?.name"-->
-<!--         draggable="false"-->
-<!--         :class="[-->
-<!--            'transition-[opacity]',-->
-<!--            visibleImage ? 'opacity-100' : 'opacity-0 hidden'-->
-<!--         ]"-->
-<!--    >-->
-<!--    <video :src="`${BASE_URL}${audioStore.activeTrack?.videoClipUrl}`"-->
-<!--           muted-->
-<!--           ref="videoRef"-->
-<!--           preload="auto"-->
-<!--           :class="[-->
-<!--               'transition-[opacity]',-->
-<!--               visibleVideo ? 'opacity-100' : 'opacity-0 hidden'-->
-<!--           ]"-->
-<!--    />-->
-<!--  </div>-->
 
   <TransitionGroup name="fade-absolute"
-                   mode="out-in"
                    tag="div"
                    :class="[
                         'img-container absolute right-0 h-screen aspect-square transition-[scale,width] duration-1200',
@@ -94,15 +66,19 @@ onUnmounted(() => {
                     ]"
   >
     <img v-if="visibleImage"
+         :key="`image-${audioStore.activeTrack.id}`"
          :src="`${BASE_URL}${audioStore.activeTrack.previewUrl}`"
          :alt="audioStore.activeTrack?.name"
          draggable="false"
     >
-    <video v-else
+    <video v-if="visibleVideo"
+           :key="`video-${audioStore.activeTrack.id}`"
            :src="`${BASE_URL}${audioStore.activeTrack?.videoClipUrl}`"
            muted
            ref="videoRef"
            preload="auto"
+           @loadeddata="syncVideoTime"
+           @canplay="onCanPlay"
     />
   </TransitionGroup>
 
