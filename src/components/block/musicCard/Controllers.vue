@@ -17,6 +17,9 @@ const allKeyCodes = {
 const handleKey = (e: KeyboardEvent) => {
   const audio = audioStore.audio
 
+  const activeEl = document.activeElement
+  if (activeEl instanceof HTMLInputElement && activeEl.type === 'text') return
+
   switch (e.code) {
     case allKeyCodes.space:
       e.preventDefault()
