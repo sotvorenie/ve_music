@@ -31,3 +31,7 @@ export interface Track {
 export interface TrackResponse extends PaginationMeta {
     music: TrackPreview[]
 }
+
+export interface RandomIdsResponse extends Omit<PaginationMeta, 'total'> {
+    ids: number[]
+}

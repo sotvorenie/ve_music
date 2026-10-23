@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import {computed, onMounted, watch} from "vue";
 
+import RandomBtn from "@components/musicCard/RandomBtn.vue";
+
 import Tooltip from "@ui/Tooltip.vue";
 import Icon from "@ui/Icon.vue";
 
 import SoundOffIcon from "@icons/SoundOffIcon.vue";
-import RandomIcon from "@icons/RandomIcon.vue";
 import SoundOnIcon from "@icons/SoundOnIcon.vue";
 import RepeatIcon from "@icons/RepeatIcon.vue";
 
@@ -13,17 +14,11 @@ import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 import useControllersStore from "@store/useControllersStore.ts";
 const controllersStore = useControllersStore();
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
 
 const volumePercent = computed(() => audioStore.volume * 100)
 
 const handleVolume = () => {
   audioStore.volume = audioStore.volume > 0 ? 0 : audioStore.oldVolume || 1
-}
-const handleIsRandom = async () => {
-  controllersStore.isRandom = !controllersStore.isRandom
-  localStorage.setItem('isRandom', JSON.stringify(controllersStore.isRandom))
 }
 const handleIsRepeat = () => {
   controllersStore.isRepeat = !controllersStore.isRepeat
@@ -47,15 +42,6 @@ watch(
       audioStore.audio.volume = newVal
       localStorage.setItem('volume', JSON.stringify(audioStore.volume))
       if (newVal > 0) audioStore.oldVolume = newVal
-    }
-)
-
-watch(
-    () => controllersStore.isRandom,
-    () => {
-      musicStore.randomIds = []
-      musicStore.randomIndex = 0
-      musicStore.randomSeed = (Math.random() * 2) - 1
     }
 )
 
@@ -104,23 +90,7 @@ onMounted(() => {
     </div>
 
     <div class="flex gap-2.5">
-      <Tooltip>
-        <template #activator>
-          <button :class="[
-                        'controllers__small-btn recolor-svg flex-center',
-                        controllersStore.isRandom && 'bg-dark-15'
-                    ]"
-                  @click="handleIsRandom"
-                  type="button"
-          >
-            <Icon :name="RandomIcon" :size="27"/>
-          </button>
-        </template>
-
-        <template #default>
-          Воспроизведение в случайном порядке
-        </template>
-      </Tooltip>
+      <RandomBtn/>
 
       <Tooltip>
         <template #activator>

@@ -1,4 +1,4 @@
-import {Track, TrackResponse} from "@/types/music.ts";
+import {RandomIdsResponse, Track, TrackResponse} from "@/types/music.ts";
 
 import {apiGet} from "@api/index.ts";
 
@@ -25,21 +25,23 @@ export const apiGetMusic = (musicId: number): Promise<Track> => {
 }
 
 export const apiGetRandomMusic = (
+    page: number = 1,
+    limit: number = 21,
     excludeId: number,
     seed: number,
-    offset: number = 0,
     name: string = '',
     artistId: number = -1,
     genreId: number = -1,
-): Promise<Track> => {
+): Promise<RandomIdsResponse> => {
     const params = new URLSearchParams({
+        page: String(page),
+        limit: String(limit),
         exclude_id: String(excludeId),
         seed: String(seed),
-        offset: String(offset),
         name,
         artist_id: String(artistId),
         genre_id: String(genreId),
     })
 
-    return apiGet(`/music/random?${params}`)
+    return apiGet(`/music/random_list?${params}`)
 }
