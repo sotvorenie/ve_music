@@ -26,6 +26,8 @@ export interface Track {
     genre: Genre
 
     artists: Artist[]
+
+    segmentsCount: number
 }
 
 export interface TrackResponse extends PaginationMeta {

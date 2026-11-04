@@ -80,7 +80,10 @@ watch(
       <input class="range-slider w-full m-0"
              v-model="audioStore.currentTime"
              :max="audioStore.activeTrack.duration"
-             :style="{'--percent': `${progressPercent || 0}%`}"
+             :style="{
+               '--percent': `${progressPercent || 0}%`,
+               '--loaded-percent': `${audioStore.loadedPercent || 0}%`,
+             }"
              type="range"
              ref="inputRef"
       >

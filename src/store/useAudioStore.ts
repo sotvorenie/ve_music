@@ -1,4 +1,5 @@
 import {defineStore} from "pinia";
+import Hls from "hls.js";
 import {ref} from "vue";
 
 import {Track} from "@/types/music.ts";
@@ -12,6 +13,9 @@ import useMusicStore from "@store/useMusicStore.ts";
 const useAudioStore = defineStore('audioStore', () => {
     const controllersStore = useControllersStore();
     const musicStore = useMusicStore();
+
+    let hls: Hls | null = null
+    const loadedPercent = ref(0)
 
     const isPlaying = ref<boolean>(false)
     const isMoving = ref<boolean>(false)
@@ -30,7 +34,8 @@ const useAudioStore = defineStore('audioStore', () => {
         videoClipUrl: '',
         isLiked: false,
         artists: [{id: -1, name: '', avatarUrl: ''}],
-        genre: {id: -1, name: ''}
+        genre: {id: -1, name: ''},
+        segmentsCount: 0,
     })
 
     const volume = ref<number>(1)
@@ -57,11 +62,37 @@ const useAudioStore = defineStore('audioStore', () => {
     }
 
     const loadAndPlay = () => {
+        loadedPercent.value = 0
         currentTime.value = 0
-        audio.src = `${BASE_URL}${activeTrack.value.url}`
-        audio.load()
+        const url = `${BASE_URL}${activeTrack.value.url}`
 
-        if (isPlaying.value) audio.play().catch(() => {})
+        if (hls) {
+            hls.destroy()
+            hls = null
+        }
+
+        if (Hls.isSupported() && activeTrack.value.url.includes(".m3u8")) {
+            if (!hls) hls = new Hls()
+
+            hls.loadSource(url)
+            hls.attachMedia(audio)
+
+            hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                if (isPlaying.value) audio.play().catch(() => {})
+            })
+            hls.on(Hls.Events.FRAG_LOADED, (_, data) => {
+                const currentSn = Number(data.frag.sn)
+                const totalFrags = activeTrack.value.segmentsCount
+
+                if (totalFrags > 0 && !Number.isNaN(currentSn)) {
+                    loadedPercent.value = Math.min(100, Math.round(((currentSn + 1) / totalFrags) * 100))
+                }
+            })
+        } else {
+            audio.src = url
+            audio.load()
+            if (isPlaying.value) audio.play().catch(() => {})
+        }
     }
 
     const updateMusic = async (
@@ -87,6 +118,8 @@ const useAudioStore = defineStore('audioStore', () => {
 
     return {
         audio,
+
+        loadedPercent,
 
         isPlaying,
         isMoving,
