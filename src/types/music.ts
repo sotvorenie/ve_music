@@ -1,7 +1,5 @@
 import {Genre} from "@/types/genre.ts";
 import {Artist} from "@/types/artist.ts";
-import {PaginationMeta} from "@/types/paginationMeta.ts";
-
 
 export interface TrackPreview {
     id: number
@@ -29,12 +27,4 @@ export interface Track {
 
     segmentsCount: number
     bitrates: number[]
-}
-
-export interface TrackResponse extends PaginationMeta {
-    music: TrackPreview[]
-}
-
-export interface RandomIdsResponse extends Omit<PaginationMeta, 'total'> {
-    ids: number[]
 }

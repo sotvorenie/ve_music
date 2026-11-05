@@ -15,8 +15,8 @@ import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
 import useArtistStore from "@store/useArtistStore.ts";
 const artistStore = useArtistStore();
-import useGenreStore from "@store/useGenreStore.ts";
-const genreStore = useGenreStore();
+import useGenresStore from "@store/useGenresStore.ts";
+const genresStore = useGenresStore();
 import useMusicStore from "@store/useMusicStore.ts";
 const musicStore = useMusicStore();
 
@@ -32,10 +32,10 @@ const allPlaceholders = {
 
 const placeholder = computed(() => {
   if (menuStore.menuMode === 'genres') {
-    if (menuStore.listMode === 'music' && genreStore.currentGenre.id === -1)
+    if (menuStore.listMode === 'music' && genresStore.currentGenre.id === -1)
       return allPlaceholders.all
-    if (menuStore.listMode === 'music' && genreStore.currentGenre.id >= 0)
-      return allPlaceholders.genre + ' ' + genreStore.currentGenre.name
+    if (menuStore.listMode === 'music' && genresStore.currentGenre.id >= 0)
+      return allPlaceholders.genre + ' ' + genresStore.currentGenre.name
     if (menuStore.listMode === 'artists')
       return allPlaceholders.artists
     if (menuStore.listMode === 'artistMusic')
@@ -101,7 +101,7 @@ const inputSearchName = debounce(() => {
            class="absolute left-64 3xl:left-100 z-10 h-13 3xl:h-15 flex overflow-hidden top-15 w-105 bg-dark-15 rounded-[1rem] border border-light"
       >
         <Transition :name="searchStore.searchName ? '' : 'fade'" mode="out-in">
-          <input :key="`${menuStore.menuMode}-${menuStore.listMode}-${genreStore.currentGenre.id}`"
+          <input :key="`${menuStore.menuMode}-${menuStore.listMode}-${genresStore.currentGenre.id}`"
                  class="w-full bg-transparent h-full pl-5 pr-25 3xl:pr-27"
                  v-model="searchStore.searchName"
                  :placeholder="placeholder"

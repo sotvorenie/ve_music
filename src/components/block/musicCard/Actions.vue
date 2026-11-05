@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {computed} from "vue";
 
-import {apiLike} from "@api/like/like.ts";
+import {LikeService} from "@api/like/LikeService.ts";
 
 import Like from "@ui/Like.vue";
 import Tooltip from "@ui/Tooltip.vue";
@@ -14,6 +14,8 @@ import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 
 const bitrateText = computed(() => {
   const bitrate = `${audioStore.currentBitrate / 1000} Кб/с`
@@ -21,10 +23,10 @@ const bitrateText = computed(() => {
 })
 
 const handleLike = async () => {
-  const activeTrack = audioStore.activeTrack
+  const activeTrack = musicStore.activeTrack
 
   try {
-    const response = await apiLike(audioStore.activeTrack.id)
+    const response = await LikeService.like(musicStore.activeTrack.id)
 
     activeTrack.isLiked = response.isLiked
     activeTrack.likesCount = response.isLiked ? activeTrack.likesCount + 1 : Math.max(activeTrack.likesCount - 1, 0)
@@ -46,10 +48,10 @@ const handleLike = async () => {
                     type="button"
             >
               <Like class="aspect-square w-6 3xl:w-7.5 h-auto"
-                    :is-liked="audioStore.activeTrack?.isLiked && userStore.isLogged"
+                    :is-liked="musicStore.activeTrack?.isLiked && userStore.isLogged"
               />
 
-              {{audioStore.activeTrack?.likesCount || 0}}
+              {{musicStore.activeTrack?.likesCount || 0}}
             </button>
           </template>
 
@@ -60,7 +62,7 @@ const handleLike = async () => {
       </template>
 
       <template #default>
-        {{audioStore.activeTrack?.isLiked ? 'Удалить из Избранного' : 'Добавить в Избранное'}}
+        {{musicStore.activeTrack?.isLiked ? 'Удалить из Избранного' : 'Добавить в Избранное'}}
       </template>
     </Tooltip>
 
@@ -69,7 +71,7 @@ const handleLike = async () => {
         <div class="recolor-svg h-full flex-center gap-2.5 bg-[#26262650] py-1 px-2.5 rounded-regular tabular-nums">
           <Icon :name="ViewIcon" :size="25" :laptop-size="23"/>
 
-          {{(audioStore.activeTrack?.auditionsCount || 0).toLocaleString()}}
+          {{(musicStore.activeTrack?.auditionsCount || 0).toLocaleString()}}
         </div>
       </template>
 
@@ -81,7 +83,7 @@ const handleLike = async () => {
     <Tooltip>
       <template #activator>
         <span class="h-full flex-center text-accent gap-2.5 bg-[#26262650] py-1 px-2.5 rounded-regular tabular-nums">
-          {{audioStore.activeTrack?.genre?.name}}
+          {{musicStore.activeTrack?.genre?.name}}
         </span>
       </template>
 

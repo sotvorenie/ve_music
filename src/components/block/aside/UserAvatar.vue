@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {computed} from "vue";
 
-import {apiDeleteUserAvatar, apiUploadUserAvatar} from "@api/user/user.ts";
+import {UserService} from "@api/user/UserService.ts";
 
 import {showConfirm, showError} from "@utils/modals.ts";
 
@@ -35,7 +35,7 @@ const updateAvatar = async (file: File) => {
   try {
     isLoading.value = true
 
-    const response = await apiUploadUserAvatar(file)
+    const response = await UserService.uploadAvatar(file)
     if (response) {
       userStore.user.avatarUrl = response.url
       messageStore.show('Аватарка обновлена!!')
@@ -62,7 +62,7 @@ const deleteAvatar = async () => {
   try {
     isLoading.value = true
 
-    await apiDeleteUserAvatar()
+    await UserService.deleteAvatar()
     userStore.user.avatarUrl = ''
   } catch {
     await showError(

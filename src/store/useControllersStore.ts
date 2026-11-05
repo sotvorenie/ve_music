@@ -18,7 +18,7 @@ const useControllersStore = defineStore("controllersStore", () => {
     const isRepeat = ref(false)
 
     const getCurrentIndex = (): number => {
-        return musicStore.music.findIndex((m: TrackPreview) => m.id === audioStore.activeTrack.id)
+        return musicStore.tracks.findIndex((m: TrackPreview) => m.id === musicStore.activeTrack.id)
     }
 
     const prevItem = async () => {
@@ -33,14 +33,14 @@ const useControllersStore = defineStore("controllersStore", () => {
             if (isRandom.value) {
                 musicStore.randomIndex = Math.max(0, musicStore.randomIndex - 1)
                 const id = musicStore.randomIds[musicStore.randomIndex]
-                if (id && id !== audioStore.activeTrack.id) await audioStore.updateMusic(id)
+                if (id && id !== musicStore.activeTrack.id) await musicStore.updateMusic(id)
                 return
             }
 
             const currentIndex = getCurrentIndex()
 
-            const prevIndexInCurrentList = (currentIndex - 1 + musicStore.music.length) % musicStore.music.length
-            await audioStore.updateMusic(musicStore.music[prevIndexInCurrentList].id)
+            const prevIndexInCurrentList = (currentIndex - 1 + musicStore.tracks.length) % musicStore.tracks.length
+            await musicStore.updateMusic(musicStore.tracks[prevIndexInCurrentList].id)
         } finally {
             isLoading.value = false
         }
@@ -49,12 +49,12 @@ const useControllersStore = defineStore("controllersStore", () => {
         if (isRandom.value) {
             try {
                 musicStore.randomIndex += 1
-                if (musicStore.randomIndex === 1) musicStore.randomIds[0] = audioStore.activeTrack.id
+                if (musicStore.randomIndex === 1) musicStore.randomIds[0] = musicStore.activeTrack.id
 
                 const id = musicStore.randomIds[musicStore.randomIndex]
 
-                if (id === audioStore.activeTrack.id) return
-                if (id) await audioStore.updateMusic(id)
+                if (id === musicStore.activeTrack.id) return
+                if (id) await musicStore.updateMusic(id)
             } catch {
                 musicStore.randomIndex -= 1
             } finally {
@@ -66,8 +66,8 @@ const useControllersStore = defineStore("controllersStore", () => {
 
                 const currentIndex = getCurrentIndex()
 
-                const nextIndexInCurrentList = (currentIndex + 1) % musicStore.music.length
-                await audioStore.updateMusic(musicStore.music[nextIndexInCurrentList].id)
+                const nextIndexInCurrentList = (currentIndex + 1) % musicStore.tracks.length
+                await musicStore.updateMusic(musicStore.tracks[nextIndexInCurrentList].id)
             } finally {
                 isLoading.value = false
             }

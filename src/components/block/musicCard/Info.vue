@@ -5,8 +5,8 @@ import {showArtists} from "@composables/useShowArtists.ts";
 
 import Actions from "@components/musicCard/Actions.vue";
 
-import useAudioStore from "@store/useAudioStore.ts";
-const audioStore = useAudioStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 
 const nameTrackRef = ref<HTMLDivElement | null>(null)
 
@@ -39,7 +39,7 @@ const checkWidth = async () => {
 }
 
 watch(
-    () => audioStore.activeTrack.id,
+    () => musicStore.activeTrack.id,
     checkWidth,
     {immediate: true, flush: 'post'}
 )
@@ -48,7 +48,7 @@ watch(
 <template>
 
   <Transition name="list">
-    <div :key="audioStore.activeTrack?.name"
+    <div :key="musicStore.activeTrack?.name"
          class="info mb-4"
     >
       <Actions/>
@@ -65,19 +65,19 @@ watch(
              ref="nameTrackRef"
         >
           <span>
-            {{ audioStore.activeTrack?.name }}
+            {{ musicStore.activeTrack?.name }}
           </span>
 
           <span v-if="isNameOverflow"
                 class="ml-37.5"
           >
-            {{ audioStore.activeTrack?.name }}
+            {{ musicStore.activeTrack?.name }}
           </span>
         </div>
       </div>
 
       <div class="text-[1.8rem] 3xl:text-[2.625rem] leading-[1.2] w-full overflow-hidden relative text-nowrap truncate">
-        {{ showArtists(audioStore.activeTrack?.artists) }}
+        {{ showArtists(musicStore.activeTrack?.artists) }}
       </div>
     </div>
   </Transition>

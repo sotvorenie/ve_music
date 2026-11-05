@@ -15,8 +15,8 @@ import CrossIcon from "@icons/CrossIcon.vue";
 
 import useMessageStore from "@store/useMessageStore.ts";
 const messageStore = useMessageStore();
-import useAudioStore from "@store/useAudioStore.ts";
-const audioStore = useAudioStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 
 const isOpen = ref<boolean>(false)
 
@@ -43,7 +43,7 @@ const successAuth = (messageText: string) => {
 
 const successLogout = () => {
   isUserRedact.value = false
-  audioStore.activeTrack.isLiked = false
+  musicStore.activeTrack.isLiked = false
   logout()
   messageStore.show('До новых встреч!!)')
 }

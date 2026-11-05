@@ -5,8 +5,8 @@ import {AuthPayload} from "@/types/auth.ts";
 import {UserWithToken} from "@/types/user.ts";
 import {IsLiked} from "@/types/like.ts";
 
-import {apiAuth, apiRegister} from "@api/auth/auth.ts";
-import {apiCheckLike} from "@api/like/like.ts";
+import {AuthService} from "@api/auth/AuthService.ts";
+import {LikeService} from "@api/like/LikeService.ts";
 
 import {onBlur, onInput, onSubmit} from "@composables/useFormValidate.ts";
 import {login} from "@utils/auth.ts";
@@ -15,8 +15,8 @@ import {showError} from "@utils/modals.ts";
 import InputUi from "@ui/InputUi.vue";
 import ButtonUi from "@ui/ButtonUi.vue";
 
-import useAudioStore from "@store/useAudioStore.ts";
-const audioStore = useAudioStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 
 const emits = defineEmits(['successAuth'])
 
@@ -38,8 +38,8 @@ const handleSubmit = async (e: Event) => {
       isLoading.value = true
 
       const response: UserWithToken = isLogin.value
-          ? await apiAuth(form.value.login, form.value.password)
-          : await apiRegister(form.value.login, form.value.password, form.value.name)
+          ? await AuthService.auth(form.value.login, form.value.password)
+          : await AuthService.registration(form.value.login, form.value.password, form.value.name)
 
       message.value = isLogin.value
           ? `Добро пожаловать, ${response.user.name} :)`
@@ -48,7 +48,7 @@ const handleSubmit = async (e: Event) => {
       login(response)
       emits('successAuth', message.value)
 
-      if (audioStore.activeTrack.id >= 0) void checkLike()
+      if (musicStore.activeTrack.id >= 0) void checkLike()
     } catch (err: any) {
       await showError(
           'Ошибка авторизации',
@@ -62,8 +62,8 @@ const handleSubmit = async (e: Event) => {
 
 const checkLike = async () => {
   try {
-    const response: IsLiked = await apiCheckLike(audioStore.activeTrack.id)
-    audioStore.activeTrack.isLiked = response.isLiked ?? false
+    const response: IsLiked = await LikeService.checkLike(musicStore.activeTrack.id)
+    musicStore.activeTrack.isLiked = response.isLiked ?? false
   } catch {}
 }
 

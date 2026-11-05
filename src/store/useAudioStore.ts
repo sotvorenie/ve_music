@@ -2,10 +2,7 @@ import {defineStore} from "pinia";
 import Hls from "hls.js";
 import {ref} from "vue";
 
-import {Track} from "@/types/music.ts";
-
 import {BASE_URL} from "@api/url.ts";
-import {apiGetMusic} from "@api/music/music.ts";
 
 import useControllersStore from "@store//useControllersStore.ts";
 import useMusicStore from "@store/useMusicStore.ts";
@@ -25,22 +22,6 @@ const useAudioStore = defineStore('audioStore', () => {
     const currentTime = ref<number>(0)
     const duration = ref<number>(0)
 
-    const activeTrack = ref<Track>({
-        id: -1,
-        name: '',
-        duration: 0,
-        url: '',
-        auditionsCount: 0,
-        likesCount: 0,
-        previewUrl: '',
-        videoClipUrl: '',
-        isLiked: false,
-        artists: [{id: -1, name: '', avatarUrl: ''}],
-        genre: {id: -1, name: ''},
-        segmentsCount: 0,
-        bitrates: [],
-    })
-
     const volume = ref<number>(1)
     const oldVolume = ref<number>(1)
 
@@ -56,7 +37,7 @@ const useAudioStore = defineStore('audioStore', () => {
         if (controllersStore.isRepeat) {
             audio.currentTime = 0
             audio.play().then(() => {})
-        } else if ((musicStore?.music && musicStore.music.length > 1) || controllersStore.isRandom) {
+        } else if ((musicStore.tracks?.length > 1) || controllersStore.isRandom) {
             await controllersStore.nextItem()
         } else {
             isPlaying.value = false
@@ -67,14 +48,14 @@ const useAudioStore = defineStore('audioStore', () => {
     const loadAndPlay = () => {
         loadedPercent.value = 0
         currentTime.value = 0
-        const url = `${BASE_URL}${activeTrack.value.url}`
+        const url = `${BASE_URL}${musicStore.activeTrack.url}`
 
         if (hls) {
             hls.destroy()
             hls = null
         }
 
-        if (Hls.isSupported() && activeTrack.value.url.includes(".m3u8")) {
+        if (Hls.isSupported() && musicStore.activeTrack.url.includes(".m3u8")) {
             if (!hls) hls = new Hls()
 
             hls.loadSource(url)
@@ -85,14 +66,14 @@ const useAudioStore = defineStore('audioStore', () => {
             })
             hls.on(Hls.Events.FRAG_LOADED, (_, data) => {
                 const currentSn = Number(data.frag.sn)
-                const totalFrags = activeTrack.value.segmentsCount
+                const totalFrags = musicStore.activeTrack.segmentsCount
 
                 if (totalFrags > 0 && !Number.isNaN(currentSn)) {
                     loadedPercent.value = Math.min(100, Math.round(((currentSn + 1) / totalFrags) * 100))
                 }
             })
             hls.on(Hls.Events.LEVEL_SWITCHED, (_, data) => {
-                const bitrates = activeTrack.value.bitrates
+                const bitrates = musicStore.activeTrack.bitrates
                 currentBitrate.value = hls?.levels[data.level]?.bitrate ?? bitrates[bitrates.length - 1]
                 isAutoBitrate.value = hls?.autoLevelEnabled ?? true
             });
@@ -100,27 +81,6 @@ const useAudioStore = defineStore('audioStore', () => {
             audio.src = url
             audio.load()
             if (isPlaying.value) audio.play().catch(() => {})
-        }
-    }
-
-    const updateMusic = async (
-        id: number | undefined,
-        music: Track | null = null
-    ) => {
-        try {
-            controllersStore.isLoading = true
-
-            let data = music
-            if (id) data = await apiGetMusic(id)
-
-            if (data) {
-                Object.assign(activeTrack.value, data)
-                loadAndPlay()
-
-                if (controllersStore.mode === 'video' && !activeTrack.value.videoClipUrl) controllersStore.mode = 'img'
-            }
-        } finally {
-            controllersStore.isLoading = false
         }
     }
 
@@ -137,14 +97,10 @@ const useAudioStore = defineStore('audioStore', () => {
         currentTime,
         duration,
 
-        activeTrack,
-
         volume,
         oldVolume,
 
         loadAndPlay,
-
-        updateMusic,
     }
 })
 

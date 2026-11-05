@@ -1,9 +1,9 @@
 import {defineStore} from "pinia";
 import {ref} from "vue";
 
-import {apiGetArtists} from "@api/artist/artist.ts";
+import {ArtistService} from "@api/artist/ArtistService.ts";
 
-import {Artist, ArtistsResponse} from "@/types/artist.ts";
+import {Artist} from "@/types/artist.ts";
 
 import useSearchStore from "@store/useSearchStore.ts";
 
@@ -23,17 +23,23 @@ const useArtistStore = defineStore("artistStore", () => {
     const total = ref<number>(0)
     const hasMore = ref<boolean>(true)
 
-    const getArtists = async (p: number = 1) => {
-        page.value = p
+    const getArtists = async (isClear: boolean = false) => {
+       if (isClear) {
+           artists.value = []
+           page.value = 1
+           hasMore.value = true
+           total.value = 0
+       }
 
         try {
-            const response: ArtistsResponse = await apiGetArtists(searchStore.searchName, page.value, limit.value)
+            const response = await ArtistService.getArtists(searchStore.searchName, page.value, limit.value)
 
             if (response) {
-                artists.value = page.value === 1 ? response.artists : [...artists.value, ...response.artists]
-                limit.value = response.limit
-                hasMore.value = response.hasMore
-                total.value = response.total
+                artists.value.push(...response.data)
+                limit.value = response.meta.limit
+                hasMore.value = response.meta.hasMore
+                total.value = response.meta.total
+                page.value += 1
             }
         } catch (err) {
             console.error(err)

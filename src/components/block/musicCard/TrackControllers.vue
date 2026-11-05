@@ -11,9 +11,11 @@ import useControllersStore from "@store/useControllersStore.ts";
 const controllersStore = useControllersStore();
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 
 const disabledControlButton = computed(() => {
-  return audioStore.activeTrack.id < 0 || controllersStore.isLoading
+  return musicStore.activeTrack.id < 0 || controllersStore.isLoading
 })
 
 watch(
@@ -33,7 +35,7 @@ watch(
       <Icon class="-mr-1" :name="ArrowIcon" :size="30"/>
     </button>
 
-    <PlayButton :disabled="audioStore.activeTrack.id < 0" class="square-15 3xl:square-20"/>
+    <PlayButton :disabled="musicStore.activeTrack.id < 0" class="square-15 3xl:square-20"/>
 
     <button class="square-12 3xl:square-12.5 flex-center bg-transparent rounded-full border-2 border-current p-1 hover:text-accent"
             :disabled="disabledControlButton"

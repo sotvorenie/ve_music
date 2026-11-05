@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {ref, watch} from "vue";
 
-import {apiGetAllGenres} from "@api/genre/genre.ts";
+import {GenreService} from "@api/genre/GenreService.ts";
 
 import Modal from "@ui/Modal.vue";
 
@@ -15,8 +15,8 @@ import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
 import useArtistStore from "@store/useArtistStore.ts";
 const artistStore = useArtistStore();
-import useGenreStore from "@store/useGenreStore.ts";
-const genreStore = useGenreStore();
+import useGenresStore from "@store/useGenresStore.ts";
+const genresStore = useGenresStore();
 import useMusicStore from "@store/useMusicStore.ts";
 const musicStore = useMusicStore();
 
@@ -55,8 +55,8 @@ const handleTab = (index: number) => {
 
 const getGenres = async () => {
   try {
-    const response = await apiGetAllGenres()
-    genreStore.genres = [{id: -1, name: 'All'}, ...response.genres]
+    const response = await GenreService.getGenres()
+    genresStore.genres = [{id: -1, name: 'All'}, ...response.data]
   } catch {}
 }
 
@@ -68,9 +68,9 @@ const handleErrorModal = (type: string, func: Function) => {
 }
 
 watch(
-    () => [genreStore.currentGenre.id, menuStore.menuMode],
+    () => [genresStore.currentGenre.id, menuStore.menuMode],
     () => {
-      if (genreStore.currentGenre.id >= -1) {
+      if (genresStore.currentGenre.id >= -1) {
         menuStore.listMode = 'music'
         artistStore.currentArtist.id = -1
         musicStore.getMusic()
@@ -87,7 +87,7 @@ watch(
     </template>
   </Modal>
 
-  <div v-if="genreStore.genres.length"
+  <div v-if="genresStore.genres.length"
        class="menu abs-y z-10 left-5 3xl:left-7.5 w-52 3xl:w-70"
   >
     <ul class="flex flex-col">
@@ -127,15 +127,15 @@ watch(
             <ul v-if="index === 0"
                 class="flex flex-col relative bg-[color-mix(in_srgb,_var(--dark-15),_transparent_25%)] rounded-regular ml-5 mt-2.5 max-h-[50vh] overflow-y-auto"
             >
-              <li v-for="genre in genreStore.genres"
+              <li v-for="genre in genresStore.genres"
                   :key="genre.id"
                   class="menu__item w-full z-1"
               >
                 <button :class="[
                             'p-3.5 3xl:p-5 font-medium w-full text-left rounded-regular transition-[backdrop-filter] hover:backdrop-brightness-[.88] hover:text-accent',
-                            genreStore.currentGenre.id === genre.id && 'pointer-events-none backdrop-brightness-[.8]',
+                            genresStore.currentGenre.id === genre.id && 'pointer-events-none backdrop-brightness-[.8]',
                         ]"
-                        @click="genreStore.currentGenre = genre"
+                        @click="genresStore.currentGenre = genre"
                         type="button"
                 >
                   {{genre?.name}}

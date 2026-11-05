@@ -5,15 +5,15 @@ import Icon from "@ui/Icon.vue";
 import ImgIcon from "@icons/ImgIcon.vue";
 import VideoIcon from "@icons/VideoIcon.vue";
 
-import useAudioStore from "@store/useAudioStore.ts";
-const audioStore = useAudioStore();
 import useControllersStore from "@store/useControllersStore.ts";
 const controllersStore = useControllersStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 </script>
 
 <template>
 
-  <div v-if="audioStore.activeTrack.id >= 0"
+  <div v-if="musicStore.activeTrack.id >= 0"
        class="flex items-center gap-2.5 w-1/5"
   >
     <Tooltip>
@@ -37,7 +37,7 @@ const controllersStore = useControllersStore();
     <Tooltip>
       <template #activator>
         <Transition name="scale">
-          <button v-if="audioStore.activeTrack.videoClipUrl"
+          <button v-if="musicStore.activeTrack.videoClipUrl"
                   :class="[
                           'controllers__small-btn recolor-svg flex-center',
                           controllersStore.mode === 'video' && 'bg-dark-15 pointer-events-none'

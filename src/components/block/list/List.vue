@@ -12,8 +12,8 @@ import useArtistStore from "@store/useArtistStore.ts";
 const artistStore = useArtistStore();
 import useMusicStore from "@store/useMusicStore.ts";
 const musicStore = useMusicStore();
-import useGenreStore from "@store/useGenreStore.ts";
-const genresStore = useGenreStore();
+import useGenresStore from "@store/useGenresStore.ts";
+const genresStore = useGenresStore();
 
 await musicStore.getMusic()
 

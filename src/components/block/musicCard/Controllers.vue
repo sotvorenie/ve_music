@@ -7,6 +7,8 @@ import ModesControllers from "@components/musicCard/ModesControllers.vue";
 
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 
 const allKeyCodes = {
   space: 'Space',
@@ -49,7 +51,7 @@ onUnmounted(() => globalThis.removeEventListener("keydown", handleKey, true))
 
     <TrackControllers/>
 
-    <ModesControllers v-if="audioStore.activeTrack.id >= 0"/>
+    <ModesControllers v-if="musicStore.activeTrack.id >= 0"/>
   </div>
 
 </template>

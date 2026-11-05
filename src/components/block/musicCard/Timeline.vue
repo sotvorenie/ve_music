@@ -5,6 +5,8 @@ import {formatTime} from "@composables/useFormatTime.ts";
 
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 
 const inputRef = ref<HTMLInputElement | null>(null)
 
@@ -38,7 +40,7 @@ const setCursorTime = (percent: number) => {
 }
 
 const mouseMoveTimeline = (e: MouseEvent) => {
-  if (!inputRef.value || audioStore.activeTrack.id < 0) return
+  if (!inputRef.value || musicStore.activeTrack.id < 0) return
 
   const inputRect = inputRef.value.getBoundingClientRect()
 
@@ -62,7 +64,7 @@ watch(
   <div class="timeline flex flex-col gap-2.5">
     <div :class="[
               'relative group leading-[0]',
-              audioStore.activeTrack.id < 0 && 'pointer-events-none'
+              musicStore.activeTrack.id < 0 && 'pointer-events-none'
           ]"
          @pointerdown="audioStore.isMoving = true"
          @pointerup="audioStore.isMoving = false"
@@ -79,7 +81,7 @@ watch(
 
       <input class="range-slider w-full m-0"
              v-model="audioStore.currentTime"
-             :max="audioStore.activeTrack.duration"
+             :max="musicStore.activeTrack.duration"
              :style="{
                '--percent': `${progressPercent || 0}%`,
                '--loaded-percent': `${audioStore.loadedPercent || 0}%`,
@@ -91,7 +93,7 @@ watch(
 
     <div class="flex justify-between mb-4">
       <span>{{formatTime(audioStore.audio.currentTime || 0)}}</span>
-      <span>{{formatTime(audioStore.activeTrack.duration)}}</span>
+      <span>{{formatTime(musicStore.activeTrack.duration)}}</span>
     </div>
   </div>
 

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {computed, onMounted, ref} from "vue";
 
-import {apiRedactUserName, apiRedactUserPassword} from "@api/user/user.ts";
+import {UserService} from "@api/user/UserService.ts";
 
 import {showConfirm, showError} from "@utils/modals.ts";
 
@@ -58,11 +58,11 @@ const redactUser = async () => {
     const actions: string[] = []
 
     if (name.value !== userStore.user.name) {
-      promises.push(apiRedactUserName(name.value))
+      promises.push(UserService.updateName(name.value))
       actions.push('name')
     }
     if (password.value.length >= 4) {
-      promises.push(apiRedactUserPassword(password.value))
+      promises.push(UserService.updatePassword(password.value))
       actions.push('password')
     }
 

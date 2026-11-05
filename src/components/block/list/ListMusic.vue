@@ -31,7 +31,7 @@ const activeLiRef = ref<HTMLLIElement | null>(null)
 
 useObserve(
     lastLiRef,
-    () => musicStore.getMusic(musicStore.page + 1),
+    () => musicStore.getMusic(),
     () => musicStore.hasMore
 )
 
@@ -59,7 +59,7 @@ const initObserver = () => {
 }
 
 watchEffect((onCleanup) => {
-  if (audioStore.activeTrack.id < 0 || searchStore.searchName) return
+  if (musicStore.activeTrack.id < 0 || searchStore.searchName) return
 
   initObserver()
 
@@ -78,19 +78,19 @@ watch(
 <template>
   <div class="relative h-full">
     <ul class="list relative flex flex-col overflow-y-auto max-h-[80vh] pr-2.5 transition-[max-height] duration-500"
-        v-if="musicStore.music.length"
+        v-if="musicStore.tracks.length"
         ref="listRef"
         v-auto-animate
     >
-      <li v-for="item in musicStore.music"
+      <li v-for="item in musicStore.tracks"
           :key="item.id"
           :class="[
               'list__item flex cursor-pointer items-center relative gap-4 rounded-regular transition-[background-color] duration-300 group hover:bg-[color-mix(in_srgb,_var(--dark-15),_transparent_50%)]',
-              item.id === audioStore.activeTrack.id && 'is-active pointer-events-none bg-[color-mix(in_srgb,_var(--dark-15),_transparent_25%)] '
+              item.id === musicStore.activeTrack.id && 'is-active pointer-events-none bg-[color-mix(in_srgb,_var(--dark-15),_transparent_25%)] '
           ]"
-          @click="audioStore.updateMusic(item.id)"
+          @click="musicStore.updateMusic(item.id)"
           :ref="(el) => {
-            if (audioStore.activeTrack.id === item.id) activeLiRef = el as HTMLLIElement
+            if (musicStore.activeTrack.id === item.id) activeLiRef = el as HTMLLIElement
           }"
       >
         <div class="square-20 3xl:square-22 shrink-0 rounded-regular img-container z-[100]">
@@ -102,7 +102,7 @@ watch(
         </div>
 
         <Transition name="record">
-          <Icon v-if="item.id === audioStore.activeTrack.id"
+          <Icon v-if="item.id === musicStore.activeTrack.id"
                 :class="[
                     'list__item-record abs-y z-10 rounded-full ml-12.5 left-0 text-accent bg-[color-mix(in srgb, var(--dark-15), transparent 25%)]',
                     !audioStore.isPlaying && 'paused'
@@ -115,7 +115,7 @@ watch(
 
         <div :class="[
                   'overflow-hidden transition-[padding]',
-                  item.id === audioStore.activeTrack.id && 'pl-6'
+                  item.id === musicStore.activeTrack.id && 'pl-6'
               ]"
         >
           <p class="font-medium truncate">{{item?.name}}</p>
@@ -127,7 +127,7 @@ watch(
       <li class="h-[1px]" ref="lastLiRef"/>
     </ul>
 
-    <Empty v-if="!musicStore.music.length"/>
+    <Empty v-if="!musicStore.tracks.length"/>
 
     <Transition name="fade-small">
       <Tooltip v-if="arrowVisible"
