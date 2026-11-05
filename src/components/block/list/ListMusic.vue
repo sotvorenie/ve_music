@@ -111,11 +111,11 @@ watch(
         <Transition name="record">
           <Icon v-if="item.id === musicStore.activeTrack.id"
                 :class="[
-                    'list__item-record abs-y z-10 rounded-full ml-12.5 left-0 text-accent bg-[color-mix(in srgb, var(--dark-15), transparent 25%)]',
+                    'list__item-record abs-y z-10 rounded-full ml-14.5 left-0 text-accent bg-[color-mix(in srgb, var(--dark-15), transparent 25%)]',
                     !audioStore.isPlaying && 'paused'
                 ]"
                 :name="MusicRecordIcon"
-                :size="70"
+                :size="75"
                 recolor
           />
         </Transition>
