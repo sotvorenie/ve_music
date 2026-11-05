@@ -5,7 +5,6 @@ import { Cropper } from 'vue-advanced-cropper';
 import {showError} from "@utils/modals.ts";
 
 import ButtonUi from "@ui/ButtonUi.vue";
-import Tooltip from "@ui/Tooltip.vue";
 
 const props = withDefaults(
     defineProps<{
@@ -57,13 +56,13 @@ const onError = () => {
   )
 }
 
-watch(rotateAngle, (newAngle) => {
+const onRotate = () => {
   if (!cropperRef.value || !props.file) return
 
-  const diff = newAngle - prevRotateAngle
+  const diff = rotateAngle.value - prevRotateAngle
   cropperRef.value.rotate(diff)
-  prevRotateAngle = newAngle
-})
+  prevRotateAngle = rotateAngle.value
+}
 
 watch(
     () => props.file,
@@ -99,35 +98,7 @@ onUnmounted(() => {
       <div class="flex items-center gap-3">
         <span>Повернуть:</span>
 
-        <div class="flex items-center gap-2">
-          <Tooltip has-delay>
-            <template #activator>
-              <button class="hover:text-accent"
-                      type="button"
-                      @click="rotateAngle = Math.max(0, rotateAngle - 1)"
-              >-</button>
-            </template>
-
-            <template #default>
-              уменьшить угол
-            </template>
-          </Tooltip>
-
-          <span>{{rotateAngle}}</span>
-
-          <Tooltip has-delay>
-            <template #activator>
-              <button class="hover:text-accent"
-                      type="button"
-                      @click="rotateAngle = Math.min(360, rotateAngle + 1)"
-              >+</button>
-            </template>
-
-            <template #default>
-              увеличить угол
-            </template>
-          </Tooltip>
-        </div>
+        <span>{{rotateAngle}} °</span>
       </div>
 
       <input class="range-slider w-full"
@@ -135,8 +106,9 @@ onUnmounted(() => {
              :min="0"
              :max="360"
              :step="1"
+             :style="{'--percent': `${rotateAngle / 360 * 100}%`}"
              type="range"
-             @mousemove.prevent
+             @change="onRotate"
       >
     </div>
 

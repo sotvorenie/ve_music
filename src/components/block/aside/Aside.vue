@@ -3,9 +3,9 @@ import {onBeforeUnmount, onMounted, provide, ref} from "vue";
 
 import {logOut} from "@utils/auth.ts";
 
-import UserRedact from "@components/aside/UserRedact.vue";
+import UserRedact from "@components/user/UserRedact.vue";
 import Auth from "@components/aside/Auth.vue";
-import UserAvatar from "@components/aside/UserAvatar.vue";
+import UserAvatar from "@components/user/UserAvatar.vue";
 
 import Tooltip from "@ui/Tooltip.vue";
 import Icon from "@ui/Icon.vue";

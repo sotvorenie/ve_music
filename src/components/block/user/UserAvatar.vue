@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {computed, inject, Ref} from "vue";
 
-import UploadUserAvatar from "@components/aside/UploadUserAvatar.vue";
+import UserUploadAvatar from "@components/user/UserUploadAvatar.vue";
 
 import Tooltip from "@ui/Tooltip.vue";
 
@@ -47,7 +47,7 @@ const handleAvatar = () => {
              @click="handleAvatar"
         />
 
-        <UploadUserAvatar/>
+        <UserUploadAvatar/>
       </div>
     </template>
 
