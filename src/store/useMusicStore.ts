@@ -99,6 +99,10 @@ const useMusicStore = defineStore("musicStore", () => {
         }
     }
 
+    const saveMusicInLocStore = (musicId: number) => {
+        if (!Number.isNaN(musicId)) localStorage.setItem('last-track', String(musicId))
+    }
+
     const updateMusic = async (
         id: number | undefined,
         music: Track | null = null
@@ -113,6 +117,7 @@ const useMusicStore = defineStore("musicStore", () => {
             if (id) data = await MusicService.getTrack(id)
 
             if (data) {
+                saveMusicInLocStore(data.id)
                 Object.assign(activeTrack.value, data)
                 audioStore.loadAndPlay()
 
