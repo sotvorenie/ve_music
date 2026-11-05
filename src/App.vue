@@ -19,12 +19,12 @@ import MusicListSkeleton from "@ui/skeletons/MusicListSkeleton.vue";
 import Vignette from "@ui/Vignette.vue";
 import TopMessage from "@ui/TopMessage.vue";
 
-import useAudioStore from "@store/useAudioStore.ts";
-const audioStore = useAudioStore();
 import useMessageStore from "@store/useMessageStore.ts";
 const messageStore = useMessageStore();
 import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
+import useMusicStore from "@store/useMusicStore.ts";
+const musicStore = useMusicStore();
 
 const visible = ref(false)
 
@@ -74,7 +74,7 @@ onBeforeMount(async () => {
       <Preview/>
 
       <div class="music__card absolute z-10 bottom-10 3xl:bottom-15 right-0 backdrop-blur-[2px] rounded-big p-6 w-[55vw]">
-        <Info v-if="audioStore.activeTrack.id >= 0"/>
+        <Info v-if="musicStore.activeTrack.id >= 0"/>
 
         <Timeline/>
 

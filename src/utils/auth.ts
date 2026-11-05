@@ -1,6 +1,6 @@
 import {UserWithToken} from "@/types/user.ts";
 
-import {apiCheckMe} from "@api/auth/auth.ts";
+import {AuthService} from "@api/auth/AuthService.ts";
 
 import useUserStore from "@store/useUserStore.ts";
 
@@ -29,7 +29,7 @@ export const checkMe = async (): Promise<void> => {
     }
 
     try {
-        const data: UserWithToken = await apiCheckMe()
+        const data: UserWithToken = await AuthService.getMe()
         if (data.token) login(data)
     } catch {
         userStore.isLogged = false
