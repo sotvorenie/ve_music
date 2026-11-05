@@ -22,6 +22,12 @@ const bitrates = computed(() => {
     }))
   ]
 })
+
+const activeBitrate = computed(() => {
+  return bitrates.value?.find(bitrate => {
+    return (bitrate.value * 1000 === audioStore.currentBitrate && !audioStore.isAutoBitrate) || (bitrate.value === - 1 && audioStore.isAutoBitrate)
+  })?.value
+})
 </script>
 
 <template>
@@ -31,13 +37,16 @@ const bitrates = computed(() => {
         :key="bitrate.value"
         class=""
     >
-      <button class="py-2 pl-5 pr-3 hover:text-accent relative"
-              type="button"
+      <button :class="[
+                  'py-2 pl-5 pr-3 hover:text-accent relative',
+                  bitrate.value === activeBitrate && 'pointer-events-none',
+              ]"
               @click="handleBitrate(bitrate.value)"
+              type="button"
       >
         {{bitrate.label}}
 
-        <span v-if="(bitrate.value * 1000 === audioStore.currentBitrate && !audioStore.isAutoBitrate) || (bitrate.value === - 1 && audioStore.isAutoBitrate)"
+        <span v-if="bitrate.value === activeBitrate"
               class="abs-y left-0 text-base"
         >✔</span>
       </button>

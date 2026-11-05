@@ -47,7 +47,7 @@ const handleLike = async () => {
       <template #activator>
         <Modal close-visible>
           <template #activator="{open}">
-            <button class="recolor-svg h-full flex-center gap-2.5 bg-[#26262650] py-1 px-2.5 rounded-regular tabular-nums"
+            <button class="recolor-svg h-full flex-center gap-2.5 bg-dark-15/35 py-1 px-2.5 rounded-regular tabular-nums"
                     @click="userStore.isLogged ? handleLike() : open()"
                     type="button"
             >
@@ -73,7 +73,7 @@ const handleLike = async () => {
     <Transition name="fade">
       <Tooltip v-if="musicStore.activeTrack?.auditionsCount">
         <template #activator>
-          <div class="recolor-svg h-full flex-center gap-2.5 bg-[#26262650] py-1 px-2.5 rounded-regular tabular-nums">
+          <div class="recolor-svg h-full flex-center gap-2.5 bg-dark-15/35 py-1 px-2.5 rounded-regular tabular-nums">
             <Icon :name="ViewIcon" :size="25" :laptop-size="23"/>
 
             {{musicStore.activeTrack.auditionsCount.toLocaleString()}}
@@ -89,7 +89,7 @@ const handleLike = async () => {
     <Transition name="fade">
       <Tooltip v-if="musicStore.activeTrack?.genre?.name">
         <template #activator>
-        <span class="h-full flex-center text-accent gap-2.5 bg-[#26262650] py-1 px-2.5 rounded-regular tabular-nums">
+        <span class="h-full flex-center text-accent gap-2.5 bg-dark-15/35 py-1 px-2.5 rounded-regular tabular-nums">
           {{musicStore.activeTrack.genre.name}}
         </span>
         </template>
@@ -106,7 +106,7 @@ const handleLike = async () => {
                :has-hover="false"
       >
         <template #activator>
-          <button class="h-full flex-center text-accent gap-2.5 bg-[#26262650] py-1 px-2.5 rounded-regular tabular-nums"
+          <button class="h-full flex-center text-accent gap-2.5 bg-dark-15/35 py-1 px-2.5 rounded-regular tabular-nums hover:bg-dark-15/60"
                   type="button"
                   @click="visibleBitratesList = !visibleBitratesList"
           >
