@@ -76,14 +76,27 @@ const useAudioStore = defineStore('audioStore', () => {
                 }
             })
             hls.on(Hls.Events.LEVEL_SWITCHED, (_, data) => {
-                const bitrates = musicStore.activeTrack.bitrates
-                currentBitrate.value = hls?.levels[data.level]?.bitrate ?? bitrates[bitrates.length - 1]
-                isAutoBitrate.value = hls?.autoLevelEnabled ?? true
-            });
+                currentBitrate.value = hls?.levels[data.level]?.bitrate ?? 0
+            })
         } else {
             audio.src = url
             audio.load()
             if (isPlaying.value) audio.play().catch(() => {})
+        }
+    }
+
+    const setBitrate = (bitrate: number) => {
+        if (!hls) return
+        if (bitrate === -1) {
+            hls.currentLevel = -1
+            isAutoBitrate.value = true
+        } else {
+            const levelIndex = hls.levels.findIndex(level => level.bitrate === bitrate * 1000)
+            if (levelIndex !== -1) {
+                hls.currentLevel = levelIndex
+                isAutoBitrate.value = false
+                currentBitrate.value = bitrate * 1000
+            }
         }
     }
 
@@ -104,6 +117,7 @@ const useAudioStore = defineStore('audioStore', () => {
         oldVolume,
 
         loadAndPlay,
+        setBitrate,
     }
 })
 

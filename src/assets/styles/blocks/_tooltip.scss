@@ -2,7 +2,7 @@
 
 .tooltip {
 
-  @include hover {
+  @mixin tooltip-visible {
     .tooltip__content {
       opacity: 1;
 
@@ -16,6 +16,16 @@
         transform: translate(0, 0);
       }
     }
+  }
+
+  &.has-hover {
+    @include hover {
+      @include tooltip-visible();
+    }
+  }
+
+  &.is-active {
+    @include tooltip-visible();
   }
 
   &.has-delay {

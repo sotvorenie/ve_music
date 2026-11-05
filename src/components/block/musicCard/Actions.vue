@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import {computed} from "vue";
+import {computed, ref} from "vue";
 
 import {LikeService} from "@api/like/LikeService.ts";
+
+import BitratesList from "@components/musicCard/BitratesList.vue";
 
 import Like from "@ui/Like.vue";
 import Tooltip from "@ui/Tooltip.vue";
@@ -21,6 +23,8 @@ const bitrateText = computed(() => {
   const bitrate = `${audioStore.currentBitrate / 1000} Кб/с`
   return audioStore.isAutoBitrate ? `Авто (${bitrate})` : bitrate
 })
+
+const visibleBitratesList = ref<boolean>(false)
 
 const handleLike = async () => {
   const activeTrack = musicStore.activeTrack
@@ -97,16 +101,21 @@ const handleLike = async () => {
     </Transition>
 
     <Transition name="fade">
-      <Tooltip v-if="musicStore.activeTrack?.bitrates?.length">
+      <Tooltip v-if="musicStore.activeTrack?.bitrates?.length"
+               v-model:show="visibleBitratesList"
+               :has-hover="false"
+      >
         <template #activator>
-        <span class="h-full flex-center text-accent gap-2.5 bg-[#26262650] py-1 px-2.5 rounded-regular tabular-nums">
-          {{bitrateText}}
-        </span>
-
+          <button class="h-full flex-center text-accent gap-2.5 bg-[#26262650] py-1 px-2.5 rounded-regular tabular-nums"
+                  type="button"
+                  @click="visibleBitratesList = !visibleBitratesList"
+          >
+            {{bitrateText}}
+          </button>
         </template>
 
         <template #default>
-          Битрейт трека
+          <BitratesList v-model:visible="visibleBitratesList" />
         </template>
       </Tooltip>
     </Transition>
