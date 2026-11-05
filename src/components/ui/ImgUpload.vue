@@ -9,6 +9,7 @@ import Icon from "@ui/Icon.vue";
 import EditIcon from "@icons/EditIcon.vue";
 import CrossIcon from "@/components/icons/CrossIcon.vue";
 import FoxIcon from "@icons/FoxIcon.vue";
+import {ref} from "vue";
 
 withDefaults(
     defineProps<{
@@ -26,24 +27,29 @@ const emits = defineEmits<{
   delete: any,
 }>()
 
-const handleUpload = async (file: File) => {
+const file = ref<File | null>(null)
+
+const handleUpload = async () => {
+  if (!file.value) return
+
   const confirm = await showConfirm(
       'Загрузка фото',
-      'Вы действительно хотите загрузить/изменить фото?'
+      'Вы действительно хотите загрузить фото?'
   )
-  if (confirm) emits('select', file)
+  if (confirm) emits('select', file.value)
 }
 </script>
 
 <template>
 
-  <Upload :class="[
+  <Upload v-model="file"
+          :class="[
               'h-full',
               disabled && 'pointer-events-none'
           ]"
           :disabled="disabled"
-          @select="(file: File) => handleUpload(file)"
-          accept=".jpg,.jpeg,.png,.webp"
+          accept=".jpg,.jpeg,.png,.webp,.gif"
+          @update:model-value="handleUpload"
   >
     <div :class="[
               'img-container relative rounded-medium h-full group',

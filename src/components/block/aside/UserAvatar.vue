@@ -40,10 +40,10 @@ const updateAvatar = async (file: File) => {
       userStore.user.avatarUrl = response.url
       messageStore.show('Аватарка обновлена!!')
     }
-  } catch {
+  } catch (err: any) {
     await showError(
         'Ошибка загрузки фото',
-        'Не удалось загрузить аватар..'
+        err?.detail ?? 'Не удалось загрузить аватар..'
     )
   } finally {
     isLoading.value = false
