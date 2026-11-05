@@ -28,6 +28,7 @@ export interface Track {
     artists: Artist[]
 
     segmentsCount: number
+    bitrates: number[]
 }
 
 export interface TrackResponse extends PaginationMeta {

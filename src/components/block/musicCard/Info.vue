@@ -41,7 +41,7 @@ const checkWidth = async () => {
 watch(
     () => audioStore.activeTrack.id,
     checkWidth,
-    {immediate: true}
+    {immediate: true, flush: 'post'}
 )
 </script>
 

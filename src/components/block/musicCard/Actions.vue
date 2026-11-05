@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import {computed} from "vue";
+
 import {apiLike} from "@api/like/like.ts";
 
 import Like from "@ui/Like.vue";
@@ -12,6 +14,11 @@ import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
+
+const bitrateText = computed(() => {
+  const bitrate = `${audioStore.currentBitrate / 1000} Кб/с`
+  return audioStore.isAutoBitrate ? `Авто (${bitrate})` : bitrate
+})
 
 const handleLike = async () => {
   const activeTrack = audioStore.activeTrack
@@ -80,6 +87,18 @@ const handleLike = async () => {
 
       <template #default>
         Жанр трека
+      </template>
+    </Tooltip>
+
+    <Tooltip>
+      <template #activator>
+        <span class="h-full flex-center text-accent gap-2.5 bg-[#26262650] py-1 px-2.5 rounded-regular tabular-nums">
+          {{bitrateText}}
+        </span>
+      </template>
+
+      <template #default>
+        Битрейт трека
       </template>
     </Tooltip>
   </div>

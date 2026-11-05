@@ -15,7 +15,9 @@ const useAudioStore = defineStore('audioStore', () => {
     const musicStore = useMusicStore();
 
     let hls: Hls | null = null
-    const loadedPercent = ref(0)
+    const loadedPercent = ref<number>(0)
+    const currentBitrate = ref<number>(0)
+    const isAutoBitrate = ref<boolean>(true)
 
     const isPlaying = ref<boolean>(false)
     const isMoving = ref<boolean>(false)
@@ -36,6 +38,7 @@ const useAudioStore = defineStore('audioStore', () => {
         artists: [{id: -1, name: '', avatarUrl: ''}],
         genre: {id: -1, name: ''},
         segmentsCount: 0,
+        bitrates: [],
     })
 
     const volume = ref<number>(1)
@@ -88,6 +91,11 @@ const useAudioStore = defineStore('audioStore', () => {
                     loadedPercent.value = Math.min(100, Math.round(((currentSn + 1) / totalFrags) * 100))
                 }
             })
+            hls.on(Hls.Events.LEVEL_SWITCHED, (_, data) => {
+                const bitrates = activeTrack.value.bitrates
+                currentBitrate.value = hls?.levels[data.level]?.bitrate ?? bitrates[bitrates.length - 1]
+                isAutoBitrate.value = hls?.autoLevelEnabled ?? true
+            });
         } else {
             audio.src = url
             audio.load()
@@ -120,6 +128,8 @@ const useAudioStore = defineStore('audioStore', () => {
         audio,
 
         loadedPercent,
+        currentBitrate,
+        isAutoBitrate,
 
         isPlaying,
         isMoving,
