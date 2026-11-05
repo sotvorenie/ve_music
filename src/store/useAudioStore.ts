@@ -56,7 +56,10 @@ const useAudioStore = defineStore('audioStore', () => {
         }
 
         if (Hls.isSupported() && musicStore.activeTrack.url.includes(".m3u8")) {
-            if (!hls) hls = new Hls()
+            if (!hls) hls = new Hls({
+                maxBufferLength: 30,
+                maxMaxBufferLength: 40,
+            })
 
             hls.loadSource(url)
             hls.attachMedia(audio)
