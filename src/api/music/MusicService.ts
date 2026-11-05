@@ -25,8 +25,13 @@ export const MusicService = {
 
     getTrack(
         musicId: number,
+        setView: boolean = true,
     ): Promise<Track> {
-        return apiGet(`/music/${musicId}`)
+        const params = new URLSearchParams({
+            set_view: String(setView),
+        })
+
+        return apiGet(`/music/${musicId}?${params}`)
     },
 
     getRandomIds(

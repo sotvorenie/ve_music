@@ -35,7 +35,7 @@ const handleContextMenu = (e: MouseEvent) => {
 const setLastTrack = () => {
   const saved = localStorage.getItem('last-track')
   const trackId = saved ? Number(saved) : null
-  if (trackId) musicStore.updateMusic(trackId)
+  if (trackId) musicStore.updateMusic(trackId, null, false)
 }
 
 onBeforeMount(async () => {

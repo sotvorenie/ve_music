@@ -105,7 +105,8 @@ const useMusicStore = defineStore("musicStore", () => {
 
     const updateMusic = async (
         id: number | undefined,
-        music: Track | null = null
+        music: Track | null = null,
+        setView: boolean = true,
     ) => {
         try {
             controllersStore.isLoading = true
@@ -114,7 +115,7 @@ const useMusicStore = defineStore("musicStore", () => {
 
             if (data) Object.assign(activeTrack.value, data)
 
-            if (id) data = await MusicService.getTrack(id)
+            if (id) data = await MusicService.getTrack(id, setView)
 
             if (data) {
                 saveMusicInLocStore(data.id)
