@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {onBeforeUnmount, onMounted, ref} from "vue";
 
-import {logout} from "@utils/auth.ts";
+import {logOut} from "@utils/auth.ts";
 
 import UserRedact from "@components/aside/UserRedact.vue";
 import Auth from "@components/aside/Auth.vue";
@@ -44,7 +44,7 @@ const successAuth = (messageText: string) => {
 const successLogout = () => {
   isUserRedact.value = false
   musicStore.activeTrack.isLiked = false
-  logout()
+  logOut()
   messageStore.show('До новых встреч!!)')
 }
 

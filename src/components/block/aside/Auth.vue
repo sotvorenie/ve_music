@@ -9,7 +9,7 @@ import {AuthService} from "@api/auth/AuthService.ts";
 import {LikeService} from "@api/like/LikeService.ts";
 
 import {onBlur, onInput, onSubmit} from "@composables/useFormValidate.ts";
-import {login} from "@utils/auth.ts";
+import {logIn} from "@utils/auth.ts";
 import {showError} from "@utils/modals.ts";
 
 import InputUi from "@ui/InputUi.vue";
@@ -45,7 +45,7 @@ const handleSubmit = async (e: Event) => {
           ? `Добро пожаловать, ${response.user.name} :)`
           : 'Пользователь успешно зарегистрирован!!'
 
-      login(response)
+      logIn(response)
       emits('successAuth', message.value)
 
       if (musicStore.activeTrack.id >= 0) void checkLike()

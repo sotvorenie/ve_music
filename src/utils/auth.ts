@@ -4,7 +4,7 @@ import {AuthService} from "@api/auth/AuthService.ts";
 
 import useUserStore from "@store/useUserStore.ts";
 
-export const login = (data: UserWithToken): void => {
+export const logIn = (data: UserWithToken): void => {
     const userStore = useUserStore();
 
     localStorage.setItem("token", data.token)
@@ -12,14 +12,14 @@ export const login = (data: UserWithToken): void => {
     userStore.isLogged = true
 }
 
-export const logout = (): void => {
+export const logOut = (): void => {
     const userStore = useUserStore();
 
     localStorage.removeItem('token')
     userStore.clear()
 }
 
-export const checkMe = async (): Promise<void> => {
+export const getMe = async (): Promise<void> => {
     const userStore = useUserStore();
 
     const token: string = localStorage.getItem("token") || ''
@@ -30,7 +30,7 @@ export const checkMe = async (): Promise<void> => {
 
     try {
         const data: UserWithToken = await AuthService.getMe()
-        if (data.token) login(data)
+        if (data.token) logIn(data)
     } catch {
         userStore.isLogged = false
     }

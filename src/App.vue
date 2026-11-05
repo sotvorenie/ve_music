@@ -3,7 +3,7 @@ import {onBeforeMount, ref} from "vue";
 
 import {UserRoles} from "@/types/user.ts";
 
-import {checkMe} from "@utils/auth.ts";
+import {getMe} from "@utils/auth.ts";
 
 import Menu from "@components/Menu.vue";
 import Info from "@components/musicCard/Info.vue";
@@ -33,7 +33,7 @@ const handleContextMenu = (e: MouseEvent) => {
 }
 
 onBeforeMount(async () => {
-  await checkMe()
+  await getMe()
   visible.value = true
 })
 </script>
