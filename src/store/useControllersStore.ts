@@ -3,6 +3,8 @@ import {ref} from "vue";
 
 import {TrackPreview} from "@/types/music.ts";
 
+import {getTrackInfoFromPreview} from "@composables/useGetTrackInfoFromPreview.ts";
+
 import useAudioStore from "@store/useAudioStore.ts";
 import useMusicStore from "@store/useMusicStore.ts";
 
@@ -40,7 +42,9 @@ const useControllersStore = defineStore("controllersStore", () => {
             const currentIndex = getCurrentIndex()
 
             const prevIndexInCurrentList = (currentIndex - 1 + musicStore.tracks.length) % musicStore.tracks.length
-            await musicStore.updateMusic(musicStore.tracks[prevIndexInCurrentList].id)
+
+            const prevTrackInfo = getTrackInfoFromPreview(musicStore.tracks[prevIndexInCurrentList])
+            await musicStore.updateMusic(prevTrackInfo.id, prevTrackInfo)
         } finally {
             isLoading.value = false
         }
@@ -67,7 +71,9 @@ const useControllersStore = defineStore("controllersStore", () => {
                 const currentIndex = getCurrentIndex()
 
                 const nextIndexInCurrentList = (currentIndex + 1) % musicStore.tracks.length
-                await musicStore.updateMusic(musicStore.tracks[nextIndexInCurrentList].id)
+
+                const nextTrackInfo = getTrackInfoFromPreview(musicStore.tracks[nextIndexInCurrentList])
+                await musicStore.updateMusic(nextTrackInfo.id, nextTrackInfo)
             } finally {
                 isLoading.value = false
             }

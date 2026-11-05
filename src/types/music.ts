@@ -5,6 +5,7 @@ export interface TrackPreview {
     id: number
     name: string
     duration: number
+    url: string
     previewUrl: string | null
     genreId: number
 

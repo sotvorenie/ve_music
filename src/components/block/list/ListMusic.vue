@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import {ref, watch, watchEffect} from "vue";
 
-import {Track, TrackPreview} from "@/types/music.ts";
+import {TrackPreview} from "@/types/music.ts";
 
 import {BASE_URL} from "@api/url.ts";
 
 import {showArtists} from "@composables/useShowArtists.ts";
 import {formatTime} from "@composables/useFormatTime.ts";
 import {useObserve} from "@composables/useObserve.ts";
+import {getTrackInfoFromPreview} from "@composables/useGetTrackInfoFromPreview.ts";
 
 import Empty from "@ui/empty/Empty.vue";
 import Icon from "@ui/Icon.vue";
@@ -46,26 +47,7 @@ const scrollToActive = () => {
 }
 
 const handleTrack = (item: TrackPreview) => {
-  const newTrackInfo: Track = {
-    id: item.id,
-    name: item.name,
-    duration: item.duration,
-    url: '',
-    auditionsCount: 0,
-    likesCount: 0,
-    previewUrl: item.previewUrl ?? '',
-    videoClipUrl: '',
-    isLiked: false,
-    genre: {
-      id: -1,
-      name: ''
-    },
-    artists: item.artists,
-    segmentsCount: 0,
-    bitrates: [],
-  }
-
-  musicStore.updateMusic(item.id, newTrackInfo)
+  musicStore.updateMusic(item.id, getTrackInfoFromPreview(item))
 }
 
 const initObserver = () => {
