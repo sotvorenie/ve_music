@@ -13,8 +13,6 @@ const nameTrackRef = ref<HTMLDivElement | null>(null)
 const isNameOverflow = ref(false)
 const isNameShadow = ref(false)
 
-const timer = ref<number | null>(null)
-
 const checkWidth = async () => {
   isNameOverflow.value = false
   isNameShadow.value = false
@@ -25,15 +23,11 @@ const checkWidth = async () => {
     const containerWidth = nameTrackRef.value.parentElement?.clientWidth
     const contentWidth = nameTrackRef.value.scrollWidth
 
-    if (timer.value) clearTimeout(timer.value)
     if (!containerWidth || !contentWidth) return
 
     if (contentWidth > containerWidth) {
       isNameShadow.value = true
       nameTrackRef.value.style.animationDuration = `${contentWidth / containerWidth * 20}s`
-      timer.value = setTimeout(() => {
-        isNameOverflow.value = true
-      }, 1000)
     }
   }
 }
@@ -47,11 +41,13 @@ watch(
 
 <template>
 
-  <Transition name="list">
+  <Transition name="list"
+              @after-leave="isNameOverflow = isNameShadow"
+  >
     <div :key="musicStore.activeTrack?.name"
          class="info mb-4"
     >
-      <Actions/>
+      <Actions v-if="musicStore.activeTrack.id >= 0"/>
 
       <div :class="[
                'text-[4rem] 3xl:text-[6.25rem] font-bold w-full overflow-hidden relative text-nowrap leading-[1.2] transition-[transform] duration-500',
@@ -76,7 +72,9 @@ watch(
         </div>
       </div>
 
-      <div class="text-[1.8rem] 3xl:text-[2.625rem] leading-[1.2] w-full overflow-hidden relative text-nowrap truncate">
+      <div v-if="musicStore.activeTrack.id >= 0"
+           class="text-[1.8rem] 3xl:text-[2.625rem] leading-[1.2] w-full overflow-hidden relative text-nowrap truncate"
+      >
         {{ showArtists(musicStore.activeTrack?.artists) }}
       </div>
     </div>
