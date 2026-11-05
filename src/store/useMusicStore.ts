@@ -107,6 +107,8 @@ const useMusicStore = defineStore("musicStore", () => {
             controllersStore.isLoading = true
 
             let data = music
+            Object.assign(activeTrack.value, data)
+
             if (id) data = await MusicService.getTrack(id)
 
             if (data) {

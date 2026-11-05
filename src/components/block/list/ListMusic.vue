@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import {ref, watch, watchEffect} from "vue";
 
+import {Track, TrackPreview} from "@/types/music.ts";
+
 import {BASE_URL} from "@api/url.ts";
 
 import {showArtists} from "@composables/useShowArtists.ts";
@@ -41,6 +43,29 @@ const arrowVisible = ref<boolean>(false)
 
 const scrollToActive = () => {
   activeLiRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+}
+
+const handleTrack = (item: TrackPreview) => {
+  const newTrackInfo: Track = {
+    id: item.id,
+    name: item.name,
+    duration: item.duration,
+    url: '',
+    auditionsCount: 0,
+    likesCount: 0,
+    previewUrl: item.previewUrl ?? '',
+    videoClipUrl: '',
+    isLiked: false,
+    genre: {
+      id: -1,
+      name: ''
+    },
+    artists: item.artists,
+    segmentsCount: 0,
+    bitrates: [],
+  }
+
+  musicStore.updateMusic(item.id, newTrackInfo)
 }
 
 const initObserver = () => {
@@ -88,7 +113,7 @@ watch(
               'list__item flex cursor-pointer items-center relative gap-4 rounded-regular transition-[background-color] duration-300 group hover:bg-[color-mix(in_srgb,_var(--dark-15),_transparent_50%)]',
               item.id === musicStore.activeTrack.id && 'is-active pointer-events-none bg-[color-mix(in_srgb,_var(--dark-15),_transparent_25%)] '
           ]"
-          @click="musicStore.updateMusic(item.id)"
+          @click="handleTrack(item)"
           :ref="(el) => {
             if (musicStore.activeTrack.id === item.id) activeLiRef = el as HTMLLIElement
           }"

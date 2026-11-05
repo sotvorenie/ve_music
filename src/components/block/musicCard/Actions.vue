@@ -66,43 +66,50 @@ const handleLike = async () => {
       </template>
     </Tooltip>
 
-    <Tooltip>
-      <template #activator>
-        <div class="recolor-svg h-full flex-center gap-2.5 bg-[#26262650] py-1 px-2.5 rounded-regular tabular-nums">
-          <Icon :name="ViewIcon" :size="25" :laptop-size="23"/>
+    <Transition name="fade">
+      <Tooltip v-if="musicStore.activeTrack?.auditionsCount">
+        <template #activator>
+          <div class="recolor-svg h-full flex-center gap-2.5 bg-[#26262650] py-1 px-2.5 rounded-regular tabular-nums">
+            <Icon :name="ViewIcon" :size="25" :laptop-size="23"/>
 
-          {{(musicStore.activeTrack?.auditionsCount || 0).toLocaleString()}}
-        </div>
-      </template>
+            {{musicStore.activeTrack.auditionsCount.toLocaleString()}}
+          </div>
+        </template>
 
-      <template #default>
-        Кол-во прослушиваний
-      </template>
-    </Tooltip>
+        <template #default>
+          Кол-во прослушиваний
+        </template>
+      </Tooltip>
+    </Transition>
 
-    <Tooltip>
-      <template #activator>
+    <Transition name="fade">
+      <Tooltip v-if="musicStore.activeTrack?.genre?.name">
+        <template #activator>
         <span class="h-full flex-center text-accent gap-2.5 bg-[#26262650] py-1 px-2.5 rounded-regular tabular-nums">
-          {{musicStore.activeTrack?.genre?.name}}
+          {{musicStore.activeTrack.genre.name}}
         </span>
-      </template>
+        </template>
 
-      <template #default>
-        Жанр трека
-      </template>
-    </Tooltip>
+        <template #default>
+          Жанр трека
+        </template>
+      </Tooltip>
+    </Transition>
 
-    <Tooltip>
-      <template #activator>
+    <Transition name="fade">
+      <Tooltip v-if="musicStore.activeTrack?.bitrates?.length">
+        <template #activator>
         <span class="h-full flex-center text-accent gap-2.5 bg-[#26262650] py-1 px-2.5 rounded-regular tabular-nums">
           {{bitrateText}}
         </span>
-      </template>
 
-      <template #default>
-        Битрейт трека
-      </template>
-    </Tooltip>
+        </template>
+
+        <template #default>
+          Битрейт трека
+        </template>
+      </Tooltip>
+    </Transition>
   </div>
 
 </template>
