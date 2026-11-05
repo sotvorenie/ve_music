@@ -31,9 +31,7 @@ const avatarTitle = computed(() => {
   return userStore.user.id >= 0 ? 'Редактировать профиль' : 'Войти/Зарегистрироваться'
 })
 
-const isCropperModalVisible = computed(() => {
-  return !!avatarFile.value
-})
+const isCropperModalVisible = ref<boolean>(false)
 
 const handleAvatar = () => {
   if (isLoading.value) return
@@ -42,6 +40,17 @@ const handleAvatar = () => {
     isUserRedact.value = !isUserRedact.value
   } else {
     isAuth.value = !isAuth.value
+  }
+}
+
+const loadedAvatarFile = (files: File[] | File | null) => {
+  if (!files) return
+  const loadedFile: File = Array.isArray(files) ? files[0] : files
+
+  if (loadedFile?.type === 'image/gif') {
+    handleUploadAvatar(loadedFile)
+  } else {
+    isCropperModalVisible.value = true
   }
 }
 
@@ -62,7 +71,7 @@ const uploadAvatar = async (newFile: File) => {
     const response = await UserService.uploadAvatar(newFile)
     userStore.user.avatarUrl = response.url
     messageStore.show('Аватарка обновлена!!')
-    avatarFile.value = null
+    clearAvatarData()
   } catch (err: any) {
     await showError(
         'Ошибка загрузки фото',
@@ -97,7 +106,8 @@ const deleteAvatar = async () => {
   }
 }
 
-const handleCancel = () => {
+const clearAvatarData = () => {
+  isCropperModalVisible.value = false
   avatarFile.value = null
 }
 </script>
@@ -128,6 +138,7 @@ const handleCancel = () => {
                 ]"
                 :disabled="isLoading || !isUserRedact"
                 accept=".jpg,.jpeg,.png,.webp,.gif"
+                @update:model-value="loadedAvatarFile"
         >
           <div :class="[
                   'img-container relative rounded-medium h-full group',
@@ -171,7 +182,7 @@ const handleCancel = () => {
           <template #default>
             <ImageCropper :file="avatarFile"
                           @cropped="handleUploadAvatar"
-                          @cancel="handleCancel"
+                          @cancel="clearAvatarData"
             />
           </template>
         </Modal>
