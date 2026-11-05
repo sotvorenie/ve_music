@@ -35,7 +35,7 @@ watch(
       <Icon class="-mr-1" :name="ArrowIcon" :size="30"/>
     </button>
 
-    <PlayButton :disabled="musicStore.activeTrack.id < 0" class="square-15 3xl:square-20"/>
+    <PlayButton :disabled="musicStore.activeTrack.id < 0" class="square-15 3xl:square-19"/>
 
     <button class="square-12 3xl:square-12.5 flex-center bg-transparent rounded-full border-2 border-current p-1 hover:text-accent"
             :disabled="disabledControlButton"
