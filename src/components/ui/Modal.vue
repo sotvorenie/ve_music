@@ -39,7 +39,10 @@ onBeforeUnmount(() => document.removeEventListener('keydown', handleEsc))
 
   <Transition name="fade-small">
     <Teleport to="body">
-      <div class="modal absolute inset-0 z-[10000] flex-center bg-[rgba(0,0,0,.6)] backdrop-blur-[5px]" v-if="isVisible" @click="close">
+      <div v-if="isVisible"
+           class="modal absolute inset-0 z-[10000] flex-center bg-[rgba(0,0,0,.6)] backdrop-blur-[5px]"
+           @click="close"
+      >
         <div class="bg-dark-15 p-5 rounded-medium"
              :style="{width: `${size / 16}rem`}"
              @click.stop

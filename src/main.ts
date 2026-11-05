@@ -1,5 +1,6 @@
 import '@/assets/styles/globals.css'
 import '@/assets/styles/main.scss'
+import 'vue-advanced-cropper/dist/style.css';
 
 import { createApp } from 'vue'
 import {createPinia} from "pinia";
