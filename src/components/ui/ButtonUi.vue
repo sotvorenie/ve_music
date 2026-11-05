@@ -25,19 +25,13 @@ withDefaults(
           :disabled="isLoading || isDisabled"
           :type="isSubmit ? 'submit' : 'button'"
   >
-    <TransitionGroup name="fade" mode="out-in">
-      <span key="label"
-            class="transition-opacity"
-            :style="{opacity: isLoading ? 0 : 1}"
-      >
-        <slot/>
-      </span>
+    <Transition name="fade">
+      <span v-if="!isLoading" class="transition-opacity"><slot/></span>
+    </Transition>
 
-      <LoadingIcon v-if="isLoading"
-                   key="loading"
-                   class="abs-center w-6 3xl:w-7.5 h-auto"
-      />
-    </TransitionGroup>
+    <Transition name="fade">
+      <LoadingIcon v-if="isLoading" class="abs-center w-6 3xl:w-7.5 h-auto"/>
+    </Transition>
   </button>
 
 </template>
