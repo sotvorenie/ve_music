@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onBeforeUnmount, onMounted, ref} from "vue";
+import {onBeforeUnmount, onMounted, provide, ref} from "vue";
 
 import {logOut} from "@utils/auth.ts";
 
@@ -21,9 +21,12 @@ const musicStore = useMusicStore();
 const isOpen = ref<boolean>(false)
 
 const isUserRedact = ref<boolean>(false)
+provide('isUserRedact', isUserRedact)
+
 const isAuth = ref<boolean>(false)
 
 const isLoading = ref<boolean>(false)
+provide('isLoading', isLoading)
 
 const closeAside = () => {
   if (isLoading.value) return
@@ -109,8 +112,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey, true))
           </li>
 
           <li class="square-12.5">
-            <UserAvatar v-model:is-loading="isLoading"
-                        v-model:is-user-redact="isUserRedact"
+            <UserAvatar v-model:is-user-redact="isUserRedact"
                         v-model:is-auth="isAuth"
             />
           </li>
