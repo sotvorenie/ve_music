@@ -34,7 +34,7 @@ const redactIsActive = computed(() => {
   return name.value !== userStore.user.name || password.value.length >= 4
 })
 
-const handleLogout = async () => {
+const handleLogOut = async () => {
   const confirm = await showConfirm(
       'Выход из профиля',
       'Вы действительно хотите выйти?'
@@ -128,7 +128,7 @@ onMounted(() => {
       </ButtonUi>
 
       <ButtonUi class="grow"
-                @click="handleLogout"
+                @click="handleLogOut"
                 :is-disabled="isLoading"
       >
         Выйти
