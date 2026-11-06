@@ -7,7 +7,12 @@ export const AuthService = {
         login: string,
         password: string,
     ): Promise<UserWithToken> {
-        return apiPost(`/auth/login`, {login, password})
+        const payload = {
+            login,
+            password,
+        }
+
+        return apiPost(`/auth/login`, payload)
     },
 
     registration(
@@ -15,7 +20,13 @@ export const AuthService = {
         password: string,
         name: string,
     ): Promise<UserWithToken> {
-        return apiPost(`/auth/register`, {login, password, name})
+        const payload = {
+            login,
+            password,
+            name,
+        }
+
+        return apiPost(`/auth/register`, payload)
     },
 
     getMe(): Promise<UserWithToken> {

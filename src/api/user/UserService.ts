@@ -6,13 +6,21 @@ export const UserService = {
     updateName(
         name: string = '',
     ): Promise<void> {
-        return apiPatch(`/user/update_name`, {name})
+        const payload = {
+            name,
+        }
+
+        return apiPatch(`/user/update_name`, payload)
     },
 
     updatePassword(
         password: string = '',
     ): Promise<void> {
-        return apiPatch(`/user/update_password`, {password})
+        const payload = {
+            password,
+        }
+
+        return apiPatch(`/user/update_password`, payload)
     },
 
     uploadAvatar(
