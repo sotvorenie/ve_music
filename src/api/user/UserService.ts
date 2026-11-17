@@ -1,6 +1,6 @@
 import {Url} from "@/types/url.ts";
 
-import {apiPatch, apiPost} from "@/api";
+import {apiDelete, apiPatch, apiPost} from "@/api";
 
 export const UserService = {
     updateName(
@@ -33,6 +33,6 @@ export const UserService = {
     },
 
     deleteAvatar(): Promise<void> {
-        return apiPatch(`/user/avatar`)
+        return apiDelete(`/user/avatar`)
     }
 }
