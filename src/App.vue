@@ -3,8 +3,6 @@ import {onBeforeMount, ref} from "vue";
 
 import {UserRoles} from "@/types/user.ts";
 
-import {getMe} from "@utils/auth.ts";
-
 import Menu from "@components/Menu.vue";
 import Info from "@components/musicCard/Info.vue";
 import Timeline from "@components/musicCard/Timeline.vue";
@@ -39,7 +37,6 @@ const setLastTrack = () => {
 }
 
 onBeforeMount(async () => {
-  await getMe()
   setLastTrack()
   visible.value = true
 })

@@ -7,7 +7,12 @@ import {createPinia} from "pinia";
 import { autoAnimatePlugin } from '@formkit/auto-animate/vue'
 import App from '@/App.vue'
 
+import {getMe} from "@utils/auth.ts";
+
 const app = createApp(App);
 app.use(createPinia());
 app.use(autoAnimatePlugin);
+
+await getMe()
+
 app.mount("#app");
