@@ -5,6 +5,6 @@ import {apiGet} from "@/api";
 
 export const GenreService = {
     getGenres(): Promise<ListResponse<Genre>> {
-        return apiGet(`/genre/all`)
+        return apiGet(`/genres`)
     },
 }

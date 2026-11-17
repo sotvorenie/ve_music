@@ -16,6 +16,6 @@ export const ArtistService = {
 
         if (name) params.append('name', name)
 
-        return apiGet(`/artist/list?${params}`)
+        return apiGet(`/artists?${params}`)
     },
 }

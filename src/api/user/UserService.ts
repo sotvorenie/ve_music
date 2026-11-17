@@ -10,7 +10,7 @@ export const UserService = {
             name,
         }
 
-        return apiPatch(`/user/update_name`, payload)
+        return apiPatch(`/user/name`, payload)
     },
 
     updatePassword(
@@ -20,7 +20,7 @@ export const UserService = {
             password,
         }
 
-        return apiPatch(`/user/update_password`, payload)
+        return apiPatch(`/user/password`, payload)
     },
 
     uploadAvatar(
@@ -29,10 +29,10 @@ export const UserService = {
         const formData = new FormData()
         formData.append('avatar', file)
 
-        return apiPost(`/user/upload_avatar`, formData)
+        return apiPost(`/user/avatar`, formData)
     },
 
     deleteAvatar(): Promise<void> {
-        return apiPatch(`/user/delete_avatar`)
+        return apiPatch(`/user/avatar`)
     }
 }

@@ -20,7 +20,7 @@ export const MusicService = {
         if (artistId >= 0) params.append('artist_id', String(artistId))
         if (genreId >= 0) params.append('genre_id', String(genreId))
 
-        return apiGet(`/music/list?${params}`)
+        return apiGet(`/music?${params}`)
     },
 
     getTrack(
@@ -55,6 +55,6 @@ export const MusicService = {
         if (genreId >= 0) params.append('genre_id', String(genreId))
 
 
-        return apiGet(`/music/random_list?${params}`)
+        return apiGet(`/music/random?${params}`)
     },
 }

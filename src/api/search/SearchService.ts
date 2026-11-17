@@ -5,7 +5,7 @@ import {apiDelete, apiGet, apiPost} from "@/api";
 
 export const SearchService = {
     getList(): Promise<ListResponse<Search>> {
-        return apiGet('/search/list')
+        return apiGet('/search')
     },
 
     create(
@@ -14,12 +14,12 @@ export const SearchService = {
         const payload = {
             search,
         }
-        return apiPost('/search/set', payload)
+        return apiPost('/search', payload)
     },
 
     delete(
         id: number,
     ): Promise<void> {
-        return apiDelete(`/search/delete/${id}`)
+        return apiDelete(`/search/${id}`)
     },
 }

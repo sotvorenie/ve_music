@@ -23,12 +23,12 @@ export const LikeService = {
 
         if (name) params.append('name', name)
 
-        return apiGet(`/like/list?${params}`)
+        return apiGet(`/likes?${params}`)
     },
 
     checkLike(
         musicId: number,
     ): Promise<IsLiked> {
-        return apiGet(`/like/check/${musicId}`)
+        return apiGet(`/likes/${musicId}`)
     },
 }

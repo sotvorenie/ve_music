@@ -16,6 +16,6 @@ export const HistoryService = {
 
         if (name) params.append('name', name)
 
-        return apiGet(`/history/list?${params}`)
+        return apiGet(`/history?${params}`)
     },
 }
