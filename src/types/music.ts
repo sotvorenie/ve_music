@@ -7,6 +7,7 @@ export interface TrackPreview {
     duration: number
     url: string
     previewUrl: string | null
+    previewX480Url: string | null
     genreId: number
 
     artists: Artist[]
@@ -17,9 +18,11 @@ export interface Track {
     name: string
     duration: number
     url: string
+    urlWithClip: string | null
     auditionsCount: number
     likesCount: number
     previewUrl: string
+    previewX480Url: string | null
     videoClipUrl: string | null
     isLiked: boolean
     genre: Genre

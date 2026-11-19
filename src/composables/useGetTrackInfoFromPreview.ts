@@ -8,7 +8,9 @@ export const getTrackInfoFromPreview = (previewTrack: TrackPreview): Track => {
         auditionsCount: 0,
         likesCount: 0,
         url: previewTrack.url,
+        urlWithClip: null,
         previewUrl: previewTrack.previewUrl ?? '',
+        previewX480Url: previewTrack.previewX480Url ?? null,
         videoClipUrl: '',
         isLiked: false,
         genre: {

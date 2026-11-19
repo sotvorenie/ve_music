@@ -101,7 +101,7 @@ watch(
           }"
       >
         <div class="square-20 3xl:square-22 shrink-0 rounded-regular img-container z-[100]">
-          <img v-if="item?.previewUrl"
+          <img v-if="item?.previewX480Url ?? item?.previewUrl"
                class="transition-transform duration-400 group-hover:will-change-transform group-hover:scale-110"
                :src="`${BASE_URL}${item?.previewUrl}`"
                :alt="item?.name"
