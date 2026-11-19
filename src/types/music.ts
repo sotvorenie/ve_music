@@ -18,7 +18,6 @@ export interface Track {
     name: string
     duration: number
     url: string
-    urlWithClip: string | null
     auditionsCount: number
     likesCount: number
     previewUrl: string
