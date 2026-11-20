@@ -4,6 +4,7 @@ import {ref, watch} from "vue";
 import {GenreService} from "@api/genre/GenreService.ts";
 
 import Modal from "@ui/Modal.vue";
+import Icon from "@ui/Icon.vue";
 
 import MusicIcon from "@/components/icons/MusicIcon.vue";
 import HistoryIcon from "@/components/icons/HistoryIcon.vue";
@@ -104,7 +105,7 @@ watch(
                     @click="userStore.isLogged ? handleTab(index) : handleErrorModal(item.value, open)"
                     type="button"
             >
-              <Component :is="item.icon" class="w-7 3xl:w-10 h-auto"/>
+              <Icon :name="item.icon" :size="35"/>
               <span class="menu__name">{{item.name}}</span>
             </button>
           </template>
