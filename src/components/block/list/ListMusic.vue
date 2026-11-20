@@ -26,6 +26,8 @@ import useMusicStore from "@store/useMusicStore.ts";
 const musicStore = useMusicStore();
 import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
+import useGenresStore from "@store/useGenresStore.ts";
+const genresStore = useGenresStore();
 
 const listRef = ref<HTMLUListElement | null>(null)
 
@@ -65,6 +67,8 @@ const initObserver = () => {
   observer.observe(activeLiRef.value)
 }
 
+await musicStore.getMusic(true)
+
 watchEffect((onCleanup) => {
   if (musicStore.activeTrack.id < 0 || searchStore.searchName) return
 
@@ -79,6 +83,11 @@ watchEffect((onCleanup) => {
 watch(
     () => menuStore.menuMode,
     () => listRef.value?.scroll(0, 0)
+)
+
+watch(
+    () => genresStore.currentGenre.id,
+    () => musicStore.getMusic(true),
 )
 </script>
 
@@ -143,8 +152,8 @@ watch(
       >
         <template #activator>
           <ButtonUi class="button !rounded-full flex-center !p-0 !bg-dark-15 recolor-svg hover:!text-accent"
-                  @click="scrollToActive"
-                  type="button"
+                    @click="scrollToActive"
+                    type="button"
           >
             <Icon :name="RadioIcon" :size="20"/>
           </ButtonUi>

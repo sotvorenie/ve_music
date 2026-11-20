@@ -38,7 +38,7 @@ const placeholder = computed(() => {
       return allPlaceholders.genre + ' ' + genresStore.currentGenre.name
     if (menuStore.listMode === 'artists')
       return allPlaceholders.artists
-    if (menuStore.listMode === 'artistMusic')
+    if (menuStore.listMode === 'music' && artistStore.currentArtist.id >= 0)
       return allPlaceholders.artistSong + ' ' + artistStore.currentArtist.name
   }
   if (menuStore.menuMode === 'history')
@@ -48,7 +48,7 @@ const placeholder = computed(() => {
 })
 
 const search = () => {
-  menuStore.listMode === 'artists' ? artistStore.getArtists() : musicStore.getMusic()
+  menuStore.listMode === 'artists' ? artistStore.getArtists(true) : musicStore.getMusic(true)
 }
 
 const handleClear = () => {

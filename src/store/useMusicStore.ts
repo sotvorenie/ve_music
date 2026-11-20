@@ -47,6 +47,7 @@ const useMusicStore = defineStore("musicStore", () => {
     const limit = ref<number>(21)
     const total = ref<number>(0)
     const hasMore = ref<boolean>(true)
+    const isLoading = ref<boolean>(false)
 
     const randomIds = ref<number[]>([])
     const randomSeed = ref<number>((Math.random() * 2) - 1)
@@ -61,6 +62,8 @@ const useMusicStore = defineStore("musicStore", () => {
         }
 
         try {
+            isLoading.value = true
+
             const allApis = {
                 genres: () => MusicService.getTracks(
                     searchStore.searchName,
@@ -97,6 +100,8 @@ const useMusicStore = defineStore("musicStore", () => {
                 'Не удалось загрузить треки..',
                 err?.detail
             )
+        } finally {
+            isLoading.value = false
         }
     }
 
@@ -138,6 +143,7 @@ const useMusicStore = defineStore("musicStore", () => {
         limit,
         total,
         hasMore,
+        isLoading,
 
         randomIds,
         randomSeed,

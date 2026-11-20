@@ -15,24 +15,20 @@ import useArtistStore from "@store/useArtistStore.ts";
 const artistStore = useArtistStore();
 import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
 import useGenresStore from "@store/useGenresStore.ts";
 const genresStore = useGenresStore();
 
-await artistStore.getArtists()
+const listRef = ref<HTMLUListElement | null>(null)
+const lastLiRef = ref<HTMLLIElement | null>(null)
 
 const handleArtist = async (artist: Artist) => {
   artistStore.currentArtist = artist
   genresStore.clearGenre()
 
-  await musicStore.getMusic(true)
-
-  menuStore.listMode = 'artistMusic'
+  menuStore.listMode = 'music'
 }
 
-const listRef = ref<HTMLUListElement | null>(null)
-const lastLiRef = ref<HTMLLIElement | null>(null)
+await artistStore.getArtists(true)
 
 useObserve(
     lastLiRef,
@@ -70,7 +66,7 @@ useObserve(
       <li class="h-[1px]" ref="lastLiRef"/>
     </ul>
 
-    <Empty v-if="!musicStore.tracks.length"/>
+    <Empty v-if="!artistStore.artists.length"/>
   </div>
 
 </template>

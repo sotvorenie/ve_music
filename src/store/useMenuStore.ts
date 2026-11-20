@@ -2,7 +2,7 @@ import {defineStore} from "pinia";
 import {ref} from "vue";
 
 const useMenuStore = defineStore("menuStore", () => {
-    const listMode = ref<'music' | 'artists' | 'artistMusic'>('music')
+    const listMode = ref<'music' | 'artists'>('music')
 
     const menuMode = ref<'genres' | 'history' | 'favorites'>('genres')
 

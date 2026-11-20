@@ -74,7 +74,6 @@ watch(
       if (genresStore.currentGenre.id >= -1) {
         menuStore.listMode = 'music'
         artistStore.currentArtist.id = -1
-        musicStore.getMusic()
       }
     }
 )
