@@ -3,15 +3,17 @@ import {onBeforeUnmount, onMounted} from "vue";
 
 import ButtonUi from "@ui/ButtonUi.vue";
 
-withDefaults(
+const props = withDefaults(
     defineProps<{
       closeVisible?: boolean
       closeText?: string
       size?: number
+      isClosable?: boolean
     }>(), {
       closeVisible: false,
       closeText: 'Ок',
       size: 400,
+      isClosable: true,
     }
 )
 
@@ -22,6 +24,7 @@ const open = () => {
 }
 
 const close = () => {
+  if (!props.isClosable) return
   isVisible.value = false
 }
 

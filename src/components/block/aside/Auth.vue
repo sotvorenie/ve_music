@@ -143,11 +143,7 @@ const clear = () => {
                   :is-loading="isLoading"
                   is-submit
         >
-          <Transition name="fade-absolute">
-            <span :key="String(isLogin)">
-              {{isLogin ? 'Войти' : 'Зарегистрироваться'}}
-            </span>
-          </Transition>
+          {{isLogin ? 'Войти' : 'Зарегистрироваться'}}
         </ButtonUi>
       </TransitionGroup>
     </form>

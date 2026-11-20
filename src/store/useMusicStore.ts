@@ -32,6 +32,7 @@ const useMusicStore = defineStore("musicStore", () => {
         auditionsCount: 0,
         likesCount: 0,
         previewUrl: '',
+        previewX480Url: null,
         videoClipUrl: '',
         isLiked: false,
         artists: [{id: -1, name: '', avatarUrl: ''}],
@@ -124,7 +125,7 @@ const useMusicStore = defineStore("musicStore", () => {
 
                 if (controllersStore.mode === 'video' && !activeTrack.value.videoClipUrl) controllersStore.mode = 'img'
             }
-        } finally {
+        } catch {} finally {
             controllersStore.isLoading = false
         }
     }

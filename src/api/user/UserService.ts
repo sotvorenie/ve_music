@@ -15,9 +15,11 @@ export const UserService = {
 
     updatePassword(
         password: string = '',
-    ): Promise<void> {
+        oldPassword: string = '',
+    ): Promise<{token: string}> {
         const payload = {
             password,
+            old_password: oldPassword,
         }
 
         return apiPatch(`/user/password`, payload)

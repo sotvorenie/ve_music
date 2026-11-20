@@ -4,10 +4,14 @@ import {AuthService} from "@api/auth/AuthService.ts";
 
 import useUserStore from "@store/useUserStore.ts";
 
+export const setToken = (token: string) => {
+    localStorage.setItem("token", token)
+}
+
 export const logIn = (data: UserWithToken): void => {
     const userStore = useUserStore();
 
-    localStorage.setItem("token", data.token)
+    setToken(data.token)
     userStore.user = data.user
     userStore.isLogged = true
 }

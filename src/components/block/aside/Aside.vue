@@ -23,6 +23,9 @@ const isOpen = ref<boolean>(false)
 const isUserRedact = ref<boolean>(false)
 provide('isUserRedact', isUserRedact)
 
+const isUserRedactPassword = ref<boolean>(false)
+provide('isUserRedactPassword', isUserRedactPassword)
+
 const isAuth = ref<boolean>(false)
 
 const isLoading = ref<boolean>(false)
@@ -31,7 +34,9 @@ provide('isLoading', isLoading)
 const closeAside = () => {
   if (isLoading.value) return
 
-  if (isUserRedact.value || isAuth.value) {
+  if (isUserRedactPassword.value) {
+    isUserRedactPassword.value = false
+  } else if (isUserRedact.value || isAuth.value) {
     isUserRedact.value = false
     isAuth.value = false
   } else {

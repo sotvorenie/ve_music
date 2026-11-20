@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import {computed, onMounted, ref} from "vue";
+import {computed, ref} from "vue";
 
 import {UserService} from "@api/user/UserService.ts";
 
 import {showConfirm, showError} from "@utils/modals.ts";
+
+import UpdatePassword from "@components/user/UpdatePassword.vue";
 
 import InputUi from "@ui/InputUi.vue";
 import ButtonUi from "@ui/ButtonUi.vue";
@@ -27,11 +29,10 @@ const emits = defineEmits<{
   logout: [],
 }>()
 
-const name = ref<string>('')
-const password = ref<string>('')
+const name = ref<string>(userStore.user.name)
 
 const redactIsActive = computed(() => {
-  return name.value !== userStore.user.name || password.value.length >= 4
+  return name.value !== userStore.user.name || !name.value.length
 })
 
 const handleLogOut = async () => {
@@ -42,69 +43,34 @@ const handleLogOut = async () => {
   if (confirm) emits('logout')
 }
 
-const handleRedact = async () => {
+const handleUpdateName = async () => {
   const confirm = await showConfirm(
       'Редактирование профиля',
       'Вы действительно хотите редактировать профиль?'
   )
-  if (confirm) await redactUser()
+  if (confirm) await updateName()
 }
 
-const redactUser = async () => {
+const updateName = async () => {
   try {
     isLoading.value = true
 
-    const promises = []
-    const actions: string[] = []
-
-    if (name.value !== userStore.user.name) {
-      promises.push(UserService.updateName(name.value))
-      actions.push('name')
-    }
-    if (password.value.length >= 4) {
-      promises.push(UserService.updatePassword(password.value))
-      actions.push('password')
-    }
-
-    if (promises.length === 0) return
-
-    const results = await Promise.allSettled(promises)
-
-    await showDetails(results, actions)
+    await UserService.updateName(name.value)
+    success()
   } catch {
     await showError(
         'Ошибка редактирования профиля',
-        'Не удалось редактировать профиль'
+        'Не удалось редактировать имя пользователя'
     )
   } finally {
     isLoading.value = false
   }
 }
 
-const showDetails = async (results:  PromiseSettledResult<void>[], actions: string[]) => {
-  let hasError = false
-  let errorMessage = ''
-
-  results.forEach((result, index) => {
-    const actionType = actions[index]
-
-    if (result.status === 'fulfilled') {
-      if (actionType === 'name') userStore.user.name = name.value
-      if (actionType === 'password') password.value = ''
-    } else {
-      hasError = true
-      errorMessage = actionType === 'password' ? result.reason?.detail : 'Не удалось обновить имя'
-    }
-  })
-
-  hasError
-      ? await showError('Ошибка редактирования профиля', errorMessage)
-      : messageStore.show('Данные пользователя изменены!!')
+const success = () => {
+  userStore.user.name = name.value
+  messageStore.show('Имя пользователя изменено!!')
 }
-
-onMounted(() => {
-  name.value = userStore.user.name
-})
 </script>
 
 <template>
@@ -115,24 +81,25 @@ onMounted(() => {
              title="Имя"
     />
 
-    <InputUi v-model="password"
-             title="Пароль"
-    />
+    <div class="flex flex-col gap-3">
+      <UpdatePassword/>
 
-    <div class="flex gap-3">
-      <ButtonUi class="grow"
-                :is-disabled="!redactIsActive || !name.length"
-                @click="handleRedact"
-      >
-        Редактировать
-      </ButtonUi>
+      <div class="grid grid-cols-2 gap-2">
+        <ButtonUi class="grow"
+                  :is-disabled="!redactIsActive"
+                  :is-loading="isLoading"
+                  @click="handleUpdateName"
+        >
+          Редактировать
+        </ButtonUi>
 
-      <ButtonUi class="grow"
-                @click="handleLogOut"
-                :is-disabled="isLoading"
-      >
-        Выйти
-      </ButtonUi>
+        <ButtonUi class="grow"
+                  @click="handleLogOut"
+                  :is-disabled="isLoading"
+        >
+          Выйти
+        </ButtonUi>
+      </div>
     </div>
   </div>
 </template>
