@@ -8,7 +8,7 @@ export const LikeService = {
     like(
         musicId: number,
     ): Promise<IsLiked> {
-        return apiPost(`/like/${musicId}`)
+        return apiPost(`/likes/${musicId}`)
     },
 
     getLikedTracks(
