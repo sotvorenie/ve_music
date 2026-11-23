@@ -13,7 +13,7 @@ const useGenresStore = defineStore("genresStore", () => {
 
     const clearGenre = () => {
         currentGenre.value = {
-            id: -2,
+            id: -1,
             name: '',
         }
     }

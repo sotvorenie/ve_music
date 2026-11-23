@@ -57,7 +57,7 @@ onBeforeMount(async () => {
 
       <Search/>
 
-      <Suspense>
+      <Suspense timeout="0">
         <template #default>
           <Menu/>
         </template>
@@ -66,7 +66,7 @@ onBeforeMount(async () => {
         </template>
       </Suspense>
 
-      <Suspense>
+      <Suspense timeout="0">
         <template #default>
           <List/>
         </template>

@@ -53,7 +53,9 @@ const useControllersStore = defineStore("controllersStore", () => {
         if (isRandom.value) {
             try {
                 musicStore.randomIndex += 1
-                if (musicStore.randomIndex === 1) musicStore.randomIds[0] = musicStore.activeTrack.id
+                if (musicStore.randomIndex === 1) {
+                    musicStore.randomIds[0] = musicStore.activeTrack.id
+                }
 
                 const id = musicStore.randomIds[musicStore.randomIndex]
 

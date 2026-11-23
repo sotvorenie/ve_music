@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import Icon from "@ui/Icon.vue";
+
 import LoadingIcon from "@/components/icons/LoadingIcon.vue";
 
 withDefaults(
@@ -30,7 +32,12 @@ withDefaults(
     </Transition>
 
     <Transition name="fade">
-      <LoadingIcon v-if="isLoading" class="abs-center w-6 3xl:w-7.5 h-auto"/>
+      <Icon v-if="isLoading"
+            :name="LoadingIcon"
+            :size="30"
+            :laptop-size="24"
+            class="abs-center"
+      />
     </Transition>
   </button>
 

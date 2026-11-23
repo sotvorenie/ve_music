@@ -56,9 +56,7 @@ const handleClear = () => {
   search()
 }
 
-const inputSearchName = debounce(() => {
-  search()
-}, 500)
+const inputSearchName = debounce(search, 500)
 </script>
 
 <template>

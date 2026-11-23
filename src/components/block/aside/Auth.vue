@@ -18,7 +18,9 @@ import ButtonUi from "@ui/ButtonUi.vue";
 import useMusicStore from "@store/useMusicStore.ts";
 const musicStore = useMusicStore();
 
-const emits = defineEmits(['successAuth'])
+const emits = defineEmits<{
+  success: [message: string]
+}>()
 
 const isLogin = ref<boolean>(true)
 
@@ -30,25 +32,16 @@ const form = ref<AuthPayload>({
   name: '',
 })
 
-const message = ref<string>('')
-
 const handleSubmit = async (e: Event) => {
   if (onSubmit(e)) {
     try {
       isLoading.value = true
 
-      const response: UserWithToken = isLogin.value
+      const response = isLogin.value
           ? await AuthService.auth(form.value.login, form.value.password)
           : await AuthService.registration(form.value.login, form.value.password, form.value.name)
 
-      message.value = isLogin.value
-          ? `Добро пожаловать, ${response.user.name} :)`
-          : 'Пользователь успешно зарегистрирован!!'
-
-      logIn(response)
-      emits('successAuth', message.value)
-
-      if (musicStore.activeTrack.id >= 0) void checkLike()
+      void success(response)
     } catch (err: any) {
       await showError(
           'Ошибка авторизации',
@@ -58,6 +51,19 @@ const handleSubmit = async (e: Event) => {
       isLoading.value = false
     }
   }
+}
+
+const success = async (response: UserWithToken) => {
+  try {
+    const message = isLogin.value
+        ? `Добро пожаловать, ${response.user.name} :)`
+        : 'Пользователь успешно зарегистрирован!!'
+
+    logIn(response)
+    emits('success', message)
+
+    if (musicStore.activeTrack.id >= 0) await checkLike()
+  } catch {}
 }
 
 const checkLike = async () => {
@@ -81,7 +87,6 @@ const clear = () => {
     name: '',
   }
 }
-
 </script>
 
 <template>

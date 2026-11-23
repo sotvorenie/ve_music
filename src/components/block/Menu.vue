@@ -1,44 +1,21 @@
 <script setup lang="ts">
-import {ref, watch} from "vue";
+import {ref} from "vue";
+
+import {Genre} from "@/types/genre.ts";
 
 import {GenreService} from "@api/genre/GenreService.ts";
 
+import {menuList} from "@data/menuList.ts";
+
 import Modal from "@ui/Modal.vue";
 import Icon from "@ui/Icon.vue";
-
-import MusicIcon from "@/components/icons/MusicIcon.vue";
-import HistoryIcon from "@/components/icons/HistoryIcon.vue";
-import LikeIcon from "@/components/icons/LikeIcon.vue";
 
 import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
 import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
-import useArtistStore from "@store/useArtistStore.ts";
-const artistStore = useArtistStore();
 import useGenresStore from "@store/useGenresStore.ts";
 const genresStore = useGenresStore();
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
-
-
-const menuList = [
-  {
-    name: 'Жанры',
-    value: 'genres',
-    icon: MusicIcon,
-  },
-  {
-    name: 'История',
-    value: 'history',
-    icon: HistoryIcon,
-  },
-  {
-    name: 'Избранное',
-    value: 'favorites',
-    icon: LikeIcon,
-  },
-]
 
 const activeTabIndex = ref<number>(0)
 
@@ -49,9 +26,20 @@ const allErrorsText: Record<string, string> = {
   favorites: `Для доступа к понравившимся трекам ${indexErrorText}`,
 }
 
-const handleTab = (index: number) => {
+const handleErrorModal = (type: string, func: Function) => {
+  modalText.value = allErrorsText[type]
+  func()
+}
+
+const handleMenuItem = (index: number) => {
   activeTabIndex.value = index
   menuStore.menuMode = menuList[index].value as 'genres' | 'history' | 'favorites'
+  menuStore.listMode = 'music'
+}
+
+const handleGenre = (genre: Genre) => {
+  genresStore.currentGenre = genre
+  menuStore.listMode = 'music'
 }
 
 const getGenres = async () => {
@@ -62,21 +50,6 @@ const getGenres = async () => {
 }
 
 await getGenres()
-
-const handleErrorModal = (type: string, func: Function) => {
-  modalText.value = allErrorsText[type]
-  func()
-}
-
-watch(
-    () => [genresStore.currentGenre.id, menuStore.menuMode],
-    () => {
-      if (genresStore.currentGenre.id >= -1) {
-        menuStore.listMode = 'music'
-        artistStore.currentArtist.id = -1
-      }
-    }
-)
 </script>
 
 <template>
@@ -101,7 +74,7 @@ watch(
                         'p-4 3xl:p-5 recolor-svg flex items-center w-full rounded-regular gap-2.5 hover:bg-dark-alt/75 hover:text-accent',
                         activeTabIndex === index && 'pointer-events-none bg-dark-15',
                     ]"
-                    @click="userStore.isLogged ? handleTab(index) : handleErrorModal(item.value, open)"
+                    @click="userStore.isLogged ? handleMenuItem(index) : handleErrorModal(item.value, open)"
                     type="button"
             >
               <Icon :name="item.icon" :size="35"/>
@@ -135,7 +108,7 @@ watch(
                             'p-3.5 3xl:p-5 font-medium w-full text-left rounded-regular transition-[backdrop-filter] hover:backdrop-brightness-[.88] hover:text-accent',
                             genresStore.currentGenre.id === genre.id && 'pointer-events-none backdrop-brightness-[.8]',
                         ]"
-                        @click="genresStore.currentGenre = genre"
+                        @click="handleGenre(genre)"
                         type="button"
                 >
                   {{genre?.name}}

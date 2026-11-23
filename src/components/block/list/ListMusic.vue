@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {ref, watch, watchEffect} from "vue";
+import {onBeforeMount, ref, watch} from "vue";
 
 import {TrackPreview} from "@/types/music.ts";
 
@@ -10,85 +10,53 @@ import {formatTime} from "@composables/useFormatTime.ts";
 import {useObserve} from "@composables/useObserve.ts";
 import {getTrackInfoFromPreview} from "@composables/useGetTrackInfoFromPreview.ts";
 
+import ToTrack from "@components/list/ToTrack.vue";
+
 import Empty from "@ui/empty/Empty.vue";
 import Icon from "@ui/Icon.vue";
-import Tooltip from "@ui/Tooltip.vue";
-import ButtonUi from "@ui/ButtonUi.vue";
 
 import MusicRecordIcon from "@icons/MusicRecordIcon.vue";
-import RadioIcon from "@icons/RadioIcon.vue";
 
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
-import useSearchStore from "@store/useSearchStore.ts";
-const searchStore = useSearchStore();
 import useMusicStore from "@store/useMusicStore.ts";
 const musicStore = useMusicStore();
 import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
 import useGenresStore from "@store/useGenresStore.ts";
 const genresStore = useGenresStore();
+import useArtistStore from "@store/useArtistStore.ts";
+const artistStore = useArtistStore();
 
 const listRef = ref<HTMLUListElement | null>(null)
 
 const lastLiRef = ref<HTMLLIElement | null>(null)
 const activeLiRef = ref<HTMLLIElement | null>(null)
 
-useObserve(
-    lastLiRef,
-    () => musicStore.getMusic(),
-    () => musicStore.hasMore
-)
-
-let observer: IntersectionObserver | null = null
-
-const arrowVisible = ref<boolean>(false)
-
-const scrollToActive = () => {
-  activeLiRef.value?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-}
-
 const handleTrack = (item: TrackPreview) => {
   musicStore.updateMusic(item.id, getTrackInfoFromPreview(item))
 }
 
-const initObserver = () => {
-  if (!activeLiRef.value) return
-
-  observer?.disconnect()
-  observer = null
-
-  observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      arrowVisible.value = !entry.isIntersecting
-    })
-  }, {root: activeLiRef.value?.parentElement})
-
-  observer.observe(activeLiRef.value)
-}
-
 await musicStore.getMusic(true)
 
-watchEffect((onCleanup) => {
-  if (musicStore.activeTrack.id < 0 || searchStore.searchName) return
+useObserve(
+    lastLiRef,
+    () => musicStore.getMusic(),
+    () => musicStore.hasMore,
+    () => musicStore.isLoading,
+)
 
-  initObserver()
+watch(
+    () => [menuStore.menuMode, genresStore.currentGenre.id],
+    () => {
+      listRef.value?.scroll(0, 0)
+      musicStore.getMusic(true)
+    }
+)
 
-  onCleanup(() => {
-    observer?.disconnect()
-    arrowVisible.value = false
-  })
+onBeforeMount(() => {
+  artistStore.currentArtist.id = -1
 })
-
-watch(
-    () => menuStore.menuMode,
-    () => listRef.value?.scroll(0, 0)
-)
-
-watch(
-    () => genresStore.currentGenre.id,
-    () => musicStore.getMusic(true),
-)
 </script>
 
 <template>
@@ -145,24 +113,6 @@ watch(
 
     <Empty v-if="!musicStore.tracks.length"/>
 
-    <Transition name="fade-small">
-      <Tooltip v-if="arrowVisible"
-               class="!absolute left-[calc(100%_+_1rem)] top-4"
-               position="right"
-      >
-        <template #activator>
-          <ButtonUi class="button !rounded-full flex-center !p-0 !bg-dark-15 recolor-svg hover:!text-accent"
-                    @click="scrollToActive"
-                    type="button"
-          >
-            <Icon :name="RadioIcon" :size="20"/>
-          </ButtonUi>
-        </template>
-
-        <template #default>
-          К треку
-        </template>
-      </Tooltip>
-    </Transition>
+    <ToTrack :active-li-ref="activeLiRef"/>
   </div>
 </template>

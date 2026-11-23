@@ -33,7 +33,8 @@ await artistStore.getArtists(true)
 useObserve(
     lastLiRef,
     () => artistStore.getArtists(true),
-    () => artistStore.hasMore
+    () => artistStore.hasMore,
+    () => artistStore.isLoading,
 )
 </script>
 

@@ -37,7 +37,7 @@ const useAudioStore = defineStore('audioStore', () => {
         if (controllersStore.isRepeat) {
             audio.currentTime = 0
             audio.play().then(() => {})
-        } else if ((musicStore.tracks?.length > 1) || controllersStore.isRandom) {
+        } else if (musicStore.tracks?.length > 1 || controllersStore.isRandom) {
             await controllersStore.nextItem()
         } else {
             isPlaying.value = false

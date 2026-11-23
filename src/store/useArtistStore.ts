@@ -5,6 +5,8 @@ import {ArtistService} from "@api/artist/ArtistService.ts";
 
 import {Artist} from "@/types/artist.ts";
 
+import {showError} from "@utils/modals.ts";
+
 import useSearchStore from "@store/useSearchStore.ts";
 
 const useArtistStore = defineStore("artistStore", () => {
@@ -18,6 +20,7 @@ const useArtistStore = defineStore("artistStore", () => {
 
     const artists = ref<Artist[]>([])
 
+    const isLoading = ref(false)
     const page = ref<number>(1)
     const limit = ref<number>(21)
     const total = ref<number>(0)
@@ -32,6 +35,8 @@ const useArtistStore = defineStore("artistStore", () => {
        }
 
         try {
+           isLoading.value = true
+
             const response = await ArtistService.getArtists(searchStore.searchName, page.value, limit.value)
 
             if (response) {
@@ -41,8 +46,13 @@ const useArtistStore = defineStore("artistStore", () => {
                 total.value = response.meta.total
                 page.value += 1
             }
-        } catch (err) {
-            console.error(err)
+        } catch (err: any) {
+            await showError(
+                'Не удалось загрузить исполнителей..',
+                err?.detail
+            )
+        } finally {
+            isLoading.value = false
         }
     }
 
@@ -51,6 +61,7 @@ const useArtistStore = defineStore("artistStore", () => {
 
         artists,
 
+        isLoading,
         page,
         limit,
         total,

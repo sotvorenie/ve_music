@@ -11,8 +11,8 @@ export const useObserve = (
     element: MaybeRef<HTMLElement | null>,
     func: () => Promise<void> | void,
     hasMore: MaybeRefOrGetter<boolean> = true,
-    root: MaybeRefOrGetter<HTMLElement | null> = null,
     loading: MaybeRefOrGetter<boolean> = false,
+    root: MaybeRefOrGetter<HTMLElement | null> = null,
 ) => {
     let observer: IntersectionObserver | null = null
     let isProcessing = false

@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import {inject, Ref, ref} from "vue";
 
+import {Url} from "@/types/url.ts";
+
 import {BASE_URL} from "@api/url.ts";
 import {UserService} from "@api/user/UserService.ts";
 
@@ -53,8 +55,7 @@ const uploadAvatar = async (newFile: File) => {
     if (isLoading) isLoading.value = true
 
     const response = await UserService.uploadAvatar(newFile)
-    userStore.user.avatarUrl = response.url
-    messageStore.show('Аватарка обновлена!!')
+    successUpdate(response)
     clearAvatarData()
   } catch (err: any) {
     await showError(
@@ -64,6 +65,11 @@ const uploadAvatar = async (newFile: File) => {
   } finally {
     if (isLoading) isLoading.value = false
   }
+}
+
+const successUpdate = (response: Url) => {
+  userStore.user.avatarUrl = response.url
+  messageStore.show('Аватарка обновлена!!')
 }
 
 const handleDeleteAvatar = async () => {
@@ -79,7 +85,8 @@ const deleteAvatar = async () => {
     if (isLoading) isLoading.value = true
 
     await UserService.deleteAvatar()
-    userStore.user.avatarUrl = ''
+
+    successDelete()
   } catch {
     await showError(
         'Ошибка удаления аватарки',
@@ -88,6 +95,10 @@ const deleteAvatar = async () => {
   } finally {
     if (isLoading) isLoading.value = false
   }
+}
+
+const successDelete = () => {
+  userStore.user.avatarUrl = ''
 }
 
 const clearAvatarData = () => {

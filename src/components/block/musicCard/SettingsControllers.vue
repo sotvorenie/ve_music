@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, onMounted, watch} from "vue";
+import {computed, onBeforeMount, watch} from "vue";
 
 import RandomBtn from "@components/musicCard/RandomBtn.vue";
 
@@ -45,7 +45,7 @@ watch(
     }
 )
 
-onMounted(() => {
+onBeforeMount(() => {
   getVolumeFromLocStore()
   getIsRandomFromLocStore()
   getIsRepeatFromLocStore()

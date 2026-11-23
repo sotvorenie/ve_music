@@ -18,11 +18,11 @@ client.interceptors.request.use((config) => {
 client.interceptors.response.use(
     response => response,
     async error => {
-        if (axios.isCancel(error) || error.code === 'ERR_CANCELED') return { data: null, detail: 'canceled' as const }
+        if (axios.isCancel(error) || error.code === 'ERR_CANCELED') return { data: null, detail: 'canceled' }
 
         if (error.response?.status === 401 && error.response?.data?.code === 'JWT_INVALID') {
             logOut()
-            return { data: null, detail: 'canceled' as const }
+            return { data: null, detail: 'canceled' }
         }
 
         if (error.response?.status === 404) {

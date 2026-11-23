@@ -3,8 +3,6 @@ import {ref, watch} from "vue";
 
 import {MusicService} from "@api/music/MusicService.ts";
 
-import {showError} from "@utils/modals.ts";
-
 import Tooltip from "@ui/Tooltip.vue";
 import Icon from "@ui/Icon.vue";
 
@@ -58,18 +56,11 @@ const getRandomMusicIds = async (isClear: boolean = false) => {
       genresStore.currentGenre.id,
     )
 
-    if (response) {
-      musicStore.randomIds.push(...response.data)
-      hasMore.value = response.meta.hasMore
-      loadedPages.value.add(page.value)
-      page.value += 1
-    }
-  } catch (err: any) {
-    await showError(
-        'Не удалось загрузить список рандомных треков',
-        err?.detail
-    )
-  } finally {
+    musicStore.randomIds.push(...response.data)
+    hasMore.value = response.meta.hasMore
+    loadedPages.value.add(page.value)
+    page.value += 1
+  } catch {} finally {
     isLoading.value = false
   }
 }
@@ -94,7 +85,7 @@ watch(
 watch(
     () => musicStore.activeTrack.id,
     (id) => {
-      if (id >= 0 && controllersStore.isRandom && musicStore.randomIds.length === 0) {
+      if (id >= 0 && controllersStore.isRandom && !musicStore.randomIds.length) {
         getRandomMusicIds()
       }
     }

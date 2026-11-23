@@ -43,11 +43,11 @@ const useMusicStore = defineStore("musicStore", () => {
 
     const tracks = ref<TrackPreview[]>([])
 
+    const isLoading = ref<boolean>(false)
     const page = ref<number>(1)
     const limit = ref<number>(21)
     const total = ref<number>(0)
     const hasMore = ref<boolean>(true)
-    const isLoading = ref<boolean>(false)
 
     const randomIds = ref<number[]>([])
     const randomSeed = ref<number>((Math.random() * 2) - 1)
@@ -88,13 +88,11 @@ const useMusicStore = defineStore("musicStore", () => {
 
             const response = await allApis?.[menuStore.menuMode]?.()
 
-            if (response) {
-                tracks.value.push(...response.data)
-                limit.value = response.meta.limit
-                hasMore.value = response.meta.hasMore
-                page.value += 1
-                total.value = response.meta.total
-            }
+            tracks.value.push(...response.data)
+            limit.value = response.meta.limit
+            hasMore.value = response.meta.hasMore
+            page.value += 1
+            total.value = response.meta.total
         } catch (err: any) {
             await showError(
                 'Не удалось загрузить треки..',
@@ -106,7 +104,9 @@ const useMusicStore = defineStore("musicStore", () => {
     }
 
     const saveMusicInLocStore = (musicId: number) => {
-        if (!Number.isNaN(musicId)) localStorage.setItem('last-track', String(musicId))
+        if (!Number.isNaN(musicId)) {
+            localStorage.setItem('last-track', String(musicId))
+        }
     }
 
     const updateMusic = async (
@@ -119,16 +119,22 @@ const useMusicStore = defineStore("musicStore", () => {
 
             let data = music
 
-            if (data) Object.assign(activeTrack.value, data)
+            if (data) {
+                Object.assign(activeTrack.value, data)
+            }
 
-            if (id) data = await MusicService.getTrack(id, setView)
+            if (id) {
+                data = await MusicService.getTrack(id, setView)
+            }
 
             if (data) {
                 saveMusicInLocStore(data.id)
                 Object.assign(activeTrack.value, data)
                 audioStore.loadAndPlay()
 
-                if (controllersStore.mode === 'video' && !activeTrack.value.videoClipUrl) controllersStore.mode = 'img'
+                if (controllersStore.mode === 'video' && !activeTrack.value.videoClipUrl) {
+                    controllersStore.mode = 'img'
+                }
             }
         } catch {} finally {
             controllersStore.isLoading = false

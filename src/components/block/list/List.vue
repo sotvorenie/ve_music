@@ -16,7 +16,6 @@ import useGenresStore from "@store/useGenresStore.ts";
 const genresStore = useGenresStore();
 
 const handleMusicTab = async () => {
-  artistStore.currentArtist.id = -1
   genresStore.currentGenre = genresStore.genres[0]
   menuStore.listMode = 'music';
 }
@@ -47,27 +46,27 @@ const handleMusicTab = async () => {
       </ButtonUi>
     </div>
 
-    <div v-if="menuStore.listMode === 'music' && artistStore.currentArtist.id >= 0"
-         class="mb-2.5 truncate"
-    >
-      Музыка исполнителя {{artistStore.currentArtist.name}}
-    </div>
+    <template v-if="menuStore.listMode === 'music'">
+      <div v-if="artistStore.currentArtist.id >= 0"
+           class="mb-2.5 truncate"
+      >
+        Музыка исполнителя {{artistStore.currentArtist.name}}
+      </div>
 
-    <div v-if="menuStore.listMode !== 'artists'"
-         class="mb-2.5"
-    >
-      Треков: {{musicStore.total || 0}}
-    </div>
+      <div class="mb-2.5">
+        Треков: {{musicStore.total || 0}}
+      </div>
 
-    <div v-if="menuStore.listMode === 'artists'"
-         class="mb-2.5"
-    >
-      Исполнителей: {{artistStore.total || 0}}
-    </div>
+      <ListMusic/>
+    </template>
 
-    <ListMusic v-if="menuStore.listMode === 'music'"/>
+    <template v-if="menuStore.listMode === 'artists'">
+      <div class="mb-2.5">
+        Исполнителей: {{artistStore.total || 0}}
+      </div>
 
-    <ListArtists v-else/>
+      <ListArtists/>
+    </template>
   </div>
 
 </template>

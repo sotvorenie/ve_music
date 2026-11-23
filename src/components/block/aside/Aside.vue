@@ -31,7 +31,7 @@ const isAuth = ref<boolean>(false)
 const isLoading = ref<boolean>(false)
 provide('isLoading', isLoading)
 
-const closeAside = () => {
+const closeBlocksByEscape = () => {
   if (isLoading.value) return
 
   if (isUserRedactPassword.value) {
@@ -52,12 +52,12 @@ const successAuth = (messageText: string) => {
 const successLogout = () => {
   isUserRedact.value = false
   musicStore.activeTrack.isLiked = false
-  logOut()
   messageStore.show('До новых встреч!!)')
+  logOut()
 }
 
 const handleKey = (e: KeyboardEvent) => {
-  if (e.key === 'Escape') closeAside()
+  if (e.key === 'Escape') closeBlocksByEscape()
 }
 
 onMounted(() => window.addEventListener('keydown', handleKey, true))
@@ -88,7 +88,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey, true))
     <Transition name="fade">
       <div v-if="isOpen"
            class="absolute z-[1000] inset-0 backdrop-brightness-[0.2] backdrop-blur-[5px] bg-[rgba(0,0,0,.6)]"
-           @click="closeAside"
+           @click="closeBlocksByEscape"
       />
     </Transition>
 
@@ -103,7 +103,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey, true))
               <template #activator>
                 <button class="aside__btn square-12.5 recolor-svg rounded-full hover:text-accent"
                         :disabled="isUserRedact || isAuth"
-                        @click="closeAside"
+                        @click="closeBlocksByEscape"
                         type="button"
                 >
                   <Icon :name="CrossIcon" :size="40"/>
@@ -132,7 +132,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKey, true))
         </Transition>
 
         <Transition name="list">
-          <Auth v-if="isAuth" @success-auth="successAuth"/>
+          <Auth v-if="isAuth" @success="successAuth"/>
         </Transition>
       </div>
     </Transition>
