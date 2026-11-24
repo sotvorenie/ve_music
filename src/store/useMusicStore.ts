@@ -114,6 +114,8 @@ const useMusicStore = defineStore("musicStore", () => {
         music: Track | null = null,
         setView: boolean = true,
     ) => {
+        if (activeTrack.value.id === id) return
+
         try {
             controllersStore.isLoading = true
 
