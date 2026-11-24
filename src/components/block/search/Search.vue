@@ -96,9 +96,12 @@ const inputSearchName = debounce(search, 500)
       </template>
     </Tooltip>
 
-    <Transition name="ist">
+    <Transition name="list">
       <div v-if="searchStore.isOpen"
-           class="absolute left-64 3xl:left-100 z-10 w-105"
+           :class="[
+               'absolute left-64 3xl:left-100 z-10 w-105 transition-[top] duration-300',
+               menuStore.menuMode === 'genres' ? 'top-15' : 'top-20'
+           ]"
       >
         <div class="h-13 3xl:h-15 flex overflow-hidden top-15 bg-dark-15 rounded-[1rem] border border-light">
           <Transition :name="searchStore.searchName ? '' : 'fade'" mode="out-in">
