@@ -25,7 +25,8 @@ const bitrates = computed(() => {
 
 const activeBitrate = computed(() => {
   return bitrates.value?.find(bitrate => {
-    return (bitrate.value * 1000 === audioStore.currentBitrate && !audioStore.isAutoBitrate) || (bitrate.value === - 1 && audioStore.isAutoBitrate)
+    return (bitrate.value * 1000 === audioStore.currentBitrate && !audioStore.isAutoBitrate)
+        || (bitrate.value === - 1 && audioStore.isAutoBitrate)
   })?.value
 })
 </script>
