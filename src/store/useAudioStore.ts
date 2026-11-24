@@ -76,7 +76,10 @@ const useAudioStore = defineStore('audioStore', () => {
                 }
             })
             hls.on(Hls.Events.LEVEL_SWITCHED, (_, data) => {
-                currentBitrate.value = hls?.levels[data.level]?.bitrate ?? 0
+                const nominal = musicStore.activeTrack.bitrates?.[data.level]
+                currentBitrate.value = nominal
+                    ? nominal * 1000
+                    : (hls?.levels[data.level]?.bitrate ?? 0)
             })
         } else {
             audio.src = url
@@ -87,16 +90,19 @@ const useAudioStore = defineStore('audioStore', () => {
 
     const setBitrate = (bitrate: number) => {
         if (!hls) return
+
         if (bitrate === -1) {
             hls.currentLevel = -1
             isAutoBitrate.value = true
-        } else {
-            const levelIndex = hls.levels.findIndex(level => level.bitrate === bitrate * 1000)
-            if (levelIndex !== -1) {
-                hls.currentLevel = levelIndex
-                isAutoBitrate.value = false
-                currentBitrate.value = bitrate * 1000
-            }
+            return
+        }
+
+        const levelIndex = musicStore.activeTrack.bitrates?.indexOf(bitrate) ?? -1
+
+        if (levelIndex !== -1) {
+            hls.currentLevel = levelIndex
+            isAutoBitrate.value = false
+            currentBitrate.value = bitrate * 1000
         }
     }
 
