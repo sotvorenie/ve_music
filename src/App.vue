@@ -10,7 +10,7 @@ import Controllers from "@components/musicCard/Controllers.vue";
 import List from "@components/list/List.vue";
 import Aside from "@components/aside/Aside.vue";
 import Preview from "@components/musicCard/Preview.vue";
-import Search from "@components/Search.vue";
+import Search from "@components/search/Search.vue";
 
 import GenresSkeleton from "@ui/skeletons/GenresSkeleton.vue";
 import MusicListSkeleton from "@ui/skeletons/MusicListSkeleton.vue";

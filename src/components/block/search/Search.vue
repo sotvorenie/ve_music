@@ -3,11 +3,13 @@ import {computed} from "vue";
 
 import {debounce} from "@composables/useDebounce.ts";
 
+import SearchHistory from "@components/search/SearchHistory.vue";
+
 import Tooltip from "@ui/Tooltip.vue";
 import Icon from "@ui/Icon.vue";
 
-import SearchIcon from "@/components/icons/SearchIcon.vue";
-import CrossIcon from "@/components/icons/CrossIcon.vue";
+import SearchIcon from "@icons/SearchIcon.vue";
+import CrossIcon from "@icons/CrossIcon.vue";
 
 import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
@@ -94,41 +96,47 @@ const inputSearchName = debounce(search, 500)
       </template>
     </Tooltip>
 
-    <Transition name="list">
+    <Transition name="ist">
       <div v-if="searchStore.isOpen"
-           class="absolute left-64 3xl:left-100 z-10 h-13 3xl:h-15 flex overflow-hidden top-15 w-105 bg-dark-15 rounded-[1rem] border border-light"
+           class="absolute left-64 3xl:left-100 z-10 w-105"
       >
-        <Transition :name="searchStore.searchName ? '' : 'fade'" mode="out-in">
-          <input :key="`${menuStore.menuMode}-${menuStore.listMode}-${genresStore.currentGenre.id}`"
-                 class="w-full bg-transparent h-full pl-5 pr-25 3xl:pr-27"
-                 v-model="searchStore.searchName"
-                 :placeholder="placeholder"
-                 @keydown.enter="search"
-                 @input="inputSearchName"
-          >
-        </Transition>
+        <div class="h-13 3xl:h-15 flex overflow-hidden top-15 bg-dark-15 rounded-[1rem] border border-light">
+          <Transition :name="searchStore.searchName ? '' : 'fade'" mode="out-in">
+            <input :key="`${menuStore.menuMode}-${menuStore.listMode}-${genresStore.currentGenre.id}`"
+                   class="w-full bg-transparent h-full pl-5 pr-25 3xl:pr-27"
+                   v-model="searchStore.searchName"
+                   :placeholder="placeholder"
+                   @keydown.enter="search"
+                   @input="inputSearchName"
+            >
+          </Transition>
 
-        <Transition name="scale">
-          <button v-if="searchStore.searchName"
-                  class="recolor-svg square-6 3xl:square-8 abs-y right-[14%] 3xl:right-[17%] flex-center hover:text-accent"
-                  @click="handleClear"
-                  title="Очистить поле"
-                  type="button"
-          >
-            <Icon :name="CrossIcon" :size="30" :laptop-size="24"/>
-          </button>
-        </Transition>
+          <Transition name="scale">
+            <button v-if="searchStore.searchName"
+                    class="recolor-svg square-6 3xl:square-8 abs-y right-[14%] 3xl:right-[17%] flex-center hover:text-accent"
+                    @click="handleClear"
+                    title="Очистить поле"
+                    type="button"
+            >
+              <Icon :name="CrossIcon" :size="30" :laptop-size="24"/>
+            </button>
+          </Transition>
 
-        <button :class="[
+          <button :class="[
                   'recolor-svg absolute flex-center top-0 right-0 w-[12%] 3xl:w-[15%] h-full p-4 bg-dark-alt !transition-[translate,opacity] hover:text-accent',
                   searchStore.searchName ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
                 ]"
-                @click="search"
-                title="Поиск"
-                type="button"
-        >
-          <Icon :name="SearchIcon" :size="20"/>
-        </button>
+                  @click="search"
+                  title="Поиск"
+                  type="button"
+          >
+            <Icon :name="SearchIcon" :size="20"/>
+          </button>
+        </div>
+
+        <SearchHistory v-if="searchStore.isOpen"
+                       class="absolute top-full w-full"
+        />
       </div>
     </Transition>
   </div>
