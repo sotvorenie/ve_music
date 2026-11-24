@@ -103,7 +103,7 @@ const inputSearchName = debounce(search, 500)
                menuStore.menuMode === 'genres' ? 'top-15' : 'top-20'
            ]"
       >
-        <div class="h-13 3xl:h-15 flex overflow-hidden top-15 bg-dark-15 rounded-[1rem] border border-light">
+        <div class="relative h-13 3xl:h-15 flex overflow-hidden bg-dark-15 rounded-[1rem] border border-light">
           <Transition :name="searchStore.searchName ? '' : 'fade'" mode="out-in">
             <input :key="`${menuStore.menuMode}-${menuStore.listMode}-${genresStore.currentGenre.id}`"
                    class="w-full bg-transparent h-full pl-5 pr-25 3xl:pr-27"
