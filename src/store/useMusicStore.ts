@@ -95,8 +95,8 @@ const useMusicStore = defineStore("musicStore", () => {
             total.value = response.meta.total
         } catch (err: any) {
             await showError(
-                'Не удалось загрузить треки..',
-                err?.detail
+                'Что-то пошло не так',
+                err?.detail ?? 'Не удалось загрузить треки..'
             )
         } finally {
             isLoading.value = false
