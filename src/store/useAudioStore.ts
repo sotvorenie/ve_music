@@ -4,6 +4,8 @@ import {ref} from "vue";
 
 import {BASE_URL} from "@api/url.ts";
 
+import {usePlayerControllers} from "@composables/usePlayerControllers.ts";
+
 import useControllersStore from "@store//useControllersStore.ts";
 import useTracksStore from "@store/music/useTracksStore.ts";
 import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
@@ -12,6 +14,8 @@ const useAudioStore = defineStore('audioStore', () => {
     const controllersStore = useControllersStore();
     const tracksStore = useTracksStore();
     const currentTrackStore = useCurrentTrackStore();
+
+    const {next} = usePlayerControllers()
 
     let hls: Hls | null = null
     const loadedPercent = ref<number>(0)
@@ -40,7 +44,7 @@ const useAudioStore = defineStore('audioStore', () => {
             audio.currentTime = 0
             audio.play().then(() => {})
         } else if (tracksStore.tracks?.length > 1 || controllersStore.isRandom) {
-            await controllersStore.nextItem()
+            await next()
         } else {
             isPlaying.value = false
             currentTime.value = 0
