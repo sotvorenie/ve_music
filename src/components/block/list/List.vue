@@ -15,9 +15,15 @@ const genresStore = useGenresStore();
 import useTracksStore from "@store/music/useTracksStore.ts";
 const tracksStore = useTracksStore();
 
-const handleMusicTab = async () => {
+const handleTracksTab = async () => {
+  artistStore.abort()
   genresStore.currentGenre = genresStore.genres[0]
   menuStore.listMode = 'music';
+}
+
+const handleArtistsTab = async () => {
+  tracksStore.abort()
+  menuStore.listMode = 'artists'
 }
 </script>
 
@@ -34,13 +40,13 @@ const handleMusicTab = async () => {
           ]"
     >
       <ButtonUi :is-active="menuStore.listMode === 'music'"
-                @click="handleMusicTab"
+                @click="handleTracksTab"
       >
         Музыка
       </ButtonUi>
 
       <ButtonUi :is-active="menuStore.listMode === 'artists'"
-                @click="menuStore.listMode = 'artists'"
+                @click="handleArtistsTab"
       >
         Исполнители
       </ButtonUi>
