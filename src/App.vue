@@ -13,7 +13,6 @@ import Preview from "@components/musicCard/Preview.vue";
 import Search from "@components/search/Search.vue";
 
 import GenresSkeleton from "@ui/skeletons/GenresSkeleton.vue";
-import MusicListSkeleton from "@ui/skeletons/MusicListSkeleton.vue";
 import Vignette from "@ui/Vignette.vue";
 import TopMessage from "@ui/TopMessage.vue";
 
@@ -66,14 +65,7 @@ onBeforeMount(async () => {
         </template>
       </Suspense>
 
-      <Suspense timeout="0">
-        <template #default>
-          <List/>
-        </template>
-        <template #fallback>
-          <MusicListSkeleton/>
-        </template>
-      </Suspense>
+      <List/>
 
       <Preview/>
 

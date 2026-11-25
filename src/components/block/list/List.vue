@@ -3,6 +3,7 @@ import ListMusic from "@components/list/ListMusic.vue";
 import ListArtists from "@components/list/ListArtists.vue";
 
 import ButtonUi from "@ui/ButtonUi.vue";
+import MusicListSkeleton from "@ui/skeletons/MusicListSkeleton.vue";
 
 import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
@@ -14,6 +15,11 @@ import useGenresStore from "@store/useGenresStore.ts";
 const genresStore = useGenresStore();
 import useTracksStore from "@store/music/useTracksStore.ts";
 const tracksStore = useTracksStore();
+
+const listComponents = {
+  music: ListMusic,
+  artists: ListArtists,
+}
 
 const handleTracksTab = async () => {
   artistStore.abort()
@@ -62,17 +68,20 @@ const handleArtistsTab = async () => {
       <div class="mb-2.5">
         Треков: {{tracksStore.meta.total || 0}}
       </div>
-
-      <ListMusic/>
     </template>
 
-    <template v-if="menuStore.listMode === 'artists'">
-      <div class="mb-2.5">
-        Исполнителей: {{artistStore.meta.total || 0}}
-      </div>
+    <div v-if="menuStore.listMode === 'artists'" class="mb-2.5">
+      Исполнителей: {{artistStore.meta.total || 0}}
+    </div>
 
-      <ListArtists/>
-    </template>
+    <Suspense timeout="0">
+      <template #default>
+        <Component :is="listComponents[menuStore.listMode]"/>
+      </template>
+      <template #fallback>
+        <MusicListSkeleton/>
+      </template>
+    </Suspense>
   </div>
 
 </template>
