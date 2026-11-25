@@ -12,7 +12,6 @@ export const showWarning = async (title: string, content: string) => {
 
 // Ошибка
 export const showError = async (title: string, content: string) => {
-    console.log(title, content)
     await message(content, { title, kind: 'error' })
 }
 
