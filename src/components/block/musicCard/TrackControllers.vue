@@ -9,8 +9,6 @@ import Icon from "@ui/Icon.vue";
 
 import ArrowIcon from "@icons/ArrowIcon.vue";
 
-import useControllersStore from "@store/useControllersStore.ts";
-const controllersStore = useControllersStore();
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
@@ -19,7 +17,7 @@ const currentTrackStore = useCurrentTrackStore();
 const {prev, next} = usePlayerControllers()
 
 const disabledControlButton = computed(() => {
-  return currentTrackStore.track.id < 0 || controllersStore.isLoading || currentTrackStore.isLoading
+  return currentTrackStore.track.id < 0 || currentTrackStore.isLoading
 })
 
 watch(

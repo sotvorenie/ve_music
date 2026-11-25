@@ -26,7 +26,7 @@ export const usePlayerControllers = () => {
         }
 
         try {
-            controllersStore.isLoading = true
+            currentTrackStore.isLoading = true
 
             if (controllersStore.isRandom) {
                 randomStore.randomIndex = Math.max(0, randomStore.randomIndex - 1)
@@ -42,11 +42,11 @@ export const usePlayerControllers = () => {
             const prevTrackInfo = getTrackInfoFromPreview(tracksStore.tracks[prevIndexInCurrentList])
             await currentTrackStore.updateTrack({id: prevTrackInfo.id, trackData: prevTrackInfo})
         } finally {
-            controllersStore.isLoading = false
+            currentTrackStore.isLoading = false
         }
     }
     const next = async () => {
-        controllersStore.isLoading = true
+        currentTrackStore.isLoading = true
 
         if (controllersStore.isRandom) {
             try {
@@ -62,7 +62,7 @@ export const usePlayerControllers = () => {
             } catch {
                 randomStore.randomIndex -= 1
             } finally {
-                controllersStore.isLoading = false
+                currentTrackStore.isLoading = false
             }
         } else {
             try {
@@ -73,7 +73,7 @@ export const usePlayerControllers = () => {
                 const nextTrackInfo = getTrackInfoFromPreview(tracksStore.tracks[nextIndexInCurrentList])
                 await currentTrackStore.updateTrack({id: nextTrackInfo.id, trackData: nextTrackInfo})
             } finally {
-                controllersStore.isLoading = false
+                currentTrackStore.isLoading = false
             }
         }
     }
