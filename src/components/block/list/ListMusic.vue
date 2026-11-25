@@ -66,8 +66,8 @@ onBeforeMount(() => {
 
 <template>
   <div class="relative h-full">
-    <ul class="list relative flex flex-col overflow-y-auto max-h-[80vh] h-full pr-2.5 transition-[max-height] duration-500"
-        v-if="tracksStore.tracks.length"
+    <ul v-if="tracksStore.tracks.length"
+        class="relative flex flex-col overflow-y-auto h-full pr-2.5 transition-[max-height] duration-500"
         ref="listRef"
         v-auto-animate
     >

@@ -2,16 +2,6 @@
 
 .list {
 
-  &-wrapper {
-
-    &.is-active {
-
-      .list {
-        max-height: 70vh;
-      }
-    }
-  }
-
   &__item {
     padding: fluid(15, 0);
 
