@@ -7,7 +7,8 @@ export const ArtistService = {
     getArtists(
         name: string = '',
         page: number = 1,
-        limit: number = 21
+        limit: number = 21,
+        signal?: AbortSignal,
     ): Promise<PaginatedResponse<Artist>> {
         const params = new URLSearchParams({
             page: String(page),
@@ -16,6 +17,6 @@ export const ArtistService = {
 
         if (name) params.append('name', name)
 
-        return apiGet(`/artists?${params}`)
+        return apiGet(`/artists?${params}`, {signal})
     },
 }

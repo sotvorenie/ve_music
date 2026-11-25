@@ -3,7 +3,10 @@ import {ref} from "vue";
 
 import {Search} from "@/types/search.ts";
 
+import {isCanceledErr} from "@/api";
 import {SearchService} from "@api/search/SearchService.ts";
+
+import {useAbortableRequest} from "@composables/useAbortableRequest.ts";
 
 import Icon from "@ui/Icon.vue";
 
@@ -12,6 +15,7 @@ import CrossIcon from "@icons/CrossIcon.vue";
 import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
 
+const {nextSignal, isCurrent} = useAbortableRequest()
 
 const searchList = ref<Search[]>([])
 
@@ -20,20 +24,30 @@ const handleSearch = (search: string) => {
 }
 
 const deleteSearch = async (id: number) => {
+  const signal = nextSignal()
+
   try {
-    await SearchService.delete(id)
+    await SearchService.delete(id, signal)
+  } catch (err:unknown) {
+    if (isCanceledErr(err)) return
   } finally {
-    searchList.value = searchList.value.filter(search => search.id !== id)
+    if (isCurrent(signal)) {
+      searchList.value = searchList.value.filter(search => search.id !== id)
+    }
   }
 }
 
 const getSearchHistory = async () => {
   if (searchList.value.length) return
 
+  const signal = nextSignal()
+
   try {
-    const response = await SearchService.getList()
+    const response = await SearchService.getList(signal)
     searchList.value = response.data
-  } catch {}
+  } catch (err:unknown) {
+    if (isCanceledErr(err)) return
+  }
 }
 
 await getSearchHistory()

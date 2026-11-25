@@ -21,19 +21,19 @@ import useMessageStore from "@store/useMessageStore.ts";
 const messageStore = useMessageStore();
 import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
+import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
+const currentTrackStore = useCurrentTrackStore();
 
 const visible = ref(false)
 
 const handleContextMenu = (e: MouseEvent) => {
-  // if (userStore.user.role !== UserRoles.ADMIN) e.preventDefault()
+  if (userStore.user.role !== UserRoles.ADMIN) e.preventDefault()
 }
 
 const setLastTrack = () => {
   const saved = localStorage.getItem('last-track')
   const trackId = saved ? Number(saved) : null
-  if (trackId) musicStore.updateMusic(trackId, null, false)
+  if (trackId) currentTrackStore.updateTrack({id: trackId, setView: false})
 }
 
 onBeforeMount(async () => {

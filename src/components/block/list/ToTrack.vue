@@ -9,8 +9,8 @@ import RadioIcon from "@icons/RadioIcon.vue";
 
 import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
+import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
+const currentTrackStore = useCurrentTrackStore();
 
 const props = defineProps<{
   activeLiRef: HTMLLIElement | null
@@ -40,7 +40,7 @@ const scrollToActive = () => {
 }
 
 watchEffect((onCleanup) => {
-  if (musicStore.activeTrack.id < 0 || searchStore.searchName) return
+  if (currentTrackStore.track.id < 0 || searchStore.searchName) return
 
   initObserver()
 

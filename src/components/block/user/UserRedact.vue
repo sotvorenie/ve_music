@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
 
+import {getErrMessage, isCanceledErr} from "@/api";
 import {UserService} from "@api/user/UserService.ts";
 
+import {useAbortableRequest} from "@composables/useAbortableRequest.ts";
 import {showConfirm, showError} from "@utils/modals.ts";
 
 import UpdatePassword from "@components/user/UpdatePassword.vue";
@@ -22,6 +24,8 @@ withDefaults(
       isUserRedact: false,
     }
 )
+
+const {nextSignal, isCurrent} = useAbortableRequest()
 
 const isLoading = defineModel<boolean>({default: false})
 
@@ -52,18 +56,22 @@ const handleUpdateName = async () => {
 }
 
 const updateName = async () => {
-  try {
-    isLoading.value = true
+  const signal = nextSignal()
+  isLoading.value = true
 
-    await UserService.updateName(name.value)
+  try {
+    await UserService.updateName(name.value, signal)
     success()
-  } catch {
+  } catch (err: unknown) {
+    if (isCanceledErr(err)) return
     await showError(
         'Ошибка редактирования профиля',
-        'Не удалось редактировать имя пользователя'
+        getErrMessage(err, 'Не удалось редактировать имя пользователя')
     )
   } finally {
-    isLoading.value = false
+    if (isCurrent(signal)) {
+      isLoading.value = false
+    }
   }
 }
 

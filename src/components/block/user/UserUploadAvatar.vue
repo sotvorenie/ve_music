@@ -3,9 +3,11 @@ import {inject, Ref, ref} from "vue";
 
 import {Url} from "@/types/url.ts";
 
+import {getErrMessage, isCanceledErr} from "@/api";
 import {BASE_URL} from "@api/url.ts";
 import {UserService} from "@api/user/UserService.ts";
 
+import {useAbortableRequest} from "@composables/useAbortableRequest.ts";
 import {showConfirm, showError} from "@utils/modals.ts";
 
 import Icon from "@ui/Icon.vue";
@@ -21,6 +23,8 @@ import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
 import useMessageStore from "@store/useMessageStore.ts";
 const messageStore = useMessageStore();
+
+const {nextSignal, isCurrent} = useAbortableRequest()
 
 const isLoading = inject<Ref<boolean>>('isLoading')
 const isUserRedact = inject<Ref<boolean>>('isUserRedact')
@@ -81,19 +85,23 @@ const handleDeleteAvatar = async () => {
 }
 
 const deleteAvatar = async () => {
-  try {
-    if (isLoading) isLoading.value = true
+  const signal = nextSignal()
+  if (isLoading) isLoading.value = true
 
-    await UserService.deleteAvatar()
+  try {
+    await UserService.deleteAvatar(signal)
 
     successDelete()
-  } catch {
+  } catch (err: unknown) {
+    if (isCanceledErr(err)) return
     await showError(
         'Ошибка удаления аватарки',
-        'Не удалось удалить аватарку'
+        getErrMessage(err, 'Не удалось удалить аватарку')
     )
   } finally {
-    if (isLoading) isLoading.value = false
+    if (isCurrent(signal) && isLoading) {
+      isLoading.value = false
+    }
   }
 }
 

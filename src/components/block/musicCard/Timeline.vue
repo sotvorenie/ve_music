@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {computed, ref, watch} from "vue";
 
-import {formatTime} from "@composables/useFormatTime.ts";
+import {formatTime} from "@utils/formatTime.ts";
 
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
+import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
+const currentTrackStore = useCurrentTrackStore();
 
 const inputRef = ref<HTMLInputElement | null>(null)
 
@@ -40,7 +40,7 @@ const setCursorTime = (percent: number) => {
 }
 
 const mouseMoveTimeline = (e: MouseEvent) => {
-  if (!inputRef.value || musicStore.activeTrack.id < 0) return
+  if (!inputRef.value || currentTrackStore.track.id < 0) return
 
   const inputRect = inputRef.value.getBoundingClientRect()
 
@@ -64,7 +64,7 @@ watch(
   <div class="timeline flex flex-col gap-2.5">
     <div :class="[
               'relative group leading-[0]',
-              musicStore.activeTrack.id < 0 && 'pointer-events-none'
+              currentTrackStore.track.id < 0 && 'pointer-events-none'
           ]"
          @pointerdown="audioStore.isMoving = true"
          @pointerup="audioStore.isMoving = false"
@@ -81,7 +81,7 @@ watch(
 
       <input class="range-slider w-full m-0"
              v-model="audioStore.currentTime"
-             :max="musicStore.activeTrack.duration"
+             :max="currentTrackStore.track.duration"
              :style="{
                '--percent': `${progressPercent || 0}%`,
                '--loaded-percent': `${audioStore.loadedPercent || 0}%`,
@@ -93,7 +93,7 @@ watch(
 
     <div class="flex justify-between mb-4">
       <span>{{formatTime(audioStore.audio.currentTime || 0)}}</span>
-      <span>{{formatTime(musicStore.activeTrack.duration)}}</span>
+      <span>{{formatTime(currentTrackStore.track.duration)}}</span>
     </div>
   </div>
 

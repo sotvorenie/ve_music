@@ -8,16 +8,16 @@ import {IsLiked} from "@/types/like.ts";
 import {AuthService} from "@api/auth/AuthService.ts";
 import {LikeService} from "@api/like/LikeService.ts";
 
-import {onBlur, onInput, onSubmit} from "@composables/useFormValidate.ts";
 import {useAbortableRequest} from "@composables/useAbortableRequest.ts";
 import {logIn} from "@utils/auth.ts";
 import {showError} from "@utils/modals.ts";
+import {onBlur, onInput, onSubmit} from "@utils/formValidate.ts";
 
 import InputUi from "@ui/InputUi.vue";
 import ButtonUi from "@ui/ButtonUi.vue";
 
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
+import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
+const currentTrackStore = useCurrentTrackStore();
 
 const emits = defineEmits<{
   success: [message: string]
@@ -49,7 +49,6 @@ const handleSubmit = async (e: Event) => {
       void success(response)
     } catch (err: any) {
       if (err.isCanceled) return
-
       await showError(
           'Ошибка авторизации',
           err?.detail
@@ -71,14 +70,14 @@ const success = async (response: UserWithToken) => {
     logIn(response)
     emits('success', message)
 
-    if (musicStore.activeTrack.id >= 0) await checkLike()
+    if (currentTrackStore.track.id >= 0) await checkLike()
   } catch {}
 }
 
 const checkLike = async () => {
   try {
-    const response: IsLiked = await LikeService.checkLike(musicStore.activeTrack.id)
-    musicStore.activeTrack.isLiked = response.isLiked ?? false
+    const response: IsLiked = await LikeService.checkLike(currentTrackStore.track.id)
+    currentTrackStore.track.isLiked = response.isLiked ?? false
   } catch {}
 }
 

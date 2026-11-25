@@ -11,7 +11,7 @@ const useGenresStore = defineStore("genresStore", () => {
         name: ''
     })
 
-    const clearGenre = () => {
+    const clear = () => {
         currentGenre.value = {
             id: -1,
             name: '',
@@ -22,7 +22,7 @@ const useGenresStore = defineStore("genresStore", () => {
         genres,
         currentGenre,
 
-        clearGenre,
+        clear,
     }
 })
 

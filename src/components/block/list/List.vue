@@ -8,12 +8,12 @@ import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
 import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
-import useArtistStore from "@store/useArtistStore.ts";
-const artistStore = useArtistStore();
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
+import useArtistsStore from "@store/useArtistsStore.ts";
+const artistStore = useArtistsStore();
 import useGenresStore from "@store/useGenresStore.ts";
 const genresStore = useGenresStore();
+import useTracksStore from "@store/music/useTracksStore.ts";
+const tracksStore = useTracksStore();
 
 const handleMusicTab = async () => {
   genresStore.currentGenre = genresStore.genres[0]
@@ -54,7 +54,7 @@ const handleMusicTab = async () => {
       </div>
 
       <div class="mb-2.5">
-        Треков: {{musicStore.total || 0}}
+        Треков: {{tracksStore.meta.total || 0}}
       </div>
 
       <ListMusic/>
@@ -62,7 +62,7 @@ const handleMusicTab = async () => {
 
     <template v-if="menuStore.listMode === 'artists'">
       <div class="mb-2.5">
-        Исполнителей: {{artistStore.total || 0}}
+        Исполнителей: {{artistStore.meta.total || 0}}
       </div>
 
       <ListArtists/>

@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import {computed, ref} from "vue";
 
+import {isCanceledErr} from "@/api";
 import {LikeService} from "@api/like/LikeService.ts";
+
+import {useAbortableRequest} from "@composables/useAbortableRequest.ts";
 
 import BitratesList from "@components/musicCard/BitratesList.vue";
 
@@ -16,8 +19,10 @@ import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
+import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
+const currentTrackStore = useCurrentTrackStore();
+
+const {nextSignal} = useAbortableRequest()
 
 const bitrateText = computed(() => {
   const bitrate = `${audioStore.currentBitrate / 1000} Кб/с`
@@ -27,14 +32,17 @@ const bitrateText = computed(() => {
 const visibleBitratesList = ref<boolean>(false)
 
 const handleLike = async () => {
-  const activeTrack = musicStore.activeTrack
+  const activeTrack = currentTrackStore.track
+
+  const signal = nextSignal()
 
   try {
-    const response = await LikeService.like(musicStore.activeTrack.id)
+    const response = await LikeService.like(activeTrack.id, signal)
 
     activeTrack.isLiked = response.isLiked
     activeTrack.likesCount = response.isLiked ? activeTrack.likesCount + 1 : Math.max(activeTrack.likesCount - 1, 0)
-  } catch {
+  } catch (err: unknown) {
+    if (isCanceledErr(err)) return
     activeTrack.isLiked = false
   }
 }
@@ -52,10 +60,10 @@ const handleLike = async () => {
                     type="button"
             >
               <Like class="aspect-square w-6 3xl:w-7.5 h-auto"
-                    :is-liked="musicStore.activeTrack?.isLiked && userStore.isLogged"
+                    :is-liked="currentTrackStore.track?.isLiked && userStore.isLogged"
               />
 
-              {{musicStore.activeTrack?.likesCount || 0}}
+              {{currentTrackStore.track?.likesCount || 0}}
             </button>
           </template>
 
@@ -66,17 +74,17 @@ const handleLike = async () => {
       </template>
 
       <template #default>
-        {{musicStore.activeTrack?.isLiked ? 'Удалить из Избранного' : 'Добавить в Избранное'}}
+        {{currentTrackStore.track?.isLiked ? 'Удалить из Избранного' : 'Добавить в Избранное'}}
       </template>
     </Tooltip>
 
     <Transition name="fade">
-      <Tooltip v-if="musicStore.activeTrack?.auditionsCount">
+      <Tooltip v-if="currentTrackStore.track?.auditionsCount">
         <template #activator>
           <div class="recolor-svg h-full flex-center gap-2.5 bg-dark-15/35 py-1 px-2.5 rounded-regular tabular-nums">
             <Icon :name="ViewIcon" :size="25" :laptop-size="23"/>
 
-            {{musicStore.activeTrack.auditionsCount.toLocaleString()}}
+            {{currentTrackStore.track.auditionsCount.toLocaleString()}}
           </div>
         </template>
 
@@ -87,10 +95,10 @@ const handleLike = async () => {
     </Transition>
 
     <Transition name="fade">
-      <Tooltip v-if="musicStore.activeTrack?.genre?.name">
+      <Tooltip v-if="currentTrackStore.track?.genre?.name">
         <template #activator>
         <span class="h-full flex-center text-accent gap-2.5 bg-dark-15/35 py-1 px-2.5 rounded-regular tabular-nums">
-          {{musicStore.activeTrack.genre.name}}
+          {{currentTrackStore.track.genre.name}}
         </span>
         </template>
 
@@ -101,7 +109,7 @@ const handleLike = async () => {
     </Transition>
 
     <Transition name="fade">
-      <Tooltip v-if="musicStore.activeTrack?.bitrates?.length"
+      <Tooltip v-if="currentTrackStore.track?.bitrates?.length"
                v-model:show="visibleBitratesList"
                :has-hover="false"
       >

@@ -7,13 +7,13 @@ import VideoIcon from "@icons/VideoIcon.vue";
 
 import useControllersStore from "@store/useControllersStore.ts";
 const controllersStore = useControllersStore();
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
+import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
+const currentTrackStore = useCurrentTrackStore();
 </script>
 
 <template>
 
-  <div v-if="musicStore.activeTrack.id >= 0"
+  <div v-if="currentTrackStore.track.id >= 0"
        class="flex items-center gap-2.5 w-1/5"
   >
     <Tooltip>

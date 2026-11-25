@@ -63,3 +63,19 @@ export const apiDelete = async <T>(
     const res = await client.delete(url, config)
     return res.data as T
 }
+
+export const isCanceledErr = (
+    err: unknown,
+): boolean => {
+    return typeof err === 'object' && err !== null && 'isCanceled' in err && err.isCanceled === true
+}
+
+export const getErrMessage = (
+    err: unknown,
+    fallback?: string,
+) => {
+    if (typeof err === 'object' && err !== null && 'detail' in err && typeof err.detail === 'string') {
+        return err.detail
+    }
+    return fallback ?? 'Неизвестная ошибка'
+}

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import {computed} from "vue";
 
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
+import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
+const currentTrackStore = useCurrentTrackStore();
 
 const isVisible = defineModel('visible', {type: Boolean, required: true})
 
@@ -16,7 +16,7 @@ const handleBitrate = (bitrate: number) => {
 const bitrates = computed(() => {
   return [
     {label: 'Авто', value: -1},
-    ...[...musicStore.activeTrack.bitrates].sort((a, b) => b - a)?.map(bitrate => ({
+    ...[...currentTrackStore.track.bitrates].sort((a, b) => b - a)?.map(bitrate => ({
       label: `${bitrate} Кб/с`,
       value: bitrate,
     }))

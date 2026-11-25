@@ -5,11 +5,13 @@ import {ref} from "vue";
 import {BASE_URL} from "@api/url.ts";
 
 import useControllersStore from "@store//useControllersStore.ts";
-import useMusicStore from "@store/useMusicStore.ts";
+import useTracksStore from "@store/music/useTracksStore.ts";
+import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
 
 const useAudioStore = defineStore('audioStore', () => {
     const controllersStore = useControllersStore();
-    const musicStore = useMusicStore();
+    const tracksStore = useTracksStore();
+    const currentTrackStore = useCurrentTrackStore();
 
     let hls: Hls | null = null
     const loadedPercent = ref<number>(0)
@@ -37,7 +39,7 @@ const useAudioStore = defineStore('audioStore', () => {
         if (controllersStore.isRepeat) {
             audio.currentTime = 0
             audio.play().then(() => {})
-        } else if (musicStore.tracks?.length > 1 || controllersStore.isRandom) {
+        } else if (tracksStore.tracks?.length > 1 || controllersStore.isRandom) {
             await controllersStore.nextItem()
         } else {
             isPlaying.value = false
@@ -48,14 +50,14 @@ const useAudioStore = defineStore('audioStore', () => {
     const loadAndPlay = () => {
         loadedPercent.value = 0
         currentTime.value = 0
-        const url = `${BASE_URL}${musicStore.activeTrack.url}`
+        const url = `${BASE_URL}${currentTrackStore.track.url}`
 
         if (hls) {
             hls.destroy()
             hls = null
         }
 
-        if (Hls.isSupported() && musicStore.activeTrack.url.includes(".m3u8")) {
+        if (Hls.isSupported() && currentTrackStore.track.url.includes(".m3u8")) {
             if (!hls) hls = new Hls({
                 maxBufferLength: 30,
                 maxMaxBufferLength: 40,
@@ -69,14 +71,14 @@ const useAudioStore = defineStore('audioStore', () => {
             })
             hls.on(Hls.Events.FRAG_LOADED, (_, data) => {
                 const currentSn = Number(data.frag.sn)
-                const totalFrags = musicStore.activeTrack.segmentsCount
+                const totalFrags = currentTrackStore.track.segmentsCount
 
                 if (totalFrags > 0 && !Number.isNaN(currentSn)) {
                     loadedPercent.value = Math.min(100, Math.round(((currentSn + 1) / totalFrags) * 100))
                 }
             })
             hls.on(Hls.Events.LEVEL_SWITCHED, (_, data) => {
-                const nominal = musicStore.activeTrack.bitrates?.[data.level]
+                const nominal = currentTrackStore.track.bitrates?.[data.level]
                 currentBitrate.value = nominal
                     ? nominal * 1000
                     : (hls?.levels[data.level]?.bitrate ?? 0)
@@ -97,7 +99,7 @@ const useAudioStore = defineStore('audioStore', () => {
             return
         }
 
-        const levelIndex = musicStore.activeTrack.bitrates?.indexOf(bitrate) ?? -1
+        const levelIndex = currentTrackStore.track.bitrates?.indexOf(bitrate) ?? -1
 
         if (levelIndex !== -1) {
             hls.currentLevel = levelIndex

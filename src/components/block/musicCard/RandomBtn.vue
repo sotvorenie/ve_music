@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import {ref, watch} from "vue";
 
+import {isCanceledErr} from "@/api";
 import {MusicService} from "@api/music/MusicService.ts";
+
+import {useAbortableRequest} from "@composables/useAbortableRequest.ts";
 
 import Tooltip from "@ui/Tooltip.vue";
 import Icon from "@ui/Icon.vue";
@@ -10,14 +13,18 @@ import RandomIcon from "@icons/RandomIcon.vue";
 
 import useControllersStore from "@store/useControllersStore.ts";
 const controllersStore = useControllersStore();
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
 import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
-import useArtistStore from "@store/useArtistStore.ts";
-const artistStore = useArtistStore();
+import useArtistsStore from "@store/useArtistsStore.ts";
+const artistStore = useArtistsStore();
 import useGenresStore from "@store/useGenresStore.ts";
 const genresStore = useGenresStore();
+import useRandomStore from "@store/music/useRandomStore.ts";
+const randomStore = useRandomStore();
+import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
+const currentTrackStore = useCurrentTrackStore();
+
+const {nextSignal, isCurrent} = useAbortableRequest()
 
 const isLoading = ref<boolean>(false)
 
@@ -25,43 +32,49 @@ const page = ref<number>(1)
 const hasMore = ref<boolean>(true)
 const loadedPages = ref<Set<number>>(new Set())
 
-const handleIsRandom = async () => {
+const handleIsRandom = () => {
   controllersStore.isRandom = !controllersStore.isRandom
   localStorage.setItem('isRandom', JSON.stringify(controllersStore.isRandom))
 }
 
 const clearInfo = () => {
-  musicStore.randomIds = []
-  musicStore.randomIndex = 0
-  musicStore.randomSeed = (Math.random() * 2) - 1
+  randomStore.randomIds = []
+  randomStore.randomIndex = 0
+  randomStore.randomSeed = (Math.random() * 2) - 1
   page.value = 1
   loadedPages.value.clear()
 }
 
 const getRandomMusicIds = async (isClear: boolean = false) => {
-  if (musicStore.activeTrack.id < 0 || !hasMore.value || loadedPages.value.has(page.value)) return
+  if (currentTrackStore.track.id < 0 || !hasMore.value || loadedPages.value.has(page.value)) return
 
   if (isClear) clearInfo()
 
-  try {
-    isLoading.value = true
+  const signal = nextSignal()
+  isLoading.value = true
 
+  try {
     const response = await MusicService.getRandomIds(
       page.value,
       21,
-      musicStore.activeTrack.id,
-      musicStore.randomSeed,
+      currentTrackStore.track.id,
+      randomStore.randomSeed,
       searchStore.searchName,
       artistStore.currentArtist.id,
       genresStore.currentGenre.id,
+      signal,
     )
 
-    musicStore.randomIds.push(...response.data)
+    randomStore.randomIds.push(...response.data)
     hasMore.value = response.meta.hasMore
     loadedPages.value.add(page.value)
     page.value += 1
-  } catch {} finally {
-    isLoading.value = false
+  } catch (err: unknown) {
+    if (isCanceledErr(err)) return
+  } finally {
+    if (isCurrent(signal)) {
+      isLoading.value = false
+    }
   }
 }
 
@@ -74,18 +87,18 @@ watch(
 )
 
 watch(
-    () => musicStore.randomIndex,
+    () => randomStore.randomIndex,
     (index) => {
-      if (index >= musicStore.randomIds.length - 3) {
+      if (index >= randomStore.randomIds.length - 3) {
         getRandomMusicIds()
       }
     }
 )
 
 watch(
-    () => musicStore.activeTrack.id,
+    () => currentTrackStore.track.id,
     (id) => {
-      if (id >= 0 && controllersStore.isRandom && !musicStore.randomIds.length) {
+      if (id >= 0 && controllersStore.isRandom && !randomStore.randomIds.length) {
         getRandomMusicIds()
       }
     }

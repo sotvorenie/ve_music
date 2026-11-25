@@ -3,6 +3,7 @@ import {computed, inject, Ref, ref} from "vue";
 
 import {UserService} from "@api/user/UserService.ts";
 
+import {useAbortableRequest} from "@composables/useAbortableRequest.ts";
 import {showConfirm, showError} from "@utils/modals.ts";
 import {setToken} from "@utils/auth.ts";
 
@@ -11,7 +12,10 @@ import Modal from "@ui/Modal.vue";
 import ButtonUi from "@ui/ButtonUi.vue";
 
 import useMessageStore from "@store/useMessageStore.ts";
+import {getErrMessage, isCanceledErr} from "@/api";
 const messageStore = useMessageStore();
+
+const {nextSignal, isCurrent, abort} = useAbortableRequest()
 
 const newPassword = ref<string>('')
 const oldPassword = ref<string>('')
@@ -33,19 +37,23 @@ const handleUpdatePassword = async () => {
 }
 
 const updatePassword = async () => {
-  try {
-    isLoading.value = true
+  const signal = nextSignal()
+  isLoading.value = true
 
-    const response = await UserService.updatePassword(newPassword.value, oldPassword.value)
+  try {
+    const response = await UserService.updatePassword(newPassword.value, oldPassword.value, signal)
 
     success(response.token)
-  } catch (err: any) {
+  } catch (err: unknown) {
+    if (isCanceledErr(err)) return
     await showError(
         'Ошибка редактирования профиля',
-        err?.detail ?? 'Не удалось редактировать пароль пользователя'
+        getErrMessage(err, 'Не удалось редактировать пароль пользователя')
     )
   } finally {
-    isLoading.value = false
+    if (isCurrent(signal)) {
+      isLoading.value = false
+    }
   }
 }
 
@@ -56,6 +64,7 @@ const success = (token: string) => {
 }
 
 const clearAndClose = () => {
+  abort()
   if (isUserRedactPassword?.value) isUserRedactPassword.value = false
   newPassword.value = ''
   oldPassword.value = ''

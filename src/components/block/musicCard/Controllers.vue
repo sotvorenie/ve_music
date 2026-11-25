@@ -7,8 +7,8 @@ import ModesControllers from "@components/musicCard/ModesControllers.vue";
 
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
+import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
+const currentTrackStore = useCurrentTrackStore();
 
 const allKeyCodes = {
   space: 'Space',
@@ -40,7 +40,7 @@ const handleKey = (e: KeyboardEvent) => {
   }
 }
 
-onMounted(async () => globalThis.addEventListener("keydown", handleKey, true))
+onMounted(() => globalThis.addEventListener("keydown", handleKey, true))
 onUnmounted(() => globalThis.removeEventListener("keydown", handleKey, true))
 </script>
 
@@ -51,7 +51,7 @@ onUnmounted(() => globalThis.removeEventListener("keydown", handleKey, true))
 
     <TrackControllers/>
 
-    <ModesControllers v-if="musicStore.activeTrack.id >= 0"/>
+    <ModesControllers v-if="currentTrackStore.track.id >= 0"/>
   </div>
 
 </template>

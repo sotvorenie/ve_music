@@ -12,11 +12,7 @@ const visible = defineModel<boolean>({default: false})
       <div v-if="visible"
            class="flex-center fixed top-5 z-[1000] left-0 right-0 pointer-events-none"
       >
-        <div :class="[
-               'py-2.5 px-5 rounded-medium font-medium',
-               messageStore.type === 'light' && 'bg-light text-dark',
-               messageStore.type === 'dark' && 'bg-dark-15 text-light'
-           ]">
+        <div class="py-2.5 px-5 rounded-medium font-medium bg-light text-dark">
           {{messageStore.messageText}}
         </div>
       </div>

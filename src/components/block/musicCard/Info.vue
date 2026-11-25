@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {nextTick, ref, watch} from "vue";
 
-import {showArtists} from "@composables/useShowArtists.ts";
+import {showArtists} from "@utils/showArtist.ts";
 
 import Actions from "@components/musicCard/Actions.vue";
 
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
+import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
+const currentTrackStore = useCurrentTrackStore();
 
 const nameTrackRef = ref<HTMLDivElement | null>(null)
 
@@ -33,7 +33,7 @@ const checkWidth = async () => {
 }
 
 watch(
-    () => musicStore.activeTrack.id,
+    () => currentTrackStore.track.id,
     checkWidth,
     {immediate: true, flush: 'post'}
 )
@@ -44,10 +44,10 @@ watch(
   <Transition name="list"
               @after-leave="isNameOverflow = isNameShadow"
   >
-    <div :key="musicStore.activeTrack?.name"
+    <div :key="currentTrackStore.track?.name"
          class="info mb-4"
     >
-      <Actions v-if="musicStore.activeTrack.id >= 0"/>
+      <Actions v-if="currentTrackStore.track.id >= 0"/>
 
       <div :class="[
                'text-[4rem] 3xl:text-[6.25rem] font-bold w-full overflow-hidden relative text-nowrap leading-[1.2] transition-[transform] duration-500',
@@ -61,21 +61,21 @@ watch(
              ref="nameTrackRef"
         >
           <span>
-            {{ musicStore.activeTrack?.name }}
+            {{ currentTrackStore.track?.name }}
           </span>
 
           <span v-if="isNameOverflow"
                 class="ml-37.5"
           >
-            {{ musicStore.activeTrack?.name }}
+            {{ currentTrackStore.track?.name }}
           </span>
         </div>
       </div>
 
-      <div v-if="musicStore.activeTrack.id >= 0"
+      <div v-if="currentTrackStore.track.id >= 0"
            class="text-[1.8rem] 3xl:text-[2.625rem] leading-[1.2] w-full overflow-hidden relative text-nowrap truncate"
       >
-        {{ showArtists(musicStore.activeTrack?.artists) }}
+        {{ showArtists(currentTrackStore.track?.artists) }}
       </div>
     </div>
   </Transition>

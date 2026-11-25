@@ -7,17 +7,17 @@ import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
 import useControllersStore from "@store/useControllersStore.ts";
 const controllersStore = useControllersStore();
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
+import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
+const currentTrackStore = useCurrentTrackStore();
 
 const visibleImage = computed(() => {
-  return controllersStore.mode === 'img' && !!musicStore.activeTrack.previewUrl
+  return controllersStore.mode === 'img' && !!currentTrackStore.track.previewUrl
 })
 
 const videoRef = ref<HTMLVideoElement | null>(null)
 
 const visibleVideo = computed(() => {
-  return controllersStore.mode === 'video' && !!musicStore.activeTrack.videoClipUrl
+  return controllersStore.mode === 'video' && !!currentTrackStore.track.videoClipUrl
 })
 
 const onPlay = () => {
@@ -68,14 +68,14 @@ watchEffect((onCleanup) => {
                     ]"
   >
     <img v-if="visibleImage"
-         :key="`image-${musicStore.activeTrack.id}`"
-         :src="`${BASE_URL}${musicStore.activeTrack.previewUrl}`"
-         :alt="musicStore.activeTrack?.name"
+         :key="`image-${currentTrackStore.track.id}`"
+         :src="`${BASE_URL}${currentTrackStore.track.previewUrl}`"
+         :alt="currentTrackStore.track?.name"
          draggable="false"
     >
     <video v-if="visibleVideo"
-           :key="`video-${musicStore.activeTrack.id}`"
-           :src="`${BASE_URL}${musicStore.activeTrack?.videoClipUrl}`"
+           :key="`video-${currentTrackStore.track.id}`"
+           :src="`${BASE_URL}${currentTrackStore.track?.videoClipUrl}`"
            muted
            ref="videoRef"
            preload="auto"

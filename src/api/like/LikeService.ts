@@ -7,14 +7,16 @@ import {apiGet, apiPost} from "@/api";
 export const LikeService = {
     like(
         musicId: number,
+        signal?: AbortSignal,
     ): Promise<IsLiked> {
-        return apiPost(`/likes/${musicId}`)
+        return apiPost(`/likes/${musicId}`, undefined, {signal})
     },
 
     getLikedTracks(
         name: string = '',
         page: number = 1,
-        limit: number = 21
+        limit: number = 21,
+        signal?: AbortSignal,
     ): Promise<PaginatedResponse<TrackPreview>> {
         const params = new URLSearchParams({
             page: String(page),
@@ -23,7 +25,7 @@ export const LikeService = {
 
         if (name) params.append('name', name)
 
-        return apiGet(`/likes?${params}`)
+        return apiGet(`/likes?${params}`, {signal})
     },
 
     checkLike(

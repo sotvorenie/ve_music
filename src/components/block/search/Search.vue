@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import {computed} from "vue";
 
-import {debounce} from "@composables/useDebounce.ts";
+import {useTracksLoader} from "@composables/useTracksLoader.ts";
+import {useArtistsLoader} from "@composables/useArtistsLoader.ts";
+import {debounce} from "@utils/debounce.ts";
 
 import SearchHistory from "@components/search/SearchHistory.vue";
 
@@ -15,13 +17,10 @@ import useSearchStore from "@store/useSearchStore.ts";
 const searchStore = useSearchStore();
 import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
-import useArtistStore from "@store/useArtistStore.ts";
-const artistStore = useArtistStore();
+import useArtistsStore from "@store/useArtistsStore.ts";
+const artistStore = useArtistsStore();
 import useGenresStore from "@store/useGenresStore.ts";
 const genresStore = useGenresStore();
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
-
 
 const allPlaceholders = {
   all: 'Поиск по всем трекам',
@@ -50,7 +49,7 @@ const placeholder = computed(() => {
 })
 
 const search = () => {
-  menuStore.listMode === 'artists' ? artistStore.getArtists(true) : musicStore.getMusic(true)
+  menuStore.listMode === 'artists' ? useArtistsLoader().load(true) : useTracksLoader().load(true)
 }
 
 const handleClear = () => {

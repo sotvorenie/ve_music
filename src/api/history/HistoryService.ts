@@ -8,6 +8,7 @@ export const HistoryService = {
         name: string = '',
         page: number = 1,
         limit: number = 21,
+        signal?: AbortSignal,
     ): Promise<PaginatedResponse<TrackPreview>> {
         const params = new URLSearchParams({
             page: String(page),
@@ -16,6 +17,6 @@ export const HistoryService = {
 
         if (name) params.append('name', name)
 
-        return apiGet(`/history?${params}`)
+        return apiGet(`/history?${params}`, {signal})
     },
 }

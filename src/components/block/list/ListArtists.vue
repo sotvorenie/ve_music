@@ -6,34 +6,37 @@ import {Artist} from "@/types/artist.ts";
 import {BASE_URL} from "@api/url.ts";
 
 import {useObserve} from "@composables/useObserve.ts";
+import {useArtistsLoader} from "@composables/useArtistsLoader.ts";
 
 import Empty from "@ui/empty/Empty.vue";
 
 import FoxIcon from "@icons/FoxIcon.vue";
 
-import useArtistStore from "@store/useArtistStore.ts";
-const artistStore = useArtistStore();
+import useArtistsStore from "@store/useArtistsStore.ts";
+const artistStore = useArtistsStore();
 import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
 import useGenresStore from "@store/useGenresStore.ts";
 const genresStore = useGenresStore();
+
+const {load, loadMore} = useArtistsLoader()
 
 const listRef = ref<HTMLUListElement | null>(null)
 const lastLiRef = ref<HTMLLIElement | null>(null)
 
 const handleArtist = async (artist: Artist) => {
   artistStore.currentArtist = artist
-  genresStore.clearGenre()
+  genresStore.clear()
 
   menuStore.listMode = 'music'
 }
 
-await artistStore.getArtists(true)
+await load()
 
 useObserve(
     lastLiRef,
-    () => artistStore.getArtists(true),
-    () => artistStore.hasMore,
+    loadMore,
+    () => artistStore.meta.hasMore,
     () => artistStore.isLoading,
 )
 </script>

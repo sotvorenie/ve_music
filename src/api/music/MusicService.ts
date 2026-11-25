@@ -10,6 +10,7 @@ export const MusicService = {
         genreId: number = -1,
         page: number = 1,
         limit: number = 21,
+        signal?: AbortSignal,
     ): Promise<PaginatedResponse<TrackPreview>> {
         const params = new URLSearchParams({
             page: String(page),
@@ -20,18 +21,19 @@ export const MusicService = {
         if (artistId >= 0) params.append('artist_id', String(artistId))
         if (genreId >= 0) params.append('genre_id', String(genreId))
 
-        return apiGet(`/music?${params}`)
+        return apiGet(`/music?${params}`, {signal})
     },
 
     getTrack(
         musicId: number,
         setView: boolean = true,
+        signal?: AbortSignal,
     ): Promise<Track> {
         const params = new URLSearchParams({
             set_view: String(setView),
         })
 
-        return apiGet(`/music/${musicId}?${params}`)
+        return apiGet(`/music/${musicId}?${params}`, {signal})
     },
 
     getRandomIds(
@@ -42,6 +44,7 @@ export const MusicService = {
         name: string = '',
         artistId: number = -1,
         genreId: number = -1,
+        signal?: AbortSignal,
     ): Promise<PaginatedResponse<number>> {
         const params = new URLSearchParams({
             page: String(page),
@@ -55,6 +58,6 @@ export const MusicService = {
         if (genreId >= 0) params.append('genre_id', String(genreId))
 
 
-        return apiGet(`/music/random?${params}`)
+        return apiGet(`/music/random?${params}`, {signal})
     },
 }

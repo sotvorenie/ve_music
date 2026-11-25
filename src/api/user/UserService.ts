@@ -5,24 +5,26 @@ import {apiDelete, apiPatch, apiPost} from "@/api";
 export const UserService = {
     updateName(
         name: string = '',
+        signal?: AbortSignal,
     ): Promise<void> {
         const payload = {
             name,
         }
 
-        return apiPatch(`/user/name`, payload)
+        return apiPatch(`/user/name`, payload, {signal})
     },
 
     updatePassword(
         password: string = '',
         oldPassword: string = '',
+        signal?: AbortSignal,
     ): Promise<{token: string}> {
         const payload = {
             password,
             old_password: oldPassword,
         }
 
-        return apiPatch(`/user/password`, payload)
+        return apiPatch(`/user/password`, payload, {signal})
     },
 
     uploadAvatar(
@@ -34,7 +36,9 @@ export const UserService = {
         return apiPost(`/user/avatar`, formData)
     },
 
-    deleteAvatar(): Promise<void> {
-        return apiDelete(`/user/avatar`)
+    deleteAvatar(
+        signal?: AbortSignal,
+    ): Promise<void> {
+        return apiDelete(`/user/avatar`, {signal})
     }
 }

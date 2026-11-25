@@ -5,10 +5,11 @@ import {TrackPreview} from "@/types/music.ts";
 
 import {BASE_URL} from "@api/url.ts";
 
-import {showArtists} from "@composables/useShowArtists.ts";
-import {formatTime} from "@composables/useFormatTime.ts";
 import {useObserve} from "@composables/useObserve.ts";
-import {getTrackInfoFromPreview} from "@composables/useGetTrackInfoFromPreview.ts";
+import {useTracksLoader} from "@composables/useTracksLoader.ts";
+import {getTrackInfoFromPreview} from "@utils/getTrackInfoFromPreview.ts";
+import {showArtists} from "@utils/showArtist.ts";
+import {formatTime} from "@utils/formatTime.ts";
 
 import ToTrack from "@components/list/ToTrack.vue";
 
@@ -19,14 +20,18 @@ import MusicRecordIcon from "@icons/MusicRecordIcon.vue";
 
 import useAudioStore from "@store/useAudioStore.ts";
 const audioStore = useAudioStore();
-import useMusicStore from "@store/useMusicStore.ts";
-const musicStore = useMusicStore();
 import useMenuStore from "@store/useMenuStore.ts";
 const menuStore = useMenuStore();
 import useGenresStore from "@store/useGenresStore.ts";
 const genresStore = useGenresStore();
-import useArtistStore from "@store/useArtistStore.ts";
-const artistStore = useArtistStore();
+import useArtistsStore from "@store/useArtistsStore.ts";
+const artistStore = useArtistsStore();
+import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
+const currentTrackStore = useCurrentTrackStore();
+import useTracksStore from "@store/music/useTracksStore.ts";
+const tracksStore = useTracksStore();
+
+const {load, loadMore} = useTracksLoader()
 
 const listRef = ref<HTMLUListElement | null>(null)
 
@@ -34,23 +39,23 @@ const lastLiRef = ref<HTMLLIElement | null>(null)
 const activeLiRef = ref<HTMLLIElement | null>(null)
 
 const handleTrack = (item: TrackPreview) => {
-  musicStore.updateMusic(item.id, getTrackInfoFromPreview(item))
+  currentTrackStore.updateTrack({id: item.id, trackData: getTrackInfoFromPreview(item)})
 }
 
-await musicStore.getMusic(true)
+await load(true)
 
 useObserve(
     lastLiRef,
-    () => musicStore.getMusic(),
-    () => musicStore.hasMore,
-    () => musicStore.isLoading,
+    loadMore,
+    () => tracksStore.meta.hasMore,
+    () => tracksStore.isLoading,
 )
 
 watch(
     () => [menuStore.menuMode, genresStore.currentGenre.id],
     () => {
       listRef.value?.scroll(0, 0)
-      musicStore.getMusic(true)
+      load(true)
     }
 )
 
@@ -62,19 +67,19 @@ onBeforeMount(() => {
 <template>
   <div class="relative h-full">
     <ul class="list relative flex flex-col overflow-y-auto max-h-[80vh] h-full pr-2.5 transition-[max-height] duration-500"
-        v-if="musicStore.tracks.length"
+        v-if="tracksStore.tracks.length"
         ref="listRef"
         v-auto-animate
     >
-      <li v-for="item in musicStore.tracks"
+      <li v-for="item in tracksStore.tracks"
           :key="item.id"
           :class="[
               'list__item flex cursor-pointer items-center relative gap-4 rounded-regular transition-[background-color] duration-300 group hover:bg-[color-mix(in_srgb,_var(--dark-15),_transparent_50%)]',
-              item.id === musicStore.activeTrack.id && 'is-active pointer-events-none bg-[color-mix(in_srgb,_var(--dark-15),_transparent_25%)] '
+              item.id === currentTrackStore.track.id && 'is-active pointer-events-none bg-[color-mix(in_srgb,_var(--dark-15),_transparent_25%)] '
           ]"
           @click="handleTrack(item)"
           :ref="(el) => {
-            if (musicStore.activeTrack.id === item.id) activeLiRef = el as HTMLLIElement
+            if (currentTrackStore.track.id === item.id) activeLiRef = el as HTMLLIElement
           }"
       >
         <div class="square-20 3xl:square-22 shrink-0 rounded-regular img-container z-[100]">
@@ -86,7 +91,7 @@ onBeforeMount(() => {
         </div>
 
         <Transition name="record">
-          <Icon v-if="item.id === musicStore.activeTrack.id"
+          <Icon v-if="item.id === currentTrackStore.track.id"
                 :class="[
                     'list__item-record abs-y z-10 rounded-full ml-11 3xl:ml-14.5 left-0 text-accent bg-[color-mix(in srgb, var(--dark-15), transparent 25%)]',
                     !audioStore.isPlaying && 'paused'
@@ -99,7 +104,7 @@ onBeforeMount(() => {
 
         <div :class="[
                   'overflow-hidden transition-[padding]',
-                  item.id === musicStore.activeTrack.id && 'pl-6'
+                  item.id === currentTrackStore.track.id && 'pl-6'
               ]"
         >
           <p class="font-medium truncate">{{item?.name}}</p>
@@ -111,7 +116,7 @@ onBeforeMount(() => {
       <li class="h-[1px]" ref="lastLiRef"/>
     </ul>
 
-    <Empty v-if="!musicStore.tracks.length"/>
+    <Empty v-else/>
 
     <ToTrack :active-li-ref="activeLiRef"/>
   </div>
