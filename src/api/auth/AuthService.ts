@@ -6,19 +6,21 @@ export const AuthService = {
     auth(
         login: string,
         password: string,
+        signal?: AbortSignal,
     ): Promise<UserWithToken> {
         const payload = {
             login,
             password,
         }
 
-        return apiPost(`/auth/login`, payload)
+        return apiPost(`/auth/login`, payload, {signal})
     },
 
     registration(
         login: string,
         password: string,
         name: string,
+        signal?: AbortSignal,
     ): Promise<UserWithToken> {
         const payload = {
             login,
@@ -26,7 +28,7 @@ export const AuthService = {
             name,
         }
 
-        return apiPost(`/auth/register`, payload)
+        return apiPost(`/auth/register`, payload, {signal})
     },
 
     getMe(): Promise<UserWithToken> {

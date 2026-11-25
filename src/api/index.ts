@@ -18,22 +18,13 @@ client.interceptors.request.use((config) => {
 client.interceptors.response.use(
     response => response,
     async error => {
-        console.log(error)
-        if (axios.isCancel(error) || error.code === 'ERR_CANCELED') return { data: null, detail: 'canceled' }
+        if (axios.isCancel(error)) {
+            return Promise.reject({ isCanceled: true, detail: 'canceled' })
+        }
 
         if (error.response?.status === 401 && error.response?.data?.code === 'JWT_INVALID') {
             logOut()
-            return { data: null, detail: 'canceled' }
-        }
-
-        if (error.response?.status === 404) {
-            const errorData = error.response?.data || { detail: "404: Ресурс не найден" }
-            return Promise.reject(errorData)
-        }
-
-        if (error?.message === 'Network Error') {
-            const errorData = { detail: "Отсутствует подключение к серверу" }
-            return Promise.reject(errorData)
+            return Promise.reject({ isCanceled: true })
         }
 
         const errorData = error.response?.data || { detail: error.message || "Ошибка сети" }

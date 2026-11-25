@@ -27,7 +27,7 @@ const musicStore = useMusicStore();
 const visible = ref(false)
 
 const handleContextMenu = (e: MouseEvent) => {
-  if (userStore.user.role !== UserRoles.ADMIN) e.preventDefault()
+  // if (userStore.user.role !== UserRoles.ADMIN) e.preventDefault()
 }
 
 const setLastTrack = () => {

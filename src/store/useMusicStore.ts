@@ -2,6 +2,7 @@ import {defineStore} from "pinia";
 import {ref} from "vue";
 
 import {Track, TrackPreview} from "@/types/music.ts";
+import {Meta} from "@/types/meta.ts";
 
 import {MusicService} from "@api/music/MusicService.ts";
 import {HistoryService} from "@api/history/HistoryService.ts";
@@ -44,10 +45,12 @@ const useMusicStore = defineStore("musicStore", () => {
     const tracks = ref<TrackPreview[]>([])
 
     const isLoading = ref<boolean>(false)
-    const page = ref<number>(1)
-    const limit = ref<number>(21)
-    const total = ref<number>(0)
-    const hasMore = ref<boolean>(true)
+    const meta = ref<Meta>({
+        page: 1,
+        limit: 21,
+        total: 0,
+        hasMore: true,
+    })
 
     const randomIds = ref<number[]>([])
     const randomSeed = ref<number>((Math.random() * 2) - 1)
@@ -56,9 +59,12 @@ const useMusicStore = defineStore("musicStore", () => {
     const getMusic = async (isClear: boolean = false) => {
         if (isClear) {
             tracks.value = []
-            page.value = 1
-            hasMore.value = true
-            total.value = 0
+            meta.value = {
+                page: 1,
+                limit: 21,
+                total: 0,
+                hasMore: true,
+            }
         }
 
         try {
@@ -69,30 +75,30 @@ const useMusicStore = defineStore("musicStore", () => {
                     searchStore.searchName,
                     artistStore.currentArtist?.id,
                     genresStore.currentGenre?.id,
-                    page.value,
-                    limit.value
+                    meta.value.page,
+                    meta.value.limit,
                 ),
 
                 history: () => HistoryService.getHistory(
                     searchStore.searchName,
-                    page.value,
-                    limit.value
+                    meta.value.page,
+                    meta.value.limit,
                 ),
 
                 favorites: () => LikeService.getLikedTracks(
                     searchStore.searchName,
-                    page.value,
-                    limit.value
+                    meta.value.page,
+                    meta.value.limit,
                 ),
             }
 
             const response = await allApis?.[menuStore.menuMode]?.()
 
             tracks.value.push(...response.data)
-            limit.value = response.meta.limit
-            hasMore.value = response.meta.hasMore
-            page.value += 1
-            total.value = response.meta.total
+            meta.value = {
+                ...response.meta,
+                page: response.meta.page + 1
+            }
         } catch (err: any) {
             await showError(
                 'Что-то пошло не так',
@@ -147,10 +153,7 @@ const useMusicStore = defineStore("musicStore", () => {
         activeTrack,
         tracks,
 
-        page,
-        limit,
-        total,
-        hasMore,
+        meta,
         isLoading,
 
         randomIds,

@@ -9,6 +9,7 @@ import {AuthService} from "@api/auth/AuthService.ts";
 import {LikeService} from "@api/like/LikeService.ts";
 
 import {onBlur, onInput, onSubmit} from "@composables/useFormValidate.ts";
+import {useAbortableRequest} from "@composables/useAbortableRequest.ts";
 import {logIn} from "@utils/auth.ts";
 import {showError} from "@utils/modals.ts";
 
@@ -22,6 +23,8 @@ const emits = defineEmits<{
   success: [message: string]
 }>()
 
+const {nextSignal, isCurrent, abort} = useAbortableRequest()
+
 const isLogin = ref<boolean>(true)
 
 const isLoading = ref<boolean>(false)
@@ -34,21 +37,27 @@ const form = ref<AuthPayload>({
 
 const handleSubmit = async (e: Event) => {
   if (onSubmit(e)) {
+    const signal = nextSignal()
+
     try {
       isLoading.value = true
 
       const response = isLogin.value
-          ? await AuthService.auth(form.value.login, form.value.password)
-          : await AuthService.registration(form.value.login, form.value.password, form.value.name)
+          ? await AuthService.auth(form.value.login, form.value.password, signal)
+          : await AuthService.registration(form.value.login, form.value.password, form.value.name, signal)
 
       void success(response)
     } catch (err: any) {
+      if (err.isCanceled) return
+
       await showError(
           'Ошибка авторизации',
           err?.detail
       )
     } finally {
-      isLoading.value = false
+      if (isCurrent(signal)) {
+        isLoading.value = false
+      }
     }
   }
 }
@@ -74,7 +83,9 @@ const checkLike = async () => {
 }
 
 const handleTab = (isLoginValue: boolean) => {
+  abort()
   isLogin.value = isLoginValue
+  isLoading.value = false
   clear()
 }
 
