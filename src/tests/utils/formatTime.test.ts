@@ -15,4 +15,14 @@ describe('formatTime', () => {
         expect(formatTime(-10)).toBe('00:00')
         expect(formatTime(59.6)).toBe('01:00')
     })
+
+    it('выводим 00:00 при time = null/undefined/NaN', () => {
+        expect(formatTime(null as unknown as number)).toBe('00:00')
+        expect(formatTime(undefined as unknown as number)).toBe('00:00')
+        expect(formatTime(NaN as unknown as number)).toBe('00:00')
+    })
+
+    it('преобразуем в число если time = string', () => {
+        expect(formatTime('65' as unknown as number)).toBe('01:05')
+    })
 })

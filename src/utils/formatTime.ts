@@ -1,5 +1,7 @@
 export const formatTime = (time: number): string => {
-    const totalSeconds = Math.max(Math.round(time || 0), 0)
+    if (!time) return '00:00'
+
+    const totalSeconds = Math.max(Math.round(+time || 0), 0)
 
     const minutes: number = Math.floor(totalSeconds / 60)
     const seconds: number = totalSeconds % 60;
