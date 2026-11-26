@@ -29,8 +29,8 @@ export const usePlayerControllers = () => {
             currentTrackStore.isLoading = true
 
             if (controllersStore.isRandom) {
-                randomStore.randomIndex = Math.max(0, randomStore.randomIndex - 1)
-                const id = randomStore.randomIds[randomStore.randomIndex]
+                randomStore.randomIndex = Math.max(-1, randomStore.randomIndex - 1)
+                const id = randomStore.randomIds.get(randomStore.randomIndex)
                 if (id && id !== currentTrackStore.track.id) await currentTrackStore.updateTrack({id})
                 return
             }
@@ -51,14 +51,14 @@ export const usePlayerControllers = () => {
         if (controllersStore.isRandom) {
             try {
                 randomStore.randomIndex += 1
-                if (randomStore.randomIndex === 1) {
-                    randomStore.randomIds[0] = currentTrackStore.track.id
+                if (randomStore.randomIndex === 0) {
+                    randomStore.randomIds.set(-1, currentTrackStore.track.id)
                 }
 
-                const id = randomStore.randomIds[randomStore.randomIndex]
+                const id = randomStore.randomIds.get(randomStore.randomIndex)
+                if (!id || id === currentTrackStore.track.id) return
 
-                if (id === currentTrackStore.track.id) return
-                if (id) await currentTrackStore.updateTrack({id})
+                await currentTrackStore.updateTrack({id})
             } catch {
                 randomStore.randomIndex -= 1
             } finally {
