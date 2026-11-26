@@ -3,10 +3,11 @@ import {createPinia, setActivePinia} from "pinia";
 
 import {UserRoles, UserWithToken} from "@/types/user.ts";
 
+import {AuthService} from "@api/auth/AuthService.ts";
+
 import {getMe, logIn, logOut, setToken} from "@utils/auth.ts";
 
 import useUserStore from "@store/useUserStore.ts";
-import {AuthService} from "@api/auth/AuthService.ts";
 
 vi.mock('@api/auth/AuthService', () => ({
     AuthService: {
