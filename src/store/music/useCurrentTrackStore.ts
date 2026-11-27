@@ -9,6 +9,7 @@ import {MusicService} from "@api/music/MusicService.ts";
 import {abortableRequest} from "@utils/abortableRequest.ts";
 
 import useAudioStore from "@store/useAudioStore.ts";
+import useControllersStore from "@store/useControllersStore.ts";
 
 interface UpdateTrackParams {
     id: number | undefined
@@ -18,6 +19,7 @@ interface UpdateTrackParams {
 
 const useCurrentTrackStore = defineStore("currentTrackStore", () => {
     const audioStore = useAudioStore();
+    const controllersStore = useControllersStore();
 
     const {nextSignal, isCurrent, abort} = abortableRequest()
 
@@ -46,6 +48,10 @@ const useCurrentTrackStore = defineStore("currentTrackStore", () => {
         }
     }
 
+    const setImgModeIfNotVideo = () => {
+        controllersStore.mode = controllersStore.mode === 'video' && track.value.videoClipUrl ? 'video' : 'img'
+    }
+
     const updateTrack = async ({id, trackData = null, setView = true}: UpdateTrackParams) => {
         if (track.value.id === id) return
 
@@ -60,6 +66,7 @@ const useCurrentTrackStore = defineStore("currentTrackStore", () => {
             saveMusicInLocStore(data.id)
             Object.assign(track.value, data)
 
+            setImgModeIfNotVideo()
             audioStore.loadAndPlay()
         } catch (err: unknown) {
             if (isCanceledErr(err)) return
