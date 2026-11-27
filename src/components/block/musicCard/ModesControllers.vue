@@ -37,7 +37,7 @@ const currentTrackStore = useCurrentTrackStore();
     <Tooltip>
       <template #activator>
         <Transition name="scale">
-          <button v-if="musicStore.activeTrack.videoClipUrl"
+          <button v-if="currentTrackStore.track.videoClipUrl"
                   :class="[
                           'controllers__small-btn recolor-svg flex-center',
                           controllersStore.mode === 'video' && 'bg-dark-15 pointer-events-none'
