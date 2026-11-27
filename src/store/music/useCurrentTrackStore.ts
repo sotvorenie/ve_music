@@ -8,6 +8,8 @@ import {MusicService} from "@api/music/MusicService.ts";
 
 import {abortableRequest} from "@utils/abortableRequest.ts";
 
+import useAudioStore from "@store/useAudioStore.ts";
+
 interface UpdateTrackParams {
     id: number | undefined
     trackData?: Track | null
@@ -15,6 +17,8 @@ interface UpdateTrackParams {
 }
 
 const useCurrentTrackStore = defineStore("currentTrackStore", () => {
+    const audioStore = useAudioStore();
+
     const {nextSignal, isCurrent, abort} = abortableRequest()
 
     const track = ref<Track>({
@@ -55,6 +59,8 @@ const useCurrentTrackStore = defineStore("currentTrackStore", () => {
 
             saveMusicInLocStore(data.id)
             Object.assign(track.value, data)
+
+            audioStore.loadAndPlay()
         } catch (err: unknown) {
             if (isCanceledErr(err)) return
         } finally {
