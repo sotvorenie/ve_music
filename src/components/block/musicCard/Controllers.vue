@@ -25,7 +25,7 @@ const handleKey = (e: KeyboardEvent) => {
   switch (e.code) {
     case allKeyCodes.space:
       e.preventDefault()
-      audioStore.isPlaying = !audioStore.isPlaying
+      audioStore.setIsPlaying()
       break
     case allKeyCodes.arrowLeft:
       if (Number.isNaN(audio.duration)) break

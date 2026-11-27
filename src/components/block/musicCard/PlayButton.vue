@@ -34,7 +34,7 @@ watch(
 <template>
 
   <button class="square-16 3xl:square-17.5 flex-center bg-transparent rounded-full border-2 border-current p-1 hover:text-accent"
-          @click="audioStore.isPlaying = !audioStore.isPlaying"
+          @click="audioStore.setIsPlaying"
           type="button"
   >
     <svg width="90%" height="90%" viewBox="0 0 24 24">

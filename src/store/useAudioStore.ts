@@ -39,6 +39,8 @@ const useAudioStore = defineStore('audioStore', () => {
     audio.ontimeupdate = () => {
         if (!isMoving.value) currentTime.value = Math.floor(audio.currentTime)
     }
+    audio.onpause = () => isPlaying.value = false
+    audio.onplay = () => isPlaying.value = true
     audio.onended = async () => {
         if (controllersStore.isRepeat) {
             audio.currentTime = 0
@@ -115,6 +117,10 @@ const useAudioStore = defineStore('audioStore', () => {
         }
     }
 
+    const setIsPlaying = () => {
+        isPlaying.value ? audio.pause() : audio.play().catch(() => isPlaying.value = false)
+    }
+
     return {
         audio,
 
@@ -133,6 +139,7 @@ const useAudioStore = defineStore('audioStore', () => {
 
         loadAndPlay,
         setBitrate,
+        setIsPlaying,
     }
 })
 
