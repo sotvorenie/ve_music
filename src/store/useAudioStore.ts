@@ -87,6 +87,9 @@ const useAudioStore = defineStore('audioStore', () => {
                     ? nominal * 1000
                     : (hls?.levels[data.level]?.bitrate ?? 0)
             })
+            hls.on(Hls.Events.ERROR, (_, data) => {
+                console.error(data)
+            })
         } else {
             audio.src = url
             audio.load()
