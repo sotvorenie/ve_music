@@ -49,6 +49,7 @@ const useCurrentTrackStore = defineStore("currentTrackStore", () => {
         isLoading.value = true
 
         try {
+            if (trackData) Object.assign(track.value, trackData)
             const data = id ? await MusicService.getTrack(id, setView, signal) : trackData
             if (!data) return
 
