@@ -109,7 +109,7 @@ await getGenres()
               >
                 <button :class="[
                             'p-3.5 3xl:p-5 font-medium w-full text-left rounded-regular transition-[backdrop-filter] hover:backdrop-brightness-[.88] hover:text-accent',
-                            genresStore.currentGenre.id === genre.id && 'pointer-events-none backdrop-brightness-[.8]',
+                            genresStore.currentGenre.id === genre.id && artistStore.currentArtist.id < 0 && 'pointer-events-none backdrop-brightness-[.8]',
                         ]"
                         @click="handleGenre(genre)"
                         type="button"
