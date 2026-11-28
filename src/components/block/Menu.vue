@@ -34,6 +34,7 @@ const handleErrorModal = (type: string, func: Function) => {
 }
 
 const handleMenuItem = (index: number) => {
+  artistStore.currentArtist.id = -1
   activeTabIndex.value = index
   menuStore.menuMode = menuList[index].value as 'genres' | 'history' | 'favorites'
   menuStore.listMode = 'music'
