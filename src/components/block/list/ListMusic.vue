@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onBeforeMount, ref, watch} from "vue";
+import {ref, watch} from "vue";
 
 import {TrackPreview} from "@/types/music.ts";
 
@@ -59,10 +59,6 @@ watch(
       load(true)
     }
 )
-
-onBeforeMount(() => {
-  artistStore.currentArtist.id = -1
-})
 </script>
 
 <template>

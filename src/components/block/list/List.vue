@@ -23,6 +23,7 @@ const listComponents = {
 
 const handleTracksTab = async () => {
   artistStore.abort()
+  artistStore.currentArtist.id = -1
   genresStore.currentGenre = genresStore.genres[0]
   menuStore.listMode = 'music';
 }

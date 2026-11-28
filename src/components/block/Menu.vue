@@ -16,6 +16,8 @@ import useUserStore from "@store/useUserStore.ts";
 const userStore = useUserStore();
 import useGenresStore from "@store/useGenresStore.ts";
 const genresStore = useGenresStore();
+import useArtistsStore from "@store/useArtistsStore.ts";
+const artistStore = useArtistsStore();
 
 const activeTabIndex = ref<number>(0)
 
@@ -38,6 +40,7 @@ const handleMenuItem = (index: number) => {
 }
 
 const handleGenre = (genre: Genre) => {
+  artistStore.currentArtist.id = -1
   genresStore.currentGenre = genre
   menuStore.listMode = 'music'
 }
