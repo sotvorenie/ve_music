@@ -37,7 +37,7 @@ const handleArtistsTab = async () => {
 <template>
 
   <div :class="[
-           'list-wrapper absolute z-10 top-15 left-66 3xl:left-100 w-100 h-[80vh] transition-[transform,height] duration-500',
+           'list-wrapper absolute z-10 top-15 left-66 3xl:left-100 w-100 h-[80vh] transition-all duration-500',
            searchStore.isOpen && 'h-[70vh] translate-y-20'
        ]"
   >
