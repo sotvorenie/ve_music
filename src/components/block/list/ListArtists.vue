@@ -31,7 +31,7 @@ const handleArtist = async (artist: Artist) => {
   menuStore.listMode = 'music'
 }
 
-await load()
+if (!artistStore.artists.length) await load()
 
 useObserve(
     lastLiRef,
