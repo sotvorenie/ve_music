@@ -15,6 +15,7 @@ import ToTrack from "@components/list/ToTrack.vue";
 
 import Empty from "@ui/empty/Empty.vue";
 import Icon from "@ui/Icon.vue";
+import MusicListSkeleton from "@ui/skeletons/MusicListSkeleton.vue";
 
 import MusicRecordIcon from "@icons/MusicRecordIcon.vue";
 
@@ -29,7 +30,6 @@ const artistStore = useArtistsStore();
 import useCurrentTrackStore from "@store/music/useCurrentTrackStore.ts";
 const currentTrackStore = useCurrentTrackStore();
 import useTracksStore from "@store/music/useTracksStore.ts";
-import MusicListSkeleton from "@ui/skeletons/MusicListSkeleton.vue";
 const tracksStore = useTracksStore();
 
 const {load, loadMore} = useTracksLoader()
