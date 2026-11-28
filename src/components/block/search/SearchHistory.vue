@@ -59,10 +59,7 @@ await getSearchHistory()
     <li v-for="search in searchList"
         :key="search.id"
     >
-      <button class=""
-              @click="handleSearch(search.search)"
-              type="button"
-      >
+      <div @click="handleSearch(search.search)">
         <span>{{search.search}}</span>
 
         <button class=""
@@ -71,7 +68,7 @@ await getSearchHistory()
         >
           <Icon :name="CrossIcon" :size="20"/>
         </button>
-      </button>
+      </div>
     </li>
   </ul>
 
