@@ -70,7 +70,7 @@ const inputSearchName = debounce(search, 500)
       <template #activator>
         <Transition name="scale" mode="out-in">
           <button :key="`${searchStore.isOpen}`"
-                  class="recolor-svg square-9 3xl:square-10 origin-right hover:text-accent"
+                  class="recolor-svg square-9 3xl:square-10 hover:text-accent"
                   @click="searchStore.isOpen = !searchStore.isOpen"
                   type="button"
           >
