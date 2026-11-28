@@ -25,7 +25,7 @@ const listRef = ref<HTMLUListElement | null>(null)
 const lastLiRef = ref<HTMLLIElement | null>(null)
 
 const handleArtist = async (artist: Artist) => {
-  artistStore.currentArtist = artist
+  artistStore.currentArtist = {...artist}
   genresStore.clear()
 
   menuStore.listMode = 'music'
